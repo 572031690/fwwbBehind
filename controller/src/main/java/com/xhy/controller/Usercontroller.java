@@ -190,7 +190,7 @@ public class Usercontroller {
     }
 
 
-    @RequiresPermissions("admin:userlist")
+//    @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> ListUser(Integer page, Integer limit,User user) {
@@ -208,7 +208,7 @@ public class Usercontroller {
         return map;
     }
 
-    @RequiresPermissions("admin:addUser")
+//    @RequiresPermissions("admin:addUser")
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> addUser(@RequestBody User user) {
@@ -228,7 +228,7 @@ public class Usercontroller {
     }
 
 
-    @RequiresPermissions("admin:updateUser")
+//    @RequiresPermissions("admin:updateUser")
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> updateUser(@RequestBody User user) {
@@ -247,7 +247,7 @@ public class Usercontroller {
         }
     }
 
-    @RequiresPermissions("admin:deleteUser")
+//    @RequiresPermissions("admin:deleteUser")
     @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> deleteUser(int userid) {
@@ -271,7 +271,7 @@ public class Usercontroller {
      * */
 
 
-    @RequiresPermissions("admin:addUserRole")
+//    @RequiresPermissions("admin:addUserRole")
     @PostMapping("/addUserRole")
     @ResponseBody
     public Map<String,Object> addUserRole(@RequestBody UserRoleVO userRole){
@@ -292,7 +292,7 @@ public class Usercontroller {
      * 获取当前用户的所有角色
     * */
 
-    @RequiresPermissions("admin:getUserRole")
+//    @RequiresPermissions("admin:getUserRole")
     @GetMapping("/getUserRole")
     @ResponseBody
     public Map<String,Object> getUserRole(String username){
@@ -314,7 +314,7 @@ public class Usercontroller {
     /**
      * 修改用户角色关联
      * */
-    @RequiresPermissions("admin:updateRole")
+//    @RequiresPermissions("admin:updateRole")
     @PostMapping("/updateUserRole")
     @ResponseBody
     public Map<String,Object> updateUserRole(@RequestBody UserRoleVO userRole){
@@ -339,7 +339,7 @@ public class Usercontroller {
     /**
      *重置密码
      * */
-    @RequiresPermissions("admin:invertPassword")
+//    @RequiresPermissions("admin:invertPassword")
     @ResponseBody
     @GetMapping("/invertPassword")
     public Map<String,Object> updateUserRole(Integer userid){
@@ -359,7 +359,7 @@ public class Usercontroller {
      * 状态修改
      * */
 
-    @RequiresPermissions("admin:updateStatus")
+//    @RequiresPermissions("admin:updateStatus")
     @ResponseBody
     @GetMapping("/updateStatus")
     public Map<String,Object> updateStatus(Integer userid){

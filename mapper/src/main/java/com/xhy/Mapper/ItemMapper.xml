@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.ItemMapper">
+    <select id="findAll" resultType="com.xhy.domain.Item" parameterType="String">
+        SELECT * FROM tb_item
+        <where>
+            <if test="itemtype!=null and itemtype!=''">
+                itemtype like '%${itemtype}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="findbyid" parameterType="String" resultType="com.xhy.domain.Item">
+        select * from tb_item where itemid = #{itemid}
+    </select>
+
+
+    <insert id="addItem" parameterType="com.xhy.domain.Item" >
+        insert into tb_item values (#{itemid} ,#{itemtype},#{comment},#{num},#{unit},#{unitchange});
+    </insert>
+
+    <update id="updataItem" parameterType="com.xhy.domain.Item">
+        update tb_item set itemtype=#{itemtype},comment=#{comment},num=#{num},unit=#{unit},unitchange=#{unitchange} where itemid = #{itemid};
+    </update>
+
+    <delete id="deleteItem" parameterType="String">
+        delete from tb_item where itemid = #{itemid};
+    </delete>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.NeedMapper">
+    <select id="findAll" resultType="com.xhy.domain.Need" parameterType="com.xhy.vo.NeedVO">
+        SELECT * FROM tb_need
+        <where>
+            <if test="needtitle!=null and needtitle!=''">
+                 needtitle like '%${needtitle}%'
+            </if>
+            <if test="userid!=null and userid!=''">
+               and userid = #{userid}
+            </if>
+            <if test="authuserid != null and authuserid != ''">
+                and authuserid = #{authuserid}
+            </if>
+        </where>
+    </select>
+
+    <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Need">
+        select * from tb_need where needid = #{needid}
+    </select>
+
+
+    <insert id="addNeed" parameterType="com.xhy.domain.Need" >
+        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemtype},#{itemid},#{neednum},#{needday},#{neederid},#{comment},0);
+    </insert>
+
+    <update id="updateNeed" parameterType="com.xhy.domain.Need">
+        update tb_need set needtitle=#{needtitle},needday=#{needday},neederid=#{neederid}
+         ,comment=#{comment}
+        <if test="uptype!=null and uptype!=''">
+            ,uptype = #{uptype}
+        </if>
+        where needid = #{needid};
+    </update>
+
+    <delete id="deleteNeed" parameterType="int">
+        delete from tb_need where needid = #{needid};
+    </delete>
+</mapper>

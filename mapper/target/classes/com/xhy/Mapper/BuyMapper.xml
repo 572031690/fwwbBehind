@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.BuyMapper">
+    <select id="findAll" resultType="com.xhy.domain.Buy" parameterType="com.xhy.vo.BuyVo">
+        SELECT * FROM tb_buy
+        <where>
+            <if test="uptype!=null and uptype!=''">
+                uptype = #{uptype}
+            </if>
+            <if test="buytitle!=null and buytitle!=''">
+                and buytitle like '%${buytitle}%'
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Buy">
+        select *
+        from tb_buy
+        where buyid = #{buyid}
+    </select>
+
+    <insert id="addBuy" parameterType="com.xhy.domain.Buy">
+        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid,  num, buyerid, neederid, uptype)
+        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{buyerid}, #{neederid},0);
+    </insert>
+
+    <update id="updataBuy" parameterType="com.xhy.domain.Buy">
+        update tb_buy set buytitle=#{buytitle},btime=#{btime},itemtype=#{itemtype},itemid=#{itemid},num=#{num}
+        ,buyerid=#{buyerid},neederid=#{neederid}
+        <if test="uptype!=null and uptype!=''">
+            , uptype=#{uptype}
+        </if>
+        where buyid = #{buyid};
+    </update>
+
+    <delete id="deleteBuy" parameterType="int">
+        delete
+        from tb_buy
+        where buyid = #{buyid};
+    </delete>
+</mapper>
+

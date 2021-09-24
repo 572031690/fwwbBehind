@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+<!--    &lt;!&ndash;    在默认方式下bean的id 固定为processBngineConfiguration&ndash;&gt;-->
+<!--    <bean id="activiti_dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+<!--        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db01?useSSL=false&amp;serverTimezone=UTC"/>-->
+<!--        <property name="user" value="root"/>-->
+<!--        <property name="password" value="root"/>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash; 工作流引擎配置bean &ndash;&gt;-->
+<!--    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">-->
+<!--        &lt;!&ndash; 数据源 &ndash;&gt;-->
+<!--        <property name="dataSource" ref="activiti_dataSource"/>-->
+<!--        &lt;!&ndash; 使用spring事务管理器 &ndash;&gt;-->
+<!--        <property name="transactionManager" ref="transactionManager"/>-->
+<!--        &lt;!&ndash; 数据库策略 &ndash;&gt;-->
+<!--        <property name="databaseSchemaUpdate" value="true"/>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash; 事务管理器 &ndash;&gt;-->
+<!--    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+<!--        <property name="dataSource" ref="activiti_dataSource"/>-->
+<!--    </bean>-->
+
+<!--    &lt;!&ndash; 流程引擎 &ndash;&gt;-->
+<!--    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">-->
+<!--        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>-->
+<!--    </bean>-->
+<!--    &lt;!&ndash; 资源服务service &ndash;&gt;-->
+<!--    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>-->
+<!--    &lt;!&ndash; 流程运行service &ndash;&gt;-->
+<!--    <bean id="runtimeService" factory-bean="processEngine"  factory-method="getRuntimeService"/>-->
+<!--    &lt;!&ndash; 任务管理service &ndash;&gt;-->
+<!--    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>-->
+<!--    &lt;!&ndash; 历史管理service &ndash;&gt;-->
+<!--    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>-->
+
+<!--    &lt;!&ndash; 通知 &ndash;&gt;-->
+<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+<!--        <tx:attributes>-->
+<!--            &lt;!&ndash; 传播行为 &ndash;&gt;-->
+<!--            <tx:method name="save*" propagation="REQUIRED"/>-->
+<!--            <tx:method name="insert*" propagation="REQUIRED"/>-->
+<!--            <tx:method name="delete*" propagation="REQUIRED"/>-->
+<!--            <tx:method name="update*" propagation="REQUIRED"/>-->
+<!--            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>-->
+<!--            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+    <!-- 切面，根据具体项目修改切点配置
+    <aop:config proxy-target-class="true">
+        <aop:advisor advice-ref="txAdvice"
+                     pointcut="execution(*com.itheima.service.impl..(..))"/>
+    </aop:config>-->
+
+
+</beans>

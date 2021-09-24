@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.PermissionMapper">
+    <!--查询所有权限-->
+    <select id="findAllPermission" resultType="com.xhy.domain.Permission" parameterType="String">
+        select * from tb_permessions
+        <where>
+            <if test="name !=null and name!=''">
+                name like '%mapper%'
+            </if>
+        </where>
+    </select>
+
+    <!--增加权限-->
+    <insert id="addPermission" parameterType="com.xhy.domain.Permission" >
+        insert into tb_permessions values(null,#{name},#{type},#{url},#{permission},#{parent_id},0,0)
+    </insert>
+
+<!--    修改权限-->
+    <update id="updatePermission" parameterType="com.xhy.domain.Permission">
+        update tb_permessions set name=#{name},type=#{type},url=#{url},permission=#{permission},isDisabled=#{isDisabled},isDeleted=#{isDeleted}
+        where id=#{id}
+    </update>
+
+<!--    删除权限-->
+    <delete id="deletePermission" parameterType="int">
+        delete from tb_permessions where id=#{id}
+    </delete>
+
+</mapper>

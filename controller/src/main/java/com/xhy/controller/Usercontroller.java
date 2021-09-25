@@ -209,12 +209,14 @@ public class Usercontroller {
             if (roleid.size() != 0) {
                 for (Integer roleId : roleid) {
                     userlist.setRoleId(Collections.singletonList(roleId));
+                    list2.add(userlist);
                 }
             } else {
                 userlist.setRoleId(Collections.singletonList(0));
+                list2.add(userlist);
             }
         }
-        map.put("list", list2);
+        map.put("list",list2);
         map.put("page", pageNum);
         return map;
     }

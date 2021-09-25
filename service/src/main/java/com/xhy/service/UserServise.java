@@ -15,6 +15,8 @@ public interface UserServise {
 
     User findbyid(int userid);
 
+    List<String> getRoleIdByName(String username);
+
     Integer logon(User user);
 
     Integer addUser(User user);

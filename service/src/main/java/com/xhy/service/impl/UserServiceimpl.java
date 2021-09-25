@@ -29,6 +29,12 @@ public class UserServiceimpl implements UserServise {
     }
 
 
+
+    @Override
+    public List<String> getRoleIdByName(String username) {
+        return userMapper.getRoleIdByName(username);
+    }
+
     @Override
     public Integer logon(User user) {
        return userMapper.addUser(user);
@@ -36,12 +42,17 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public Integer addUser(User user) {
-        return userMapper.addUser(user);
+        CodeUtil codeUtil = new CodeUtil();
+        user.setPassword("888888");
+        User newUser = codeUtil.CodeHash(user);
+        return userMapper.addUser(newUser);
     }
 
     @Override
     public Integer updataUser(User user) {
-        return userMapper.updateUser(user);
+        CodeUtil codeUtil = new CodeUtil();
+        User newUser = codeUtil.CodeHash(user);
+        return userMapper.updateUser(newUser);
     }
 
     @Override

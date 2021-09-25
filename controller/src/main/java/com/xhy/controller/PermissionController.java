@@ -21,7 +21,7 @@ public class PermissionController {
     PermissionService permissionService;
 
 
-    @RequiresPermissions("admin:listPerm")
+//    @RequiresPermissions("admin:listPerm")
     @GetMapping("/listPerm")
     public @ResponseBody
     Map<String,Object> ListPerm(Integer page, Integer limit, String name){
@@ -38,7 +38,7 @@ public class PermissionController {
         return map;
     }
 
-    @RequiresPermissions("admin:addPerm")
+//    @RequiresPermissions("admin:addPerm")
     @PostMapping("/addPerm")
     public @ResponseBody Map<String,Object> addPerm(@RequestBody Permission permission){
         Map<String,Object> map = new HashMap<>();
@@ -51,7 +51,7 @@ public class PermissionController {
         return map;
     }
 
-    @RequiresPermissions("admin:updatePerm")
+//    @RequiresPermissions("admin:updatePerm")
     @PostMapping("/updatePerm")
     public @ResponseBody Map<String,Object> updatePerm(@RequestBody Permission permission){
         Map<String,Object> map = new HashMap<>();
@@ -64,7 +64,7 @@ public class PermissionController {
         return map;
     }
 
-    @RequiresPermissions("admin:deletePerm")
+//    @RequiresPermissions("admin:deletePerm")
     @GetMapping("/deletePerm")
     public @ResponseBody Map<String,Object> deletePerm(int id){
         Map<String,Object> map = new HashMap<>();

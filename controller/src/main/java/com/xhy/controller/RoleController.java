@@ -34,7 +34,7 @@ public class RoleController {
     UserServise userServise;
 
 
-    @RequiresPermissions("admin:listRole")
+//    @RequiresPermissions("admin:listRole")
     @GetMapping("/listRole")
     public @ResponseBody Map<String,Object> ListRole(Integer page, Integer limit, String rolename){
         Map<String, Object> map = new HashMap<String, Object>();
@@ -50,7 +50,7 @@ public class RoleController {
         return map;
     }
 
-    @RequiresPermissions("admin:addRole")
+//    @RequiresPermissions("admin:addRole")
     @PostMapping ("/addRole")
     public @ResponseBody Map<String,Object> addRole(@RequestBody Role role){
         Map<String,Object> map = new HashMap<>();
@@ -63,7 +63,7 @@ public class RoleController {
         return map;
     }
 
-    @RequiresPermissions("admin:updateRole")
+//    @RequiresPermissions("admin:updateRole")
     @PostMapping("/updateRole")
     public @ResponseBody Map<String,Object> updateRole(@RequestBody Role role){
         Map<String,Object> map = new HashMap<>();
@@ -76,7 +76,7 @@ public class RoleController {
         return map;
     }
 
-    @RequiresPermissions("admin:deleteRole")
+//    @RequiresPermissions("admin:deleteRole")
     @GetMapping("/deleteRole")
     public @ResponseBody Map<String,Object> deleteRole(int roleId){
         Map<String,Object> map = new HashMap<>();
@@ -93,7 +93,7 @@ public class RoleController {
     /*
      * 拿到角色表中所有角色
      * */
-    @RequiresPermissions("admin:getRolePerm")
+//    @RequiresPermissions("admin:getRolePerm")
     @GetMapping("/getRolePerm")
     public Map<String,Object> getRolePerm(String username){
         Map<String,Object> map = new HashMap<>();
@@ -116,7 +116,7 @@ public class RoleController {
      * 处理添加数据
      * */
 
-    @RequiresPermissions("admin:addRolePerm")
+//    @RequiresPermissions("admin:addRolePerm")
     @PostMapping("/addRolePerm")
     public Map<String,Object> AddUserRole(@RequestBody RolePermVO rolePermvo){
         Map<String,Object> map = new HashMap<>();
@@ -135,7 +135,7 @@ public class RoleController {
     /**
      * 修改用户角色关联
      * */
-    @RequiresRoles("admin:updateRolePerm")
+//    @RequiresRoles("admin:updateRolePerm")
     @PostMapping("/updateRolePerm")
     @ResponseBody
     public Map<String,Object> updateRolePerm(@RequestBody RolePermVO rolePermvo){

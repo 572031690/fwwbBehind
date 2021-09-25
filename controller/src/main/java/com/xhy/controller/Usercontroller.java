@@ -43,7 +43,6 @@ public class Usercontroller {
     @ResponseBody
     public Map<String, Object> login(AdminUserVO adminUserVO) {
         Map<String, Object> map = new HashMap<String, Object>();
-        User user = userServise.findUser(adminUserVO.getUsername());
         try {
             if(adminUserVO!=null) {
                 //创建主体
@@ -55,7 +54,15 @@ public class Usercontroller {
                     usernamePasswordToken.setRememberMe(true);
                 }
             }
-
+            User user = userServise.findUser(adminUserVO.getUsername());
+            List<String> roleIdByName = userServise.getRoleIdByName(adminUserVO.getUsername());
+            if (roleIdByName.size() != 0) {
+                for (String roleId : roleIdByName) {
+                    user.setRoleId(Integer.parseInt(roleId));
+                }
+            } else {
+                user.setRoleId(0);
+            }
             map.put("code", "101");
             map.put("user", user);
 
@@ -173,8 +180,8 @@ public class Usercontroller {
             return map;
         } else if (userServise.findbyname(user.getUsername())) {
             CodeUtil codeUtil = new CodeUtil();
-            User newUser = codeUtil.CodeHash(user);
-            Integer status = userServise.logon(newUser);
+            codeUtil.CodeHash(user);
+            Integer status = userServise.logon(user);
             if(status!=null) {
                 map.put("code", "101");
                 return map;
@@ -195,6 +202,7 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> ListUser(Integer page, Integer limit,User user) {
 
+
         Map<String, Object> map = new HashMap<String, Object>();
         List<User> list1 = userServise.findalluser(0, 0, user);
         PageInfo pageInfo1 = new PageInfo(list1);
@@ -203,6 +211,14 @@ public class Usercontroller {
         List<User> list2 = userServise.findalluser(page, limit, user);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
+        List<String> roleid = userServise.getRoleIdByName(user.getUsername());
+        if (roleid.size() != 0) {
+            for (String roleId : roleid) {
+                user.setRoleId(Integer.parseInt(roleId));
+            }
+        } else {
+            user.setRoleId(0);
+        }
         map.put("list", list2);
         map.put("page", pageNum);
         return map;
@@ -213,8 +229,6 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> addUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
-        CodeUtil codeUtil = new CodeUtil();
-        codeUtil.CodeHash(user);
         Integer status= userServise.addUser(user);
         if(status!=null){
             map.put("code", "101");
@@ -233,8 +247,6 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> updateUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
-        CodeUtil codeUtil = new CodeUtil();
-        codeUtil.CodeHash(user);
         Integer status= userServise.updataUser(user);
         if(status!=null){
             map.put("code", "101");

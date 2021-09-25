@@ -13,6 +13,8 @@ public interface UserMapper {
 
     User findUser(String username);
 
+    /*获取用户角色id*/
+    List<String> getRoleIdByName(String username);
 
     Integer addUser(User user);
 

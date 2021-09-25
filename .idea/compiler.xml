@@ -10,8 +10,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="controller" />
         <module name="mapper" />
-        <module name="domain" />
         <module name="service" />
+        <module name="domain" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -5,8 +5,7 @@
 <mapper namespace="com.xhy.Mapper.UserMapper">
     <!--配置查询所有，resultType的作用就是返回封装的位置，如果你要是不写的话，最后mybatis是不知道你到底要封装到哪里，会出现错误，我这个是User表，查询的也是这个，最后返回的结果就封装在User类中-->
     <select id="findAll" resultType="com.xhy.domain.User" parameterType="com.xhy.domain.User">
-        SELECT u.userId, u.username, u.telNum, u.employeeid, u.isDisabled,ur.roleId FROM tb_users u
-        INNER JOIN tb_user_role ur ON u.userId = ur.userId
+        SELECT userId, username, telNum, employeeid, isDisabled FROM tb_users
         <where>
             <if test="userid != null and userid!=''">
                 u.userId = #{userid}
@@ -27,6 +26,11 @@
         select *
         from tb_users
         where userId = #{userid}
+    </select>
+
+    <select id="getRoleIdByName" parameterType="String" resultType="java.lang.String">
+        SELECT tur.roleId
+        from tb_users u inner join tb_user_role tur  on u.userId = tur.userId where username = #{username};
     </select>
 
     <select id="login" parameterType="com.xhy.domain.User" resultType="com.xhy.domain.User">

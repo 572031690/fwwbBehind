@@ -1,7 +1,9 @@
 package com.xhy.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Item;
+import com.xhy.domain.User;
 import com.xhy.service.ItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,20 @@ public class ItemController {
 //    @RequiresPermissions("item:listItem")
     @RequestMapping(value = "/findAllitem", method = RequestMethod.GET)
     public @ResponseBody
-    List<Item> findAllitem(int page, int limit, String itemtype) {
-
-
+    Map<String, Object> findAllitem(int page, int limit, String itemtype) {
+        Map<String, Object> map = new HashMap<String, Object>();
         List<Item> itemList = itemService.findAllItem(page, limit, itemtype);
+        PageInfo pageInfo1 = new PageInfo(itemList);
+        int count = pageInfo1.getSize();
+        map.put("count", count);
+        List<Item> itemList2 = itemService.findAllItem(page, limit, itemtype);
+        PageInfo pageInfo2 = new PageInfo(itemList2);
+        int pageNum = pageInfo2.getPageNum();
+        map.put("list", itemList2);
+        map.put("page", pageNum);
 
-        return itemList;
+        return map;
+
 
     }
 

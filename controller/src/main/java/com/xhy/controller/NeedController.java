@@ -25,7 +25,7 @@ public class NeedController {
     @Autowired
     UserServise userServise;
 
-    @RequiresPermissions("needer:listNeed")
+//    @RequiresPermissions("needer:listNeed")
     @RequestMapping(value = "/findAllNeed",method = RequestMethod.GET)
     public @ResponseBody Map<String,Object> findAllNeed(@RequestBody NeedVO needVO)
     {
@@ -47,7 +47,7 @@ public class NeedController {
         return map;
     }
 
-    @RequiresPermissions("needer:updateNeed")
+//    @RequiresPermissions("needer:updateNeed")
     @RequestMapping(value = "/updateNeed",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> updateNeed(@RequestBody Need need){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -81,7 +81,7 @@ public class NeedController {
         return map;
     }
 
-    @RequiresPermissions("needer:addNeed")
+//    @RequiresPermissions("needer:addNeed")
     @RequestMapping(value = "/addNeed",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> addNeed(Need need){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -100,7 +100,7 @@ public class NeedController {
         }
     }
 
-    @RequiresPermissions("needer:deleteNeed")
+//    @RequiresPermissions("needer:deleteNeed")
     @RequestMapping(value = "/deleteNeed",method = RequestMethod.GET)
     public @ResponseBody Map<String,Object> deleteNeed(int needid){
         Map<String,Object> map = new HashMap<String,Object>();

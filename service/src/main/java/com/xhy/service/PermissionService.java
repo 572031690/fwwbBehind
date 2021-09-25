@@ -16,17 +16,17 @@ public interface PermissionService {
     /*
      * 添加权限
      * */
-    String addPermission(Permission permission);
+    Integer addPermission(Permission permission);
 
     /*
      * 修改权限
      * */
-    String updatePermission(Permission permission);
+    Integer updatePermission(Permission permission);
 
     /*
      * 删除权限
      * */
-    String deletePermission(int id);
+    Integer deletePermission(int id);
 
     List<Permission> findPermission();
 

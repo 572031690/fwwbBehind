@@ -15,16 +15,16 @@ public interface PermissionMapper {
     /*
      * 增加权限
      * */
-    void addPermission(Permission permission);
+    Integer addPermission(Permission permission);
 
     /*
      * 修改权限
      * */
-    void updatePermission(Permission permission);
+    Integer updatePermission(Permission permission);
 
     /*
      * 删除权限
      * */
-    void deletePermission(int id);
+    Integer deletePermission(int id);
 
 }

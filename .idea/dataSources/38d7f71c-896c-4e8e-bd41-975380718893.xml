@@ -1131,8 +1131,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </column>
     <column id="324" parent="241" name="itemtype">
       <Position>3</Position>
-      <DataType>varchar(10)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>varchar(30)|0s</DataType>
     </column>
     <column id="325" parent="241" name="itemid">
       <Position>4</Position>
@@ -1166,128 +1165,120 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>10</Position>
       <DataType>int(20)|0s</DataType>
     </column>
-    <column id="332" parent="241" name="authuserid">
-      <Position>11</Position>
-      <DataType>int(11)|0s</DataType>
-    </column>
-    <index id="333" parent="241" name="FK_tb_need">
+    <index id="332" parent="241" name="FK_tb_need">
       <ColNames>itemid</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="334" parent="241" name="PRIMARY">
+    <key id="333" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>needid</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="335" parent="242" name="id">
+    <column id="334" parent="242" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="336" parent="242" name="name">
+    <column id="335" parent="242" name="name">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="337" parent="242" name="type">
+    <column id="336" parent="242" name="type">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="338" parent="242" name="url">
+    <column id="337" parent="242" name="url">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="339" parent="242" name="permission">
+    <column id="338" parent="242" name="permission">
       <Position>5</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="340" parent="242" name="isDisabled">
+    <column id="339" parent="242" name="isDisabled">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <column id="341" parent="242" name="isDeleted">
-      <Position>7</Position>
-      <DataType>int(11)|0s</DataType>
-    </column>
-    <key id="342" parent="242" name="PRIMARY">
+    <key id="340" parent="242" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="343" parent="243" name="roleId">
+    <column id="341" parent="243" name="roleId">
       <Position>1</Position>
       <DataType>int(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="344" parent="243" name="permId">
+    <column id="342" parent="243" name="permId">
       <Position>2</Position>
       <DataType>int(100)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="345" parent="244" name="roleId">
+    <column id="343" parent="244" name="roleId">
       <Position>1</Position>
       <DataType>int(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="346" parent="244" name="rolename">
+    <column id="344" parent="244" name="rolename">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="347" parent="244" name="description">
+    <column id="345" parent="244" name="description">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="348" parent="244" name="isDeleted">
+    <column id="346" parent="244" name="isDeleted">
       <Position>4</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <key id="349" parent="244" name="PRIMARY">
+    <key id="347" parent="244" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>roleId</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="350" parent="245" name="roleId">
+    <column id="348" parent="245" name="roleId">
       <Position>1</Position>
       <DataType>int(100)|0s</DataType>
     </column>
-    <column id="351" parent="245" name="userId">
+    <column id="349" parent="245" name="userId">
       <Position>2</Position>
       <DataType>int(100)|0s</DataType>
     </column>
-    <column id="352" parent="246" name="userId">
+    <column id="350" parent="246" name="userId">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="353" parent="246" name="username">
+    <column id="351" parent="246" name="username">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="354" parent="246" name="password">
+    <column id="352" parent="246" name="password">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="355" parent="246" name="salt">
+    <column id="353" parent="246" name="salt">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="356" parent="246" name="telNum">
+    <column id="354" parent="246" name="telNum">
       <Position>5</Position>
       <DataType>varchar(11)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="357" parent="246" name="employeeid">
+    <column id="355" parent="246" name="employeeid">
       <Position>6</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="358" parent="246" name="isDisabled">
+    <column id="356" parent="246" name="isDisabled">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
     </column>
-    <key id="359" parent="246" name="PRIMARY">
+    <key id="357" parent="246" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userId</ColNames>
       <Primary>1</Primary>

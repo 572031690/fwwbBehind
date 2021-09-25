@@ -15,12 +15,12 @@
 
     <!--增加权限-->
     <insert id="addPermission" parameterType="com.xhy.domain.Permission" >
-        insert into tb_permessions values(null,#{name},#{type},#{url},#{permission},#{parent_id},0,0)
+        insert into tb_permessions values(null,#{name},#{type},#{url},#{permission},0)
     </insert>
 
 <!--    修改权限-->
     <update id="updatePermission" parameterType="com.xhy.domain.Permission">
-        update tb_permessions set name=#{name},type=#{type},url=#{url},permission=#{permission},isDisabled=#{isDisabled},isDeleted=#{isDeleted}
+        update tb_permessions set name=#{name},type=#{type},url=#{url},permission=#{permission}
         where id=#{id}
     </update>
 

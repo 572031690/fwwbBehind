@@ -15,12 +15,12 @@
 
     <!--增加角色-->
     <insert id="addRole" parameterType="com.xhy.domain.Role" >
-        insert into tb_roles values(null,#{rolename},#{description},0)
+        insert into tb_roles values(#{roleId},#{rolename},#{description},0)
     </insert>
 
 <!--    修改角色-->
     <update id="updateRole" parameterType="com.xhy.domain.Role">
-        update tb_roles set rolename=#{rolename},description=#{description},isDeleted=#{isDeleted} where roleId=#{roleId}
+        update tb_roles set rolename=#{rolename},description=#{description} where roleId=#{roleId}
     </update>
 
 <!--    删除角色-->

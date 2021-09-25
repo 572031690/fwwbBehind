@@ -29,7 +29,7 @@ public class ItemController {
     public @ResponseBody
     Map<String, Object> findAllitem(int page, int limit, String itemtype) {
         Map<String, Object> map = new HashMap<String, Object>();
-        List<Item> itemList = itemService.findAllItem(page, limit, itemtype);
+        List<Item> itemList = itemService.findAllItem(0, 0, itemtype);
         PageInfo pageInfo1 = new PageInfo(itemList);
         int count = pageInfo1.getSize();
         map.put("count", count);
@@ -58,7 +58,7 @@ public class ItemController {
         Map<String, Object> map = new HashMap<>();
         if (item != null) {
             Integer integer = itemService.addItem(item);
-            if (integer != null) {
+            if (integer != 0) {
                 map.put("code", "101");
                 return map;
             } else {
@@ -66,7 +66,7 @@ public class ItemController {
                 return map;
             }
         } else {
-            map.put("code", "103");
+            map.put("code", "102");
             return map;
         }
     }
@@ -78,7 +78,7 @@ public class ItemController {
         Map<String, Object> map = new HashMap<>();
         if (item != null) {
             Integer integer = itemService.updateItem(item);
-            if (integer != null) {
+            if (integer != 0) {
                 map.put("code", "101");
                 return map;
             } else {
@@ -96,7 +96,7 @@ public class ItemController {
     Map<String, Object> deleteItem(String itemid) {
         Map<String, Object> map = new HashMap<>();
         Integer integer = itemService.deleteItem(itemid);
-        if (integer != null) {
+        if (integer != 0) {
             map.put("code", "101");
             return map;
         } else {

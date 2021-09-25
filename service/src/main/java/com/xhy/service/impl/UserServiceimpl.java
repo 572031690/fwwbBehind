@@ -31,7 +31,7 @@ public class UserServiceimpl implements UserServise {
 
 
     @Override
-    public List<String> getRoleIdByName(String username) {
+    public List<Integer> getRoleIdByName(String username) {
         return userMapper.getRoleIdByName(username);
     }
 

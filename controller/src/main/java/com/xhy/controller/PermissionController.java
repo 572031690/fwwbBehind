@@ -42,8 +42,8 @@ public class PermissionController {
     @PostMapping("/addPerm")
     public @ResponseBody Map<String,Object> addPerm(@RequestBody Permission permission){
         Map<String,Object> map = new HashMap<>();
-        String add = permissionService.addPermission(permission);
-        if(add!=null || add!=""){
+        Integer add = permissionService.addPermission(permission);
+        if(add!=0){
             map.put("code","101");
         }else {
             map.put("code","102");
@@ -55,8 +55,8 @@ public class PermissionController {
     @PostMapping("/updatePerm")
     public @ResponseBody Map<String,Object> updatePerm(@RequestBody Permission permission){
         Map<String,Object> map = new HashMap<>();
-        String update = permissionService.updatePermission(permission);
-        if(update!=null || update!=""){
+        Integer update = permissionService.updatePermission(permission);
+        if(update!=0){
             map.put("code","101");
         }else {
             map.put("code","102");
@@ -68,8 +68,8 @@ public class PermissionController {
     @GetMapping("/deletePerm")
     public @ResponseBody Map<String,Object> deletePerm(int id){
         Map<String,Object> map = new HashMap<>();
-        String delete = permissionService.deletePermission(id);
-        if(delete!=null || delete!=""){
+        Integer delete = permissionService.deletePermission(id);
+        if(delete!=0){
             map.put("code","101");
         }else {
             map.put("code","102");

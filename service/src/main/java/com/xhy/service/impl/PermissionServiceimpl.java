@@ -23,21 +23,18 @@ public class PermissionServiceimpl implements PermissionService {
     }
 
     @Override
-    public String addPermission(Permission permission) {
-         permissionMapper.addPermission(permission);
-         return null;
+    public Integer addPermission(Permission permission) {
+        return permissionMapper.addPermission(permission);
     }
 
     @Override
-    public String updatePermission(Permission permission) {
-        permissionMapper.updatePermission(permission);
-        return null;
+    public Integer updatePermission(Permission permission) {
+        return permissionMapper.updatePermission(permission);
     }
 
     @Override
-    public String deletePermission(int id) {
-        permissionMapper.deletePermission(id);
-        return null;
+    public Integer deletePermission(int id) {
+        return  permissionMapper.deletePermission(id);
     }
 
     @Override

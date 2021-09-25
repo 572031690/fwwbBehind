@@ -10,14 +10,13 @@ import java.util.List;
 public class Need implements Serializable {
     private int needid;
     private String needtitle;
-    private String itemtype;
     private String itemid;
+    private String itemtype;
     private int neednum;
+    private String itemunti;
     private String needday;
-    private int userid;
+    private int neederid;
     private String comment;
-//    private int needlevel;
     private int uptype;
-    private int authuserid;
 
 }

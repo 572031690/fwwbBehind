@@ -9,11 +9,8 @@
             <if test="needtitle!=null and needtitle!=''">
                  needtitle like '%${needtitle}%'
             </if>
-            <if test="userid!=null and userid!=''">
-               and userid = #{userid}
-            </if>
-            <if test="authuserid != null and authuserid != ''">
-                and authuserid = #{authuserid}
+            <if test="uptype != null and uptype !=''">
+                and uptype = #{uptype}
             </if>
         </where>
     </select>
@@ -24,15 +21,12 @@
 
 
     <insert id="addNeed" parameterType="com.xhy.domain.Need" >
-        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemtype},#{itemid},#{neednum},#{needday},#{neederid},#{comment},0);
+        insert into tb_need(needid, needtitle,itemtype,itemid, neednum,itemunti, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemtype},#{itemid},#{neednum},#{itemunit},#{needday},#{neederid},#{comment},0);
     </insert>
 
     <update id="updateNeed" parameterType="com.xhy.domain.Need">
-        update tb_need set needtitle=#{needtitle},needday=#{needday},neederid=#{neederid}
+        update tb_need set needtitle=#{needtitle},itemtype=#{itemtype},itemid=#{itemid},neednum=#{neednum},itemunti=#{itemunti},needday=#{needday},neederid=#{neederid}
          ,comment=#{comment}
-        <if test="uptype!=null and uptype!=''">
-            ,uptype = #{uptype}
-        </if>
         where needid = #{needid};
     </update>
 

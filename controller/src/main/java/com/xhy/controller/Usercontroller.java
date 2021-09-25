@@ -13,12 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.crypto.hash.SimpleHash;
-
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +50,13 @@ public class Usercontroller {
                 }
             }
             User user = userServise.findUser(adminUserVO.getUsername());
-            List<String> roleIdByName = userServise.getRoleIdByName(adminUserVO.getUsername());
+            List<Integer> roleIdByName = userServise.getRoleIdByName(adminUserVO.getUsername());
             if (roleIdByName.size() != 0) {
-                for (String roleId : roleIdByName) {
-                    user.setRoleId(Integer.parseInt(roleId));
+                for (Integer roleId : roleIdByName) {
+                    user.setRoleId(Collections.singletonList(roleId));
                 }
             } else {
-                user.setRoleId(0);
+                user.setRoleId(Collections.singletonList(0));
             }
             map.put("code", "101");
             map.put("user", user);
@@ -211,13 +206,13 @@ public class Usercontroller {
         List<User> list2 = userServise.findalluser(page, limit, user);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
-        List<String> roleid = userServise.getRoleIdByName(user.getUsername());
+        List<Integer> roleid = userServise.getRoleIdByName(user.getUsername());
         if (roleid.size() != 0) {
-            for (String roleId : roleid) {
-                user.setRoleId(Integer.parseInt(roleId));
+            for (Integer roleId : roleid) {
+                user.setRoleId(Collections.singletonList(roleId));
             }
         } else {
-            user.setRoleId(0);
+            user.setRoleId(Collections.singletonList(0));
         }
         map.put("list", list2);
         map.put("page", pageNum);
@@ -301,7 +296,7 @@ public class Usercontroller {
 
 
     /**
-     * 获取当前用户的所有角色
+     * 获取当前用户的所有角色和角色列表
     * */
 
 //    @RequiresPermissions("admin:getUserRole")
@@ -314,7 +309,7 @@ public class Usercontroller {
         if(role != null){
             map.put("code","101");
             map.put("list",roleByUserName);
-            map.put("rolelist",role);
+            map.put("roleList",role);
         }
         else{
             map.put("code","102");
@@ -342,10 +337,6 @@ public class Usercontroller {
         map.put("code","101");
         return map;
     }
-
-    /*
-    * 查找
-    * */
 
 
     /**

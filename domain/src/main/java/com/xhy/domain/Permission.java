@@ -11,7 +11,6 @@ public class Permission implements Serializable {
     private String type;
     private String url;
     private String permission;
-    private int parent_id;
     private int isDisabled;
     private int isDeleted;
 }

@@ -2,11 +2,9 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Need;
-import com.xhy.domain.User;
 import com.xhy.service.NeedService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.NeedVO;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +25,7 @@ public class NeedController {
 
 //    @RequiresPermissions("needer:listNeed")
     @RequestMapping(value = "/findAllNeed",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> findAllNeed(@RequestBody NeedVO needVO)
+    public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
     {
         Map<String,Object> map = new HashMap<String,Object>();
         NeedVO needVO1 = new NeedVO();
@@ -83,7 +81,7 @@ public class NeedController {
 
 //    @RequiresPermissions("needer:addNeed")
     @RequestMapping(value = "/addNeed",method = RequestMethod.POST)
-    public @ResponseBody Map<String,Object> addNeed(Need need){
+    public @ResponseBody Map<String,Object> addNeed(@RequestBody Need need){
         Map<String,Object> map = new HashMap<String,Object>();
         if (need != null) {
             Integer integer = needService.addNeed(need);
@@ -95,7 +93,7 @@ public class NeedController {
                 return map;
             }
         } else {
-            map.put("code", "103");
+            map.put("code", "102");
             return map;
         }
     }

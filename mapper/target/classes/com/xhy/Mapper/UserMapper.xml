@@ -18,7 +18,7 @@
 
     <select id="findUser" parameterType="String" resultType="com.xhy.domain.User">
         SELECT *
-        from tb_users  u inner join tb_user_role tur on u.userId = tur.userId
+        from tb_users
         where username = #{username};
     </select>
 
@@ -28,7 +28,7 @@
         where userId = #{userid}
     </select>
 
-    <select id="getRoleIdByName" parameterType="String" resultType="java.lang.String">
+    <select id="getRoleIdByName" parameterType="String" resultType="java.lang.Integer">
         SELECT tur.roleId
         from tb_users u inner join tb_user_role tur  on u.userId = tur.userId where username = #{username};
     </select>

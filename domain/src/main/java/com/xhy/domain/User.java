@@ -3,8 +3,8 @@ package com.xhy.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.awt.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String telNum;
     private String employeeid;
     private int isDisabled;
-    private int roleId;
+    private List<Integer> roleId;
 
     public User(){};
 

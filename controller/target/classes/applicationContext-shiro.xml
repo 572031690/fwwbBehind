@@ -53,6 +53,18 @@
                 /webitem/updateItem=anon
                 /webitem/addItem=anon
                 /webitem/deleteItem=anon
+                /Role/listRole=anon
+                /Role/addRole=anon
+                /Role/updateRole=anon
+                /Role/deleteRole=anon
+                /Perm/listPerm=anon
+                /Perm/addPerm=anon
+                /Perm/updatePerm=anon
+                /Perm/deletePerm=anon
+                /webneed/findAllNeed=anon
+                /webneed/addNeed=anon
+                /webneed/updateNeed=anon
+                /webneed/deleteNeed=anon
                 /**=user
             </value>
         </property>

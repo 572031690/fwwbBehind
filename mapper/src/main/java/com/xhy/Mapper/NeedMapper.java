@@ -18,9 +18,6 @@ public interface NeedMapper {
 
     Integer deleteNeed(int needid);
 
-    /*
-    * 审批人员查看的请假条
-    * */
 
 
 }

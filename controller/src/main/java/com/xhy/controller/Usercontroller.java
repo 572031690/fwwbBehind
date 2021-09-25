@@ -173,9 +173,7 @@ public class Usercontroller {
         } else if (user.getEmployeeid() == null) {
             map.put("code", "102");
             return map;
-        } else if (userServise.findbyname(user.getUsername())) {
-            CodeUtil codeUtil = new CodeUtil();
-            codeUtil.CodeHash(user);
+        } else if (!userServise.findbyname(user.getUsername())) {
             Integer status = userServise.logon(user);
             if(status!=null) {
                 map.put("code", "101");
@@ -206,13 +204,15 @@ public class Usercontroller {
         List<User> list2 = userServise.findalluser(page, limit, user);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
-        List<Integer> roleid = userServise.getRoleIdByName(user.getUsername());
-        if (roleid.size() != 0) {
-            for (Integer roleId : roleid) {
-                user.setRoleId(Collections.singletonList(roleId));
+        for( User userlist:list2){
+            List<Integer> roleid = userServise.getRoleIdByName(user.getUsername());
+            if (roleid.size() != 0) {
+                for (Integer roleId : roleid) {
+                    userlist.setRoleId(Collections.singletonList(roleId));
+                }
+            } else {
+                userlist.setRoleId(Collections.singletonList(0));
             }
-        } else {
-            user.setRoleId(Collections.singletonList(0));
         }
         map.put("list", list2);
         map.put("page", pageNum);

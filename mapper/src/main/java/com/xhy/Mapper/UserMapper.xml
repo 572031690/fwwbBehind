@@ -49,8 +49,7 @@
         update tb_users
         set username=#{username},
             telNum=#{telNum},
-            employeeid=#{employeeid},
-            isDisabled=#{isDisabled}
+            employeeid=#{employeeid}
         where userId = #{userid}
     </update>
 

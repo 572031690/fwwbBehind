@@ -49,6 +49,10 @@
                 /web/updateUser=anon
                 /web/addUser=anon
                 /web/listUser=anon
+                /web/getUserRole=anon
+                /web/addUserRole=anon
+                /web/invertPassword=anon
+                /web/updateStatus=anon
                 /webitem/findAllitem=anon
                 /webitem/updateItem=anon
                 /webitem/addItem=anon
@@ -65,7 +69,6 @@
                 /webneed/addNeed=anon
                 /webneed/updateNeed=anon
                 /webneed/deleteNeed=anon
-
                 /**=user
             </value>
         </property>

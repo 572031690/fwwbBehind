@@ -21,11 +21,11 @@
 
 
     <insert id="addNeed" parameterType="com.xhy.domain.Need" >
-        insert into tb_need(needid, needtitle,itemid, neednum,itemunti, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemid},#{neednum},#{itemunit},#{needday},#{neederid},#{comment},0);
+        insert into tb_need(needid, needtitle,itemtype,itemid, neednum,itemunti, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemtype},#{itemid},#{neednum},#{itemunit},#{needday},#{neederid},#{comment},0);
     </insert>
 
     <update id="updateNeed" parameterType="com.xhy.domain.Need">
-        update tb_need set needtitle=#{needtitle},itemid=#{itemid},neednum=#{neednum},itemunti=#{itemunti},needday=#{needday},neederid=#{neederid}
+        update tb_need set needtitle=#{needtitle},itemtype=#{itemtype},itemid=#{itemid},neednum=#{neednum},itemunti=#{itemunti},needday=#{needday},neederid=#{neederid}
          ,comment=#{comment}
         where needid = #{needid};
     </update>

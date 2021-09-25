@@ -58,7 +58,7 @@ public class BuyController {
                 return map;
             }
         } else {
-            map.put("code", "103");
+            map.put("code", "102");
             return map;
         }
     }

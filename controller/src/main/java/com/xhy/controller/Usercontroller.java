@@ -173,8 +173,8 @@ public class Usercontroller {
             return map;
         } else if (userServise.findbyname(user.getUsername())) {
             CodeUtil codeUtil = new CodeUtil();
-            codeUtil.CodeHash(user);
-            Integer status = userServise.logon(user);
+            User newUser = codeUtil.CodeHash(user);
+            Integer status = userServise.logon(newUser);
             if(status!=null) {
                 map.put("code", "101");
                 return map;

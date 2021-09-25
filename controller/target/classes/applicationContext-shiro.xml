@@ -42,7 +42,17 @@
                 /web/logon=anon
                 /web/logout=anon
                 /web/shirologin=anon
+                /web/invertPassword=anon
+                /web/updateUserRole=anon
+                /web/getUserRole=anon
+                /web/deleteUser=anon
+                /web/updateUser=anon
+                /web/addUser=anon
                 /web/listUser=anon
+                /webitem/findAllitem=anon
+                /webitem/updateItem=anon
+                /webitem/addItem=anon
+                /webitem/deleteItem=anon
                 /**=user
             </value>
         </property>

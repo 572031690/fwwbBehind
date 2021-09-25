@@ -69,7 +69,10 @@
                 /webneed/addNeed=anon
                 /webneed/updateNeed=anon
                 /webneed/deleteNeed=anon
-                /web
+                /webCountrysale/findAll=anon
+                /webCompany/findAllCompany=anon
+                /webMonthsales/findAllMonthsales=anon
+                /webMonthsalesup/findAll=anon
                 /**=user
             </value>
         </property>
@@ -80,7 +83,7 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="useRealm"/>
           <property name="rememberMeManager" ref="rememberMeManager"/>
-<!--        <property name="authenticator" ref="authenticator"/>-->
+<!--            <property name="authenticator" ref="authenticator"/>-->
 <!--        <property name="authorizer" ref="authorizer" />-->
     </bean>
 
@@ -109,6 +112,7 @@
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
         <property name="arguments" ref="securityManager"/>
+
     </bean>
 
 <!--      5.将shiro对Bean的生命周期管理的对象注入,交给spring管理-->

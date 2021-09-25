@@ -204,19 +204,21 @@ public class Usercontroller {
         List<User> list2 = userServise.findalluser(page, limit, user);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
-        for( User userlist:list2){
-            List<Integer> roleid = userServise.getRoleIdByName(user.getUsername());
+        List<User> userList = new ArrayList<>();
+        for( User user1:list2){
+            List<Integer> roleid = userServise.getRoleIdByName(user1.getUsername());
             if (roleid.size() != 0) {
                 for (Integer roleId : roleid) {
-                    userlist.setRoleId(Collections.singletonList(roleId));
-                    list2.add(userlist);
+                    user1.setRoleId(Collections.singletonList(roleId));
+                    userList.add(user1);
                 }
             } else {
-                userlist.setRoleId(Collections.singletonList(0));
-                list2.add(userlist);
+                user1.setRoleId(Collections.singletonList(0));
+                userList.add(user1);
             }
         }
-        map.put("list",list2);
+
+        map.put("list",userList);
         map.put("page", pageNum);
         return map;
     }

@@ -14,6 +14,6 @@ public class Company implements Serializable {
     //公司坐标
     private String port;
     //省份
-    private String coutyname;
+    private String countyname;
 
 }

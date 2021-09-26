@@ -15,8 +15,7 @@ public class CompanyServiceimpl implements CompanyService {
 @Autowired
 private CompanyMapper companyMapper;
     @Override
-    public List<Company> findAll(int startNum, int pageSize) {
-        PageHelper.startPage(startNum,pageSize);
+    public List<Company> findAll() {
         return companyMapper.findAll();
     }
 }

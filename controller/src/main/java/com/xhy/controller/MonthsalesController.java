@@ -16,11 +16,13 @@ import java.util.List;
 @RequestMapping("/webMonthsales")
 public class MonthsalesController {
     @Autowired
-     MonthsalesService monthsalesService;
-@RequestMapping(value = "/findAllMonthsales",method = RequestMethod.GET)
-    private  @ResponseBody  List<Monthsales> findAllMonthsales(){
+    MonthsalesService monthsalesService;
 
-  List<Monthsales> allist =monthsalesService.findAll();
-  return allist;
+    @ResponseBody
+    @RequestMapping(value = "/findAllMonthsales", method = RequestMethod.GET)
+    private List<Monthsales> findAllMonthsales() {
+
+        List<Monthsales> allist = monthsalesService.findAll();
+        return allist;
     }
 }

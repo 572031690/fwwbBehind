@@ -124,7 +124,7 @@ public class UserServiceimpl implements UserServise {
     public Boolean updatePassword(int userid) {
         CodeUtil codeUtil = new CodeUtil();
         User user = userMapper.findbyid(userid);
-        user.setPassword("88888888");
+        user.setPassword("888888");
         User newUser = codeUtil.CodeHash(user);
         Integer status = userMapper.updatePassword(newUser);
         if (status!=0){

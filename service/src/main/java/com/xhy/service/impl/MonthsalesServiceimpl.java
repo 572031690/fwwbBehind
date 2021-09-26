@@ -12,6 +12,7 @@ import java.util.List;
 public class MonthsalesServiceimpl implements MonthsalesService {
     @Autowired
     private MonthsalesMapper monthsalesMapper;
+
     @Override
     public List<Monthsales> findAll() {
         return monthsalesMapper.findAll();

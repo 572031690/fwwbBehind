@@ -15,7 +15,7 @@ public class Monthsales {
     private double jun;
     private double jul;
     private double aug;
-    private double sep;
+    private double sept;
     private double oct;
     private double nov;
     private double dec;

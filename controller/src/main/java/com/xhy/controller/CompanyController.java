@@ -17,8 +17,8 @@ public class CompanyController {
     private CompanyService companyService;
     @RequestMapping(value = "/findAllCompany",method = RequestMethod.GET)
     private @ResponseBody
-    List<Company> findAllCompany(int page, int limit){
-        List<Company> alllist = companyService.findAll(page,limit);
+    List<Company> findAllCompany(){
+        List<Company> alllist = companyService.findAll();
 
         return alllist;
     }

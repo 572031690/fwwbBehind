@@ -9,16 +9,16 @@ import java.io.Serializable;
 public class Monthsalesup implements Serializable {
     private int id;
     private String materiakName;
-    private double Jan;
-    private double Feb;
-    private double Mar;
-    private double Apr;
+    private double January;
+    private double February;
+    private double March;
+    private double April;
     private double May;
-    private double Jun;
-    private double Jul;
-    private double Aug;
-    private double Sep;
-    private double Oct;
-    private double Nov;
-    private double Dec;
+    private double June;
+    private double July;
+    private double August;
+    private double September;
+    private double October;
+    private double November;
+    private double December;
 }

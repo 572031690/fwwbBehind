@@ -1,9 +1,12 @@
 package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.xhy.Utils.CookiesUtils;
+import com.xhy.domain.Permission;
 import com.xhy.domain.Role;
 import com.xhy.domain.User;
 import com.xhy.domain.UserRole;
+import com.xhy.service.PermissionService;
 import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.AdminUserVO;
@@ -14,11 +17,13 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 import org.apache.shiro.subject.Subject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -32,11 +37,18 @@ public class Usercontroller {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    PermissionService permissionService;
+
+    /**
+     * 获取cookie
+     * */
+
 
     //    权限登录
     @RequestMapping(value = "/shirologin", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> login(AdminUserVO adminUserVO) {
+    public Map<String, Object> login(AdminUserVO adminUserVO, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             if(adminUserVO!=null) {
@@ -60,7 +72,8 @@ public class Usercontroller {
             }
             map.put("code", "101");
             map.put("user", user);
-
+            List<Permission> permission = permissionService.findPermission();
+            map.put("permission",permission);
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");
@@ -70,9 +83,6 @@ public class Usercontroller {
             map.put("code","102");
             map.put("error","输入用户名密码不正确，请重新输入");
         }
-
-
-
         return map;
     }
 
@@ -199,6 +209,7 @@ public class Usercontroller {
         Map<String, Object> map = new HashMap<String, Object>();
         List<User> userList = new ArrayList<>();
         String nameLog = null;
+        int count = 0;
 
         //获取count
         UserVO userVO = new UserVO();
@@ -206,9 +217,10 @@ public class Usercontroller {
         userVO.setLimit(0);
         userVO.setSearchName(uservo.getSearchName());
         userVO.setSelectName(userVO.getSelectName());
-        List<User> list1 = userServise.findalluser(uservo);
-        PageInfo pageInfo1 = new PageInfo(list1);
-        int count = pageInfo1.getSize();
+        List<User> list1 = userServise.findalluser(userVO);
+        for(User j : list1){
+            count+=1;
+        }
         map.put("count", count);
         //获取page&list
         List<User> list2 = userServise.findalluser(uservo);
@@ -367,7 +379,6 @@ public class Usercontroller {
         UserRole userRole1 = new UserRole();
         userRole1.setUserId(userRole.getUserId());
         for(Integer roleId: roleIds){
-
             userRole1.setRoleId(roleId);
             userServise.updateUserRole(userRole1);
         }

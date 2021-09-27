@@ -2,6 +2,7 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Need;
+import com.xhy.domain.Role;
 import com.xhy.service.NeedService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.NeedVO;
@@ -28,14 +29,16 @@ public class NeedController {
     public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
     {
         Map<String,Object> map = new HashMap<String,Object>();
+        int count=0;
         NeedVO needVO1 = new NeedVO();
         needVO1.setLimit(0);
         needVO1.setPage(0);
         needVO1.setSearchName(needVO.getSearchName());
         needVO1.setSelectName(needVO.getSelectName());
         List<Need> needList1 = needService.findAllNeed(needVO1);
-        PageInfo pageInfo1 = new PageInfo(needList1);
-        int count = pageInfo1.getSize();
+        for(Need j : needList1){
+            count+=1;
+        }
         map.put("count",count);
         List<Need> needList2 = needService.findAllNeed(needVO);
         PageInfo pageInfo2 = new PageInfo(needList2);

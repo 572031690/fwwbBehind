@@ -2,10 +2,7 @@ package com.xhy.controller;
 
 
 import com.github.pagehelper.PageInfo;
-import com.xhy.domain.Permission;
-import com.xhy.domain.Role;
-import com.xhy.domain.RolePerm;
-import com.xhy.domain.UserRole;
+import com.xhy.domain.*;
 import com.xhy.service.PermissionService;
 import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
@@ -38,9 +35,11 @@ public class RoleController {
     @GetMapping("/listRole")
     public @ResponseBody Map<String,Object> ListRole(Integer page, Integer limit, String rolename){
         Map<String, Object> map = new HashMap<String, Object>();
+        int count=0;
         List<Role> list1 = roleService.findAllRole(0,0,rolename);
-        PageInfo pageInfo1 = new PageInfo(list1);
-        int count = pageInfo1.getSize();
+        for(Role j : list1){
+            count+=1;
+        }
         map.put("count", count);
         List<Role> list2 = roleService.findAllRole(page, limit, rolename);
         PageInfo pageInfo2 = new PageInfo(list2);

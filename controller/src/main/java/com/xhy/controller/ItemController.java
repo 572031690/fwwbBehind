@@ -3,6 +3,7 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Item;
+import com.xhy.domain.Permission;
 import com.xhy.domain.User;
 import com.xhy.service.ItemService;
 import com.xhy.vo.ItemVO;
@@ -30,14 +31,17 @@ public class ItemController {
     public @ResponseBody
     Map<String, Object> findAllitem(ItemVO itemVO) {
         Map<String, Object> map = new HashMap<String, Object>();
+        int count = 0;
+
         ItemVO itemCount = new ItemVO();
         itemCount.setPage(0);
         itemCount.setLimit(0);
         itemCount.setSearchName(itemVO.getSearchName());
         itemCount.setSelectName(itemVO.getSelectName());
         List<Item> itemList = itemService.findAllItem(itemCount);
-        PageInfo pageInfo1 = new PageInfo(itemList);
-        int count = pageInfo1.getSize();
+        for(Item j : itemList){
+            count+=1;
+        }
         map.put("count", count);
         List<Item> itemList2 = itemService.findAllItem(itemVO);
         PageInfo pageInfo2 = new PageInfo(itemList2);

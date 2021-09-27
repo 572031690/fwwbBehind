@@ -2,6 +2,7 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Buy;
+import com.xhy.domain.User;
 import com.xhy.service.BuyService;
 import com.xhy.vo.BuyVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,16 @@ public class BuyController {
     public @ResponseBody
     Map<String, Object> findAllBuy(BuyVo buyVo) {
         Map<String, Object> map = new HashMap<String, Object>();
+        int count=0;
         BuyVo buyVo1 = new BuyVo();
         buyVo1.setLimit(0);
         buyVo1.setPage(0);
         buyVo1.setSearchName(buyVo.getSearchName());
         buyVo1.setSelectName(buyVo.getSelectName());
         List<Buy> buyList1 = buyService.findAllBuy(buyVo1);
-        PageInfo pageInfo1 = new PageInfo(buyList1);
-        int count = pageInfo1.getSize();
+        for(Buy j : buyList1){
+            count+=1;
+        }
         map.put("count", count);
         List<Buy> buyList2 = buyService.findAllBuy(buyVo);
         PageInfo pageInfo2 = new PageInfo(buyList2);

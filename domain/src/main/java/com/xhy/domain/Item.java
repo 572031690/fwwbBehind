@@ -11,4 +11,5 @@ public class Item implements Serializable {
     private String comment;
     private int stock;
     private String unit;
+    private int totalStock;
 }

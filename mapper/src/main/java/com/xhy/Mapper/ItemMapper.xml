@@ -18,11 +18,11 @@
 
 
     <insert id="addItem" parameterType="com.xhy.domain.Item" >
-        insert into tb_item values (#{itemid} ,#{itemtype},#{comment},#{stock},#{unit});
+        insert into tb_item values (#{itemid} ,#{itemtype},#{comment},#{stock},#{unit},#{totalStock});
     </insert>
 
     <update id="updataItem" parameterType="com.xhy.domain.Item">
-        update tb_item set itemtype=#{itemtype},comment=#{comment},stock=#{stock},unit=#{unit} where itemid = #{itemid};
+        update tb_item set itemtype=#{itemtype},comment=#{comment},stock=#{stock},unit=#{unit},totalStock=#{totalStock} where itemid = #{itemid};
     </update>
 
     <delete id="deleteItem" parameterType="String">

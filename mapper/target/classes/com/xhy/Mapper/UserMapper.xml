@@ -8,7 +8,7 @@
         SELECT userId, username, telNum, employeeid, isDisabled FROM tb_users
         <where>
             <if test="searchName !=null and   searchName!=''">
-                u.username like '%${searchName}%'
+                username like '%${searchName}%'
             </if>
         </where>
     </select>

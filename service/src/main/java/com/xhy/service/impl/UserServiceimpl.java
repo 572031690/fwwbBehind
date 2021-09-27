@@ -25,8 +25,9 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public List<User> findalluser(UserVO userVO) {
-        PageHelper.startPage(userVO.getPage(),userVO.getLimit());
-        return userMapper.findAll(userVO.getSearchName());
+
+            PageHelper.startPage(userVO.getPage(),userVO.getLimit());
+            return userMapper.findAll(userVO.getSearchName());
     }
 
 

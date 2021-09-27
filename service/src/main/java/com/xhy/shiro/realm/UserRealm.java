@@ -47,14 +47,11 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String) token.getPrincipal();
         String password = new String((char[]) token.getCredentials());
 
-        System.out.println("账号:"+username+"   密码："+ password);
-
         //密码加密,通过加盐值，MD5加密方式，
         Object salt =ByteSource.Util.bytes(username);
         SimpleHash simpleHash = new SimpleHash("md5",password,salt,2);
         String mdpassword = simpleHash.toString();
         User user = userServise.findUser(username);
-        System.out.println(user);
         if(!username.equals(user.getUsername()) || username == null){
             throw new UnknownAccountException("账号不存在或输入的账号不正确");
         }

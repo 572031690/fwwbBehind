@@ -26,9 +26,11 @@ public class PermissionController {
     public @ResponseBody
     Map<String,Object> ListPerm(Integer page, Integer limit, String name){
         Map<String, Object> map = new HashMap<String, Object>();
+        int count = 0;
         List<Permission> list1 = permissionService.findAllPermission(0,0,name);
-        PageInfo pageInfo1 = new PageInfo(list1);
-        int count = pageInfo1.getSize();
+        for(Permission j : list1){
+            count+=1;
+        }
         map.put("count", count);
         List<Permission> list2 = permissionService.findAllPermission(page,limit,name);
         PageInfo pageInfo2 = new PageInfo(list2);

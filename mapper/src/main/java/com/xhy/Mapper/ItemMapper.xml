@@ -7,7 +7,7 @@
         SELECT * FROM tb_item
         <where>
             <if test="itemtype!=null and itemtype!=''">
-                itemtype like '%${itemtype}%'
+                itemtype like '%${searchName}%'
             </if>
         </where>
     </select>

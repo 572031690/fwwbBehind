@@ -6,6 +6,7 @@ import com.xhy.Utils.CodeUtil;
 import com.xhy.domain.User;
 import com.xhy.domain.UserRole;
 import com.xhy.service.UserServise;
+import com.xhy.vo.UserVO;
 import org.apache.bcel.classfile.Code;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ public class UserServiceimpl implements UserServise {
     private UserMapper userMapper;
 
     @Override
-    public List<User> findalluser(int startNum,int pageSize,User user) {
-        PageHelper.startPage(startNum,pageSize);
-        return userMapper.findAll(user);
+    public List<User> findalluser(UserVO userVO) {
+        PageHelper.startPage(userVO.getPage(),userVO.getLimit());
+        return userMapper.findAll(userVO.getSearchName());
     }
 
 

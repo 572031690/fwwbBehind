@@ -2,13 +2,14 @@ package com.xhy.service;
 
 import com.xhy.domain.User;
 import com.xhy.domain.UserRole;
+import com.xhy.vo.UserVO;
 
 import java.util.List;
 import java.util.Set;
 
 public interface UserServise {
 
-    List<User> findalluser(int startNum,int pageSize,User user);
+    List<User> findalluser(UserVO userVO);
 
 
     Boolean findbyname(String username);

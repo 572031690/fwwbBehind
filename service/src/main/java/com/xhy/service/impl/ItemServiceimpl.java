@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.xhy.Mapper.ItemMapper;
 import com.xhy.domain.Item;
 import com.xhy.service.ItemService;
+import com.xhy.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,10 @@ public class ItemServiceimpl implements ItemService {
     ItemMapper itemMapper;
 
     @Override
-    public List<Item> findAllItem(int startNum,int pageSize,String itemtype) {
+    public List<Item> findAllItem(ItemVO itemVO) {
 
-        PageHelper.startPage(startNum,pageSize);
-        return itemMapper.findAll(itemtype);
+        PageHelper.startPage(itemVO.getPage(),itemVO.getLimit());
+        return itemMapper.findAll(itemVO.getSearchName());
     }
 
     @Override

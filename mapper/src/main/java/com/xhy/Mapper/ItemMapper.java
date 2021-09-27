@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ItemMapper {
 
-    List<Item> findAll(String itemtype);
+    List<Item> findAll(String searchName);
 
     Item findbyid(String itemid);
 

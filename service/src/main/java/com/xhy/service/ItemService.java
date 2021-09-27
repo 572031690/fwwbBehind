@@ -1,12 +1,13 @@
 package com.xhy.service;
 
 import com.xhy.domain.Item;
+import com.xhy.vo.ItemVO;
 
 import java.util.List;
 
 public interface ItemService {
     //    查看所有
-    List<Item> findAllItem(int startNum,int pageSize,String itemtype);
+    List<Item> findAllItem(ItemVO itemVO);
 
     //  添加
     Integer addItem(Item item);

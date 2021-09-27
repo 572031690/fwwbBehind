@@ -29,8 +29,8 @@ public class BuyController {
         BuyVo buyVo1 = new BuyVo();
         buyVo1.setLimit(0);
         buyVo1.setPage(0);
-        buyVo1.setBuytitle(buyVo.getBuytitle());
-        buyVo1.setUptype(buyVo.getUptype());
+        buyVo1.setSearchName(buyVo.getSearchName());
+        buyVo1.setSelectName(buyVo.getSelectName());
         List<Buy> buyList1 = buyService.findAllBuy(buyVo1);
         PageInfo pageInfo1 = new PageInfo(buyList1);
         int count = pageInfo1.getSize();

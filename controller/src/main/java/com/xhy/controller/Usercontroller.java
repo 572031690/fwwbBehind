@@ -1,7 +1,6 @@
 package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.xhy.Utils.CodeUtil;
 import com.xhy.domain.Role;
 import com.xhy.domain.User;
 import com.xhy.domain.UserRole;
@@ -9,6 +8,7 @@ import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.AdminUserVO;
 import com.xhy.vo.UserRoleVO;
+import com.xhy.vo.UserVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -71,6 +71,8 @@ public class Usercontroller {
             map.put("error","输入用户名密码不正确，请重新输入");
         }
 
+
+
         return map;
     }
 
@@ -83,7 +85,6 @@ public class Usercontroller {
     @ResponseBody
     public Map<String,Object> unauth(){
         Map<String,Object> map = new HashMap<>();
-
         map.put("code","406");
         map.put("error","用户未登录");
         return map;
@@ -193,33 +194,65 @@ public class Usercontroller {
 //    @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> ListUser(Integer page, Integer limit,User user) {
-
-
+    Map<String, Object> ListUser(UserVO uservo) {
+        //参数定义
         Map<String, Object> map = new HashMap<String, Object>();
-        List<User> list1 = userServise.findalluser(0, 0, user);
+        List<User> userList = new ArrayList<>();
+        String nameLog = null;
+
+        //获取count
+        UserVO userVO = new UserVO();
+        userVO.setPage(0);
+        userVO.setLimit(0);
+        userVO.setSearchName(uservo.getSearchName());
+        userVO.setSelectName(userVO.getSelectName());
+        List<User> list1 = userServise.findalluser(uservo);
         PageInfo pageInfo1 = new PageInfo(list1);
         int count = pageInfo1.getSize();
         map.put("count", count);
-        List<User> list2 = userServise.findalluser(page, limit, user);
+        //获取page&list
+        List<User> list2 = userServise.findalluser(uservo);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
-        List<User> userList = new ArrayList<>();
         for( User user1:list2){
-            List<Integer> roleid = userServise.getRoleIdByName(user1.getUsername());
-            if (roleid.size() != 0) {
-                for (Integer roleId : roleid) {
-                    user1.setRoleId(Collections.singletonList(roleId));
+                List<Integer> roleid = userServise.getRoleIdByName(user1.getUsername());
+                if (roleid.size() != 0) {
+                    for (Integer roleId : roleid) {
+                        if (user1.getRoleId() == null) {
+                            user1.setRoleId(Collections.singletonList(roleId));
+                            userList.add(user1);
+                        }
+                        else {
+                            List<Integer> userRole = new ArrayList<>();
+                            for (Integer i : user1.getRoleId()) {
+                                userRole.add(i);
+                            }
+                            userRole.add(roleId);
+                            user1.setRoleId(userRole);
+                        }
+                    }
+                } else {
+                    user1.setRoleId(Collections.singletonList(0));
                     userList.add(user1);
                 }
-            } else {
-                user1.setRoleId(Collections.singletonList(0));
-                userList.add(user1);
-            }
         }
-
+        System.out.println(userList);
         map.put("list",userList);
         map.put("page", pageNum);
+        //查询筛选状态
+        if(uservo.getSelectName()!=0 ){
+            List<User> selectUserList = new ArrayList<>();
+            for(User userSelect : userList){
+                for(Integer selectRoleId : userSelect.getRoleId()) {
+                    if (selectRoleId.equals(uservo.getSelectName())) {
+                        selectUserList.add(userSelect);
+                    }
+                }
+            }
+            map.put("list",selectUserList);
+        }
+
+
         return map;
     }
 

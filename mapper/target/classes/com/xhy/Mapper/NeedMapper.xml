@@ -6,11 +6,11 @@
     <select id="findAll" resultType="com.xhy.domain.Need" parameterType="com.xhy.vo.NeedVO">
         SELECT * FROM tb_need
         <where>
-            <if test="needtitle!=null and needtitle!=''">
-                 needtitle like '%${needtitle}%'
+            <if test="searchName!=null and searchName!=''">
+                 needtitle like '%${searchName}%'
             </if>
-            <if test="uptype != null and uptype !=''">
-                and uptype = #{uptype}
+            <if test="selectName != null and selectName !=''">
+                and uptype = #{selectName}
             </if>
         </where>
     </select>

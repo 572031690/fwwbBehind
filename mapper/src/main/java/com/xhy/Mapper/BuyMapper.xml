@@ -6,11 +6,11 @@
     <select id="findAll" resultType="com.xhy.domain.Buy" parameterType="com.xhy.vo.BuyVo">
         SELECT * FROM tb_buy
         <where>
-            <if test="uptype!=null and uptype!=''">
-                uptype = #{uptype}
+            <if test="selectName!=null and selectName!=''">
+                uptype = #{selectName}
             </if>
-            <if test="buytitle!=null and buytitle!=''">
-                and buytitle like '%${buytitle}%'
+            <if test="searchName!=null and searchName!=''">
+                and buytitle like '%${searchName}%'
             </if>
 
         </where>

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Item;
 import com.xhy.domain.User;
 import com.xhy.service.ItemService;
+import com.xhy.vo.ItemVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +28,18 @@ public class ItemController {
 //    @RequiresPermissions("item:listItem")
     @RequestMapping(value = "/findAllitem", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> findAllitem(int page, int limit, String itemtype) {
+    Map<String, Object> findAllitem(ItemVO itemVO) {
         Map<String, Object> map = new HashMap<String, Object>();
-        List<Item> itemList = itemService.findAllItem(0, 0, itemtype);
+        ItemVO itemCount = new ItemVO();
+        itemCount.setPage(0);
+        itemCount.setLimit(0);
+        itemCount.setSearchName(itemVO.getSearchName());
+        itemCount.setSelectName(itemVO.getSelectName());
+        List<Item> itemList = itemService.findAllItem(itemCount);
         PageInfo pageInfo1 = new PageInfo(itemList);
         int count = pageInfo1.getSize();
         map.put("count", count);
-        List<Item> itemList2 = itemService.findAllItem(page, limit, itemtype);
+        List<Item> itemList2 = itemService.findAllItem(itemVO);
         PageInfo pageInfo2 = new PageInfo(itemList2);
         int pageNum = pageInfo2.getPageNum();
         map.put("list", itemList2);

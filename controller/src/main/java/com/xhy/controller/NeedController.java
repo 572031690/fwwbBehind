@@ -31,8 +31,8 @@ public class NeedController {
         NeedVO needVO1 = new NeedVO();
         needVO1.setLimit(0);
         needVO1.setPage(0);
-        needVO1.setNeedtitle(needVO.getNeedtitle());
-        needVO1.setUptype(needVO.getUptype());
+        needVO1.setSearchName(needVO.getSearchName());
+        needVO1.setSelectName(needVO.getSelectName());
         List<Need> needList1 = needService.findAllNeed(needVO1);
         PageInfo pageInfo1 = new PageInfo(needList1);
         int count = pageInfo1.getSize();

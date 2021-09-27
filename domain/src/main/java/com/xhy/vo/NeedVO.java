@@ -6,6 +6,6 @@ import lombok.Data;
 public class NeedVO {
     int page;
     int limit;
-    String needtitle;
-    int uptype;
+    String searchName;  //传递搜索参数
+    int selectName;
 }

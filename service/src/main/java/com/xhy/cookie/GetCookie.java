@@ -1,10 +1,11 @@
 package com.xhy.cookie;
 
-import org.apache.shiro.web.servlet.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
-public class GetCookie extends javax.servlet.http.Cookie {
+public class GetCookie extends HttpServlet {
 
-    public GetCookie(String name, String value) {
-        super(name, value);
-    }
+
 }

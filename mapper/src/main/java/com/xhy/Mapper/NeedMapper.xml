@@ -33,4 +33,5 @@
     <delete id="deleteNeed" parameterType="int">
         delete from tb_need where needid = #{needid};
     </delete>
+
 </mapper>

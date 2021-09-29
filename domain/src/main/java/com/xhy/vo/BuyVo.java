@@ -10,5 +10,5 @@ public class BuyVo implements Serializable {
     int page;
     int limit;
     String searchName;
-    int selectName;
+    String selectName;
 }

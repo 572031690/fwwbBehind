@@ -11,6 +11,7 @@ import java.util.List;
 public class User implements Serializable {
     private int userid;
     private String username;
+    private String realname;
     private String password;
     private String salt;
     private String telNum;

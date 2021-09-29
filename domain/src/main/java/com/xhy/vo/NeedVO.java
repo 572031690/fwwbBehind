@@ -7,5 +7,5 @@ public class NeedVO {
     int page;
     int limit;
     String searchName;  //传递搜索参数
-    int selectName;
+    String selectName;
 }

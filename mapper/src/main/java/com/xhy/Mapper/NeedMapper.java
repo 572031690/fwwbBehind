@@ -9,7 +9,7 @@ public interface NeedMapper {
 
     List<Need> findAll(NeedVO needVO);
 
-    List<Need>  findbyid(int needid);
+    Need  findbyid(int needid);
 
 
     Integer addNeed(Need need);

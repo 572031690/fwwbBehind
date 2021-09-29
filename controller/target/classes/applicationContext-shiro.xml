@@ -83,12 +83,8 @@
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="useRealm"/>
           <property name="rememberMeManager" ref="rememberMeManager"/>
-<!--            <property name="authenticator" ref="authenticator"/>-->
-<!--        <property name="authorizer" ref="authorizer" />-->
     </bean>
 
-<!--    <bean id="authorizer" class="com.xhy.shiro.Authorizer"/>-->
-<!--    <bean id="authenticator" class="com.xhy.shiro.Authenticator"/>-->
 
 
 

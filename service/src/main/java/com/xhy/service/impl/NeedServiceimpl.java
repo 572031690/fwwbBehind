@@ -35,17 +35,17 @@ public class NeedServiceimpl implements NeedService {
     @Autowired
     UserMapper userMapper;
 
-//    @Autowired
-//    RuntimeService runtimeService;
-//
-//    @Autowired
-//    TaskService taskService;
-//
-//    @Autowired
-//    HistoryService historyService;
-//
-//    @Autowired
-//    RepositoryService repositoryService;
+    @Autowired
+    RuntimeService runtimeService;
+
+    @Autowired
+    TaskService taskService;
+
+    @Autowired
+    HistoryService historyService;
+
+    @Autowired
+    RepositoryService repositoryService;
 
     @Override
     public List<Need> findAllNeed(NeedVO needVO) {
@@ -69,54 +69,17 @@ public class NeedServiceimpl implements NeedService {
     }
 
     @Override
-    public List<Need> findByNeedid(int needid) {
+    public Need findByNeedid(int needid) {
         return needMapper.findbyid(needid);
     }
 
-//    @Override
-//    public void upNeed(Need need) {
-//        Map<String ,Object> map = new HashMap<>();
-//        //查询处理人
-//        User user  = new User();
-//        List<Integer> assignee = userMapper.getAssigneeId(user);
-//        map.put("userid",need.getUserid());
-//        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("audit", String.valueOf(need.getNeedid()),map);
-//        map.put("assignee", StringUtils.join(assignee.toArray(),","));
-//        Task task = taskService.createTaskQuery()
-//                .taskAssignee(String.valueOf(need.getUserid()))
-//                .processDefinitionKey("audit")
-//                .processInstanceBusinessKey(String.valueOf(need.getNeedid()))
-//                .singleResult();
-//        if(task != null){
-//            taskService.complete(task.getId(),map);
-//            System.out.println("成功");
-//            updateNeed(need);
-//        }
-//
-//    }
-//
-//    @Override
-//    public void auditNeed(Need need) {
-//        Task task = taskService.createTaskQuery()
-//                .taskAssignee(String.valueOf(need.getUserid()))
-//                .processDefinitionKey("audit")
-//                .processInstanceBusinessKey(String.valueOf(need.getNeedid()))
-//                .singleResult();
-//        Map<String,Object> map = new HashMap<>();
-//        int uptype = need.getUptype();
-//        map.put("uptype",uptype);
-//        if(uptype == 2){
-//            if(task!=null) {
-//                User user  = new User();
-//                List<Integer> assignee = userMapper.getAssigneeId(user);
-//                map.put("assignee", StringUtils.join(assignee.toArray(),","));
-//                taskService.complete(task.getId(),map);
-//            }
-//        }else if(uptype == 3){
-//
-//
-//        }
-//    }
+    @Override
+    public Need queryActNeed(Integer page, Integer limit,String username) {
+
+        Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
+
+        return null;
+    }
 
 
 }

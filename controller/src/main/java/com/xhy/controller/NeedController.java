@@ -3,6 +3,7 @@ package com.xhy.controller;
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Need;
 import com.xhy.domain.Role;
+import com.xhy.domain.User;
 import com.xhy.service.NeedService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.NeedVO;
@@ -67,20 +68,20 @@ public class NeedController {
         }
     }
 
-    @RequestMapping(value = "/findNeedById",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> findNeedById(int needid){
-        Map<String,Object> map = new HashMap<String,Object>();
-        List<Need> need1 = needService.findByNeedid(needid);
-        PageInfo pageInfo1 = new PageInfo(need1);
-        int count = pageInfo1.getSize();
-        map.put("count",count);
-        List<Need> need2 = needService.findByNeedid(needid);
-        PageInfo pageInfo2 = new PageInfo(need2);
-        int pageNum = pageInfo2.getPageNum();
-        map.put("list",need2);
-        map.put("page",pageNum);
-        return map;
-    }
+//    @RequestMapping(value = "/findNeedById",method = RequestMethod.GET)
+//    public @ResponseBody Map<String,Object> findNeedById(int needid){
+//        Map<String,Object> map = new HashMap<String,Object>();
+//        Need need1 = needService.findByNeedid(needid);
+//        PageInfo pageInfo1 = new PageInfo(need1);
+//        int count = pageInfo1.getSize();
+//        map.put("count",count);
+//       Need need2 = needService.findByNeedid(needid);
+//        PageInfo pageInfo2 = new PageInfo(need2);
+//        int pageNum = pageInfo2.getPageNum();
+//        map.put("list",need2);
+//        map.put("page",pageNum);
+//        return map;
+//    }
 
 //    @RequiresPermissions("needer:addNeed")
     @RequestMapping(value = "/addNeed",method = RequestMethod.POST)
@@ -114,35 +115,6 @@ public class NeedController {
                 return map;
             }
     }
-
-    //
-
-
-//    提交申请
-//
-//    @RequiresPermissions("needer:upNeed")
-//    @PostMapping("/upNeed")
-//    @ResponseBody
-//    public Map<String,Object> upNeed(@RequestBody Need need){
-//        Map<String,Object> map = new HashMap<>();
-//        needService.upNeed(need);
-//        return map;
-//    }
-//
-////    领导审批
-//
-//    @RequiresPermissions("needManger:auditNeed")
-//    @PostMapping("/auditNeed")
-//    @ResponseBody
-//    public Map<String,Object> autditNeed(@RequestBody Need need){
-//        User auther = userServise.findbyid(need.getUserid());
-//        User upname  = userServise.findbyid(need.getUserid());
-//        Map<String,Object> map = new HashMap<>();
-//        needService.auditNeed(need);
-//        updateNeed(need);
-//        map.put("code","101");
-//        return map;
-//    }
 
 
 

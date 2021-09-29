@@ -20,13 +20,10 @@ public interface NeedService {
     Integer deleteNeed(int needid);
 
 //  根据ID查询
-    List<Need>  findByNeedid(int needid);
-//
-////    申请提交
-//    void upNeed(Need need);
-//
-//    //审批
-//    void auditNeed(Need need);
+    Need  findByNeedid(int needid);
 
+//    查找个人代办任务
+
+    Need queryActNeed(Integer page,Integer limit,String username);
 
 }

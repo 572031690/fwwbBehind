@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.ActMapper">
+   
+    <!--查看代办任务-->
+    <select id="findNeedTaskList" parameterType="String" resultType="com.xhy.domain.Need">
+        select n.*,a.ID_ from activiti.act_ru_task a
+            inner join  activiti.act_ru_execution e on a.EXECUTION_ID_ = e.ID_
+            inner join db01.tb_need n on e.BUSINESS_KEY_ = n.needid
+            inner join tb_users u on n.neederid = u.userId where u.realname = #{username}
+    </select>
+
+    <!--存储需求相关信息-->
+    <insert id="addActNeed" parameterType="com.xhy.domain.Act_Need" >
+        insert into act_need values (id=#{id},businessId = #{businessId},startTime=#{starttime},endTime=#{endTime},upname=#{upname},auther=#{auther},text=#{text})
+    </insert>
+
+</mapper>

@@ -14,6 +14,7 @@ public class ActivitiUtil {
                 .addClasspathResource("processes/audit.bpmn20.xml")
                 .addClasspathResource("processes/audit.bpmn20.png")
                 .name("需求申请流程")
+                .key("need")
                 .deploy();
         System.out.println(deployment.getId());
         System.out.println(deployment.getName());

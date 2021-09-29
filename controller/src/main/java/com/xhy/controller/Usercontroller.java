@@ -224,6 +224,7 @@ public class Usercontroller {
         map.put("count", count);
         //获取page&list
         List<User> list2 = userServise.findalluser(uservo);
+        System.out.println(list2);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
         for( User user1:list2){
@@ -248,20 +249,21 @@ public class Usercontroller {
                     userList.add(user1);
                 }
         }
-        System.out.println(userList);
         map.put("list",userList);
         map.put("page", pageNum);
         //查询筛选状态
-        if(uservo.getSelectName()!=0 ){
+        if(uservo.getSelectName()!=null && !uservo.getSelectName().isEmpty()){
             List<User> selectUserList = new ArrayList<>();
             for(User userSelect : userList){
                 for(Integer selectRoleId : userSelect.getRoleId()) {
-                    if (selectRoleId.equals(uservo.getSelectName())) {
+                     String roleid = String.valueOf(selectRoleId);
+                    if (roleid.equals(uservo.getSelectName())) {
                         selectUserList.add(userSelect);
                     }
                 }
             }
             map.put("list",selectUserList);
+            System.out.println(selectUserList);
         }
 
 

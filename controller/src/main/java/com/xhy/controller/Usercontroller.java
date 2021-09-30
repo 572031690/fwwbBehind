@@ -74,6 +74,7 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
+
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");
@@ -276,7 +277,7 @@ public class Usercontroller {
     Map<String, Object> addUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
         Integer status= userServise.addUser(user);
-        if(status!=null){
+        if(status!=0){
             map.put("code", "101");
             return map;
         }

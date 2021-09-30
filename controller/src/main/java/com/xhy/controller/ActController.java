@@ -21,10 +21,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -73,6 +70,7 @@ public class ActController {
     }
 
     //    /*启动流程*/
+    @ResponseBody
     @GetMapping("/startNeedAct")
     public Map<String, Object> startNeedAct(Integer needid) {
         Map<String, Object> actmap = new HashMap<>();
@@ -92,10 +90,10 @@ public class ActController {
         System.out.println(actneed);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
         System.out.println("流程定义的key"+processInstance.getProcessDefinitionKey());
-        System.out.println("流程定义ID" + processInstance.getProcessDefinitionId());
         System.out.println("流程定义的name"+processInstance.getName());
 
         map.put("list", actneed);
+        map.put("code","101");
         return map;
     }
 

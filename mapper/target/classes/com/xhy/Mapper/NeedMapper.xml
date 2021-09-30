@@ -7,7 +7,7 @@
         SELECT * FROM tb_need
         <where>
             <if test="searchName!=null and searchName!=''">
-                 needtitle like '%${searchName}%'
+                needtitle like '%${searchName}%'
             </if>
             <if test="selectName != null and selectName !=''">
                 and uptype = #{selectName}
@@ -16,22 +16,41 @@
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Need">
-        select * from tb_need where needid = #{needid}
+        select *
+        from tb_need
+        where needid = #{needid}
     </select>
 
 
-    <insert id="addNeed" parameterType="com.xhy.domain.Need" >
-        insert into tb_need(needid, needtitle,itemtype,itemid, neednum,itemunti, needday,neederid, comment,uptype) values (null ,#{needtitle},#{itemtype},#{itemid},#{neednum},#{itemunit},#{needday},#{neederid},#{comment},0);
+    <insert id="addNeed" parameterType="com.xhy.domain.Need">
+        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, itemunti, needday, neederid, comment, uptype)
+        values (null, #{needtitle}, #{itemtype}, #{itemid}, #{neednum}, #{itemunit}, #{needday}, #{neederid},
+                #{comment}, 0);
     </insert>
 
     <update id="updateNeed" parameterType="com.xhy.domain.Need">
-        update tb_need set needtitle=#{needtitle},itemtype=#{itemtype},itemid=#{itemid},neednum=#{neednum},itemunti=#{itemunti},needday=#{needday},neederid=#{neederid}
-         ,comment=#{comment}
+        update tb_need
+        set needtitle=#{needtitle}
+          , itemtype=#{itemtype}
+          , itemid=#{itemid}
+          , neednum=#{neednum}
+          , itemunti=#{itemunti}
+          , needday=#{needday}
+          , neederid=#{neederid}
+          , comment=#{comment}
         where needid = #{needid};
     </update>
 
     <delete id="deleteNeed" parameterType="int">
-        delete from tb_need where needid = #{needid};
+        delete
+        from tb_need
+        where needid = #{needid};
     </delete>
+
+    <update id="updateStatus" parameterType="com.xhy.domain.Need">
+        update tb_need
+        set uptype=#{uptype}
+        where needid = #{needid};
+    </update>
 
 </mapper>

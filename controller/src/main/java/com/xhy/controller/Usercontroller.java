@@ -294,7 +294,7 @@ public class Usercontroller {
     Map<String, Object> updateUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
         Integer status= userServise.updataUser(user);
-        if(status!=null){
+        if(status!=0){
             map.put("code", "101");
             return map;
         }

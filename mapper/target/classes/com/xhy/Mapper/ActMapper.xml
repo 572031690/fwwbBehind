@@ -17,4 +17,8 @@
         insert into act_need values (id=#{id},businessId = #{businessId},startTime=#{starttime},endTime=#{endTime},upname=#{upname},auther=#{auther},text=#{text})
     </insert>
 
+    <!--查看需求审批状态-->
+    <select id="findActNeed" parameterType="Integer">
+        select * from act_need where businessId=#{businessKey}
+    </select>
 </mapper>

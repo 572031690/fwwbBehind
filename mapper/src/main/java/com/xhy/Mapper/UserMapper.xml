@@ -27,7 +27,9 @@
 
     <select id="getRoleIdByName" parameterType="String" resultType="java.lang.Integer">
         SELECT tur.roleId
-        from tb_users u inner join tb_user_role tur  on u.userId = tur.userId where username = #{username};
+        from tb_users u
+                 inner join tb_user_role tur on u.userId = tur.userId
+        where username = #{username};
     </select>
 
     <select id="login" parameterType="com.xhy.domain.User" resultType="com.xhy.domain.User">
@@ -39,13 +41,12 @@
 
     <insert id="addUser" parameterType="com.xhy.domain.User">
         insert into tb_users
-        values (null, #{username},#{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0);
+        values (null, #{username}, #{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0);
     </insert>
 
     <update id="updateUser" parameterType="com.xhy.domain.User">
         update tb_users
-        set username=#{username},
-            realname=#{realname},
+        set realname=#{realname},
             telNum=#{telNum},
             employeeid=#{employeeid}
         where userId = #{userid}
@@ -107,17 +108,24 @@
     <!--*******************审批相关操作**************************-->
     <!--查询处理人id-->
     <select id="getAssigneeId" parameterType="com.xhy.domain.User" resultType="int">
-        select userId from tb_users where userId =#{userid}
+        select userId
+        from tb_users
+        where userId = #{userid}
     </select>
 
 
     <!--重置密码-->
     <update id="updatePassword" parameterType="com.xhy.domain.User">
-        update tb_users set  password=#{password},salt=#{salt} where userId =#{userid}
+        update tb_users
+        set password=#{password},
+            salt=#{salt}
+        where userId = #{userid}
     </update>
 
     <!--状态修改-->
     <update id="updateStatus" parameterType="com.xhy.domain.User">
-        update tb_users set isDisabled=#{isDisabled} where userId=#{userid};
+        update tb_users
+        set isDisabled=#{isDisabled}
+        where userId = #{userid};
     </update>
 </mapper>

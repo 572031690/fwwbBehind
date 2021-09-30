@@ -13,5 +13,4 @@ public class Act_Need implements Serializable {
     private String auther;
     private String upname;
     private String text;
-    private String taskId;
 }

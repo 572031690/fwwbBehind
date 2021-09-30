@@ -19,9 +19,9 @@ public class ActServiceimpl implements ActService {
     TaskService taskService;
 
     @Override
-    public List<Need> findAct_Need(Integer page, Integer limit, String username) {
+    public List<Need> findNeedTaskList(Integer page, Integer limit, String username) {
         PageHelper.startPage(page,limit);
-        return actMapper.findAct_Need(username);
+        return actMapper.findNeedTaskList(username);
     }
 
     @Override

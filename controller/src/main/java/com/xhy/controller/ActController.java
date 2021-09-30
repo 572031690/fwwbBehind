@@ -58,7 +58,8 @@ public class ActController {
         actmap.put("userid", user.getUserid());
         Need actneed = needService.findByNeedid(need.getNeedid());
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("needAudit", String.valueOf(need.getNeedid()), actmap);
-        System.out.println("活动ID" + processInstance.getActivityId());
+
+        System.out.println("业务ID" + processInstance.getBusinessKey());
         System.out.println("流程定义ID" + processInstance.getProcessDefinitionId());
         if(actneed.getUptype()==0){
             System.out.println("已修改审批状态");
@@ -89,8 +90,7 @@ public class ActController {
 
         System.out.println(actneed);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
-        System.out.println("流程定义的key"+processInstance.getProcessDefinitionKey());
-        System.out.println("流程定义的name"+processInstance.getName());
+        System.out.println("业务ID"+processInstance.getBusinessKey());
 
         map.put("list", actneed);
         map.put("code","101");
@@ -98,15 +98,21 @@ public class ActController {
     }
 
     /*找出需求个人待办任务*/
+    @ResponseBody
     @GetMapping("/queryNeedActTask")
     public List<Need> queryNeedActTask(NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-        return actService.findAct_Need(needVO.getPage(), needVO.getLimit(), username);
+        User user = userServise.findUser(username);
+        System.out.println(username);
+        System.out.println(user);
+        System.out.println(actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname()));
+        return actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname());
     }
 
     /*完成审批节点*/
     @RequestMapping("/completeprocess")
+    @ResponseBody
     public Map<String, Object> completeprocess(Integer taskId,  String text) {
         Map<String, Object> map = new HashMap<>();
 

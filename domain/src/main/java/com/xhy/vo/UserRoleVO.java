@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class UserRoleVO {
-    int userId;
+    int userid;
     List<Integer> roleId;
 }

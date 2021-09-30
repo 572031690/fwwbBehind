@@ -19,4 +19,6 @@ public class Need implements Serializable {
     private String comment;
     private int uptype;
 
+    private String taskId;
+
 }

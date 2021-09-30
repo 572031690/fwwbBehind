@@ -7,7 +7,7 @@
     <!--    在默认方式下bean的id 固定为processBngineConfiguration-->
     <bean id="activiti_dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/activiti?useSSL=false&amp;serverTimezone=UTC"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db01?useSSL=false&amp;serverTimezone=UTC"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
     </bean>

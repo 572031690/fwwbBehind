@@ -13,7 +13,7 @@ public class Need implements Serializable {
     private String itemid;
     private String itemtype;
     private int neednum;
-    private String itemunti;
+    private String unti;
     private String needday;
     private int neederid;
     private String comment;

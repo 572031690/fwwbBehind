@@ -293,6 +293,7 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> updateUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
+        System.out.println(user);
         Integer status= userServise.updataUser(user);
         if(status!=0){
             map.put("code", "101");

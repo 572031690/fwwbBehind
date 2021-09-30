@@ -52,9 +52,14 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public Integer updataUser(User user) {
-        CodeUtil codeUtil = new CodeUtil();
-        User newUser = codeUtil.CodeHash(user);
-        return userMapper.updateUser(newUser);
+        if(user.getPassword()!= null){
+            CodeUtil codeUtil = new CodeUtil();
+            User newUser = codeUtil.CodeHash(user);
+            return userMapper.updateUser(newUser);
+        }
+        else
+            return userMapper.updateUser(user);
+
     }
 
     @Override

@@ -50,6 +50,7 @@ public class UserRealm extends AuthorizingRealm {
         //密码加密,通过加盐值，MD5加密方式，
         Object salt =ByteSource.Util.bytes(username);
         SimpleHash simpleHash = new SimpleHash("md5",password,salt,2);
+        SimpleHash newSalt  = new SimpleHash("md5",salt,null,2);
         String mdpassword = simpleHash.toString();
         User user = userServise.findUser(username);
         if(!username.equals(user.getUsername()) || username == null){

@@ -80,13 +80,20 @@ public class ActController {
 
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
+        System.out.println(username);
 
         User user = userServise.findUser(username);
+        System.out.println(user);
+
         actmap.put("userid", user.getUserid());
+
         Need actneed = needService.findByNeedid(needid);
+
+        System.out.println(actneed);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
-        System.out.println("活动ID" + processInstance.getActivityId());
+        System.out.println("流程定义的key"+processInstance.getProcessDefinitionKey());
         System.out.println("流程定义ID" + processInstance.getProcessDefinitionId());
+        System.out.println("流程定义的name"+processInstance.getName());
 
         map.put("list", actneed);
         return map;

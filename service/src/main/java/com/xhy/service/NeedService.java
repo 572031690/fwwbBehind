@@ -26,4 +26,6 @@ public interface NeedService {
 
     Need queryActNeed(Integer page,Integer limit,String username);
 
+    Integer updateStatus(Need need);
+
 }

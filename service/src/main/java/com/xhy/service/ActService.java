@@ -18,4 +18,8 @@ public interface ActService {
 
     /*添加需求审批表的信息*/
     Integer addActNeed(Act_Need act_need);
+
+    /*查看需求审批表的信息*/
+    List<Act_Need> findActNeed(Integer businessKey);
+
 }

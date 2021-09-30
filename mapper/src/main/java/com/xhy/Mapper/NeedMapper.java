@@ -18,6 +18,8 @@ public interface NeedMapper {
 
     Integer deleteNeed(int needid);
 
+    Integer updateStatus(Need need);
+
 
 
 }

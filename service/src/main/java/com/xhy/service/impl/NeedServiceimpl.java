@@ -81,5 +81,10 @@ public class NeedServiceimpl implements NeedService {
         return null;
     }
 
+    @Override
+    public Integer updateStatus(Need need) {
+        return needMapper.updateStatus(need);
+    }
+
 
 }

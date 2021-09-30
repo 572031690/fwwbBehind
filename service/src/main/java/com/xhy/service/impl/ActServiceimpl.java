@@ -29,5 +29,10 @@ public class ActServiceimpl implements ActService {
         return actMapper.addActNeed(act_need);
     }
 
+    @Override
+    public List<Act_Need> findActNeed(Integer businessKey) {
+        return actMapper.findActNeed(businessKey);
+    }
+
 
 }

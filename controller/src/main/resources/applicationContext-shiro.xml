@@ -48,7 +48,7 @@
                 /web/deleteUser=anon
                 /web/updateUser=anon
                 /web/addUser=anon
-                /web/listUser=anon
+<!--                /web/listUser=anon-->
                 /web/getUserRole=anon
                 /web/addUserRole=anon
                 /web/invertPassword=anon

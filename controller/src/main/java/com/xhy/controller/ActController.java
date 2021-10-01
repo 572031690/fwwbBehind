@@ -103,10 +103,11 @@ public class ActController {
     public List<Need> queryNeedActTask(NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
+
+        Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
+        String processInstanceId = task.getProcessInstanceId();
+
         User user = userServise.findUser(username);
-        System.out.println(username);
-        System.out.println(user);
-        System.out.println(actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname()));
         return actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname());
     }
 

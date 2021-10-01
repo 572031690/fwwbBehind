@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -74,6 +75,12 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if(cookie != null){
+                    map.put("cookie",cookie);
+                }
+            }
 
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
@@ -202,7 +209,7 @@ public class Usercontroller {
     }
 
 
-//    @RequiresPermissions("admin:userlist")
+    @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> ListUser(UserVO uservo) {
@@ -338,7 +345,7 @@ public class Usercontroller {
         Map<String,Object> map = new HashMap<>();
         List<Integer> roleIds = userRole.getRoleId();
         UserRole userRole1 = new UserRole();
-        userRole1.setUserId(userRole.getUserId());
+        userRole1.setUserId(userRole.getUserid());
         for(Integer roleId: roleIds){
             userRole1.setRoleId(roleId);
             userServise.addUserRole(userRole1);
@@ -381,7 +388,7 @@ public class Usercontroller {
         Map<String,Object> map = new HashMap<>();
         List<Integer> roleIds = userRole.getRoleId();
         UserRole userRole1 = new UserRole();
-        userRole1.setUserId(userRole.getUserId());
+        userRole1.setUserId(userRole.getUserid());
         for(Integer roleId: roleIds){
             userRole1.setRoleId(roleId);
             userServise.updateUserRole(userRole1);

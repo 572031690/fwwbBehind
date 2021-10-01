@@ -16,6 +16,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,12 +76,7 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
-            Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if(cookie != null){
-                    map.put("cookie",cookie);
-                }
-            }
+
 
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
@@ -171,6 +167,21 @@ public class Usercontroller {
         map.put("error","您输入的密码不正确");
         return map;
     }
+
+    /*获取cookie*/
+    @GetMapping("/getCookie")
+    @ResponseBody
+    public Map<String,Object>  getCookie(HttpServletRequest request){
+        Map<String,Object> map = new HashMap<>();
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie != null){
+                map.put("cookie",cookie);
+            }
+        }
+        return map;
+    }
+
 
 
     /**

@@ -2990,7 +2990,7 @@ TENANT_ID_</ColNames>
       <Position>7</Position>
       <DataType>int(10)|0s</DataType>
     </column>
-    <column id="774" parent="262" name="dUnint">
+    <column id="774" parent="262" name="unit">
       <Position>8</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
@@ -3073,7 +3073,7 @@ TENANT_ID_</ColNames>
       <DataType>int(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="792" parent="264" name="unti">
+    <column id="792" parent="264" name="unit">
       <Position>6</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>

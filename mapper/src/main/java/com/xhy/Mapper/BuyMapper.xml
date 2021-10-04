@@ -23,12 +23,13 @@
     </select>
 
     <insert id="addBuy" parameterType="com.xhy.domain.Buy">
-        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid,  num, buyerid, neederid, uptype)
-        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{buyerid}, #{neederid},0);
+        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid, uptype)
+        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid}, #{neederid}, 0);
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">
-        update tb_buy set buytitle=#{buytitle},btime=#{btime},itemtype=#{itemtype},itemid=#{itemid},num=#{num}
+        update tb_buy set
+        buytitle=#{buytitle},btime=#{btime},itemtype=#{itemtype},itemid=#{itemid},num=#{num},unit=#{unit}
         ,buyerid=#{buyerid},neederid=#{neederid}
         <if test="uptype!=null and uptype!=''">
             , uptype=#{uptype}

@@ -17,6 +17,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class Usercontroller {
             if(adminUserVO!=null) {
                 //创建主体
                 Subject subject = SecurityUtils.getSubject();
+                Session session = subject.getSession();
                 UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(adminUserVO.getUsername(), adminUserVO.getPassword());
                 subject.login(usernamePasswordToken);
                 if(adminUserVO.isRemember()) {
@@ -76,6 +78,7 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
+            request.getRequestDispatcher("/web/getCookie");
 
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");

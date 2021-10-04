@@ -112,6 +112,10 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public Boolean addUserRole(UserRole userRole) {
+        List<String> roleById = userMapper.findRoleById(userRole.getUserId());
+        if(!roleById.isEmpty()){
+            userMapper.deleteUserRole(userRole.getUserId());
+        }
         return userMapper.addUserRole(userRole);
     }
 

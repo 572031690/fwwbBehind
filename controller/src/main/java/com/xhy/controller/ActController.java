@@ -105,8 +105,8 @@ public class ActController {
         String username = String.valueOf(subject.getPrincipals());
 
         Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
-        task.getProcessInstanceId()
-
+        String processInstanceId = task.getProcessInstanceId();
+        
         User user = userServise.findUser(username);
         return actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname());
     }

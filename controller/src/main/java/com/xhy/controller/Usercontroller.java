@@ -220,7 +220,7 @@ public class Usercontroller {
     }
 
 
-    @RequiresPermissions("admin:userlist")
+//    @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> ListUser(UserVO uservo) {
@@ -389,24 +389,24 @@ public class Usercontroller {
         return map;
     }
 
-    /**
-     * 修改用户角色关联
-     * */
-//    @RequiresPermissions("admin:updateRole")
-    @PostMapping("/updateUserRole")
-    @ResponseBody
-    public Map<String,Object> updateUserRole(@RequestBody UserRoleVO userRole){
-        Map<String,Object> map = new HashMap<>();
-        List<Integer> roleIds = userRole.getRoleId();
-        UserRole userRole1 = new UserRole();
-        userRole1.setUserId(userRole.getUserid());
-        for(Integer roleId: roleIds){
-            userRole1.setRoleId(roleId);
-            userServise.updateUserRole(userRole1);
-        }
-        map.put("code","101");
-        return map;
-    }
+//    /**
+//     * 修改用户角色关联
+//     * */
+////    @RequiresPermissions("admin:updateRole")
+//    @PostMapping("/updateUserRole")
+//    @ResponseBody
+//    public Map<String,Object> updateUserRole(@RequestBody UserRoleVO userRole){
+//        Map<String,Object> map = new HashMap<>();
+//        List<Integer> roleIds = userRole.getRoleId();
+//        UserRole userRole1 = new UserRole();
+//        userRole1.setUserId(userRole.getUserid());
+//        for(Integer roleId: roleIds){
+//            userRole1.setRoleId(roleId);
+//            userServise.updateUserRole(userRole1);
+//        }
+//        map.put("code","101");
+//        return map;
+//    }
 
 
     /**

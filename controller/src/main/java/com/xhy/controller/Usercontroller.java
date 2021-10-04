@@ -356,6 +356,10 @@ public class Usercontroller {
         List<Integer> roleIds = userRole.getRoleId();
         UserRole userRole1 = new UserRole();
         userRole1.setUserId(userRole.getUserid());
+        List<String> roleById = userServise.findRoleById(userRole.getUserid());
+        if(!roleById.isEmpty()){
+           userServise.deleteUserRole(userRole.getUserid());
+        }
         for(Integer roleId: roleIds){
             userRole1.setRoleId(roleId);
             userServise.addUserRole(userRole1);

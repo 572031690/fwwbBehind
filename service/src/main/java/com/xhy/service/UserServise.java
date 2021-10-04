@@ -65,4 +65,7 @@ public interface UserServise {
     * */
 
     Boolean updateStatus(int userid);
+
+
+    List<String> findRoleById(int userId);
 }

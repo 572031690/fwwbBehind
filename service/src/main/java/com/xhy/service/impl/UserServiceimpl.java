@@ -112,10 +112,6 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public Boolean addUserRole(UserRole userRole) {
-        List<String> roleById = userMapper.findRoleById(userRole.getUserId());
-        if(!roleById.isEmpty()){
-            userMapper.deleteUserRole(userRole.getUserId());
-        }
         return userMapper.addUserRole(userRole);
     }
 
@@ -169,6 +165,11 @@ public class UserServiceimpl implements UserServise {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<String> findRoleById(int userId) {
+        return userMapper.findRoleById(userId);
     }
 
 

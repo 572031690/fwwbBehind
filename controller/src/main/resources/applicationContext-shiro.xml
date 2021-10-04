@@ -73,6 +73,7 @@
                 /webCompany/findAllCompany=anon
                 /webMonthsales/findAllMonthsales=anon
                 /webMonthsalesup/findAll=anon
+                /activiti/startNeedAct=anon
                 /**=user
             </value>
         </property>

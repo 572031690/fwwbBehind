@@ -77,7 +77,6 @@ public class Usercontroller {
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
 
-
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");

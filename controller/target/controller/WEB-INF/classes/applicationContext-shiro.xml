@@ -42,6 +42,7 @@
                 /web/logon=anon
                 /web/logout=anon
                 /web/shirologin=anon
+                /getCookie=anon
                 /web/invertPassword=anon
                 /web/updateUserRole=anon
                 /web/getUserRole=anon

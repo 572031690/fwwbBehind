@@ -23,7 +23,7 @@
 
 
     <insert id="addNeed" parameterType="com.xhy.domain.Need">
-        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, unti, needday, neederid, comment, uptype)
+        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, unit, needday, neederid, comment, uptype)
         values (null, #{needtitle}, #{itemtype}, #{itemid}, #{neednum}, #{unit}, #{needday}, #{neederid},
                 #{comment}, 0);
     </insert>
@@ -34,7 +34,7 @@
           , itemtype=#{itemtype}
           , itemid=#{itemid}
           , neednum=#{neednum}
-          , unti=#{unti}
+          , unit=#{unit}
           , needday=#{needday}
           , neederid=#{neederid}
           , comment=#{comment}

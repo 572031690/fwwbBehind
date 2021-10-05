@@ -106,9 +106,12 @@ public class ActController {
 
         Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
         String processInstanceId = task.getProcessInstanceId();
-        
-        User user = userServise.findUser(username);
-        return actService.findNeedTaskList(needVO.getPage(), needVO.getLimit(), user.getRealname());
+        ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        String businessKey = instance.getBusinessKey();
+        Need need = needService.findByNeedid(Integer.parseInt(businessKey));
+        List<Need> needList = new ArrayList<>();
+        needList.add(need);
+        return needList;
     }
 
     /*完成审批节点*/

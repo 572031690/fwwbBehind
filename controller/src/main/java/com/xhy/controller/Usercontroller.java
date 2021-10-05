@@ -1,7 +1,6 @@
 package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.xhy.Utils.CookiesUtils;
 import com.xhy.domain.Permission;
 import com.xhy.domain.Role;
 import com.xhy.domain.User;
@@ -78,8 +77,6 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
-            request.getRequestDispatcher("/web/getCookie");
-
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");
@@ -168,6 +165,11 @@ public class Usercontroller {
         map.put("code","501");
         map.put("error","您输入的密码不正确");
         return map;
+    }
+
+    @GetMapping("/goGetCookie")
+    public String goGetCookie(){
+        return "redirect:/web/getCookie";
     }
 
     /*获取cookie*/

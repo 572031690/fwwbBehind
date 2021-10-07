@@ -92,9 +92,22 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+    <servlet-name>cookie</servlet-name>
+    <servlet-class>com.xhy.Utils.GetCookie</servlet-class>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet-mapping>
+        <servlet-name>cookie</servlet-name>
+        <url-pattern>/web/getCookie</url-pattern>
     </servlet-mapping>
 
 

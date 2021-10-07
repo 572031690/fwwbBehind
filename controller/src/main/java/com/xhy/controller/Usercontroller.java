@@ -167,22 +167,24 @@ public class Usercontroller {
         return map;
     }
 
-    @GetMapping("/goGetCookie")
-    public String goGetCookie(){
-        return "redirect:/web/getCookie";
-    }
+//    @GetMapping("/goGetCookie")
+//    public String goGetCookie(){
+//        return "redirect:/web/getCookie";
+//    }
 
     /*获取cookie*/
     @GetMapping("/getCookie")
     @ResponseBody
     public Map<String,Object>  getCookie(HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if(cookie != null){
-                map.put("cookie",cookie);
-            }
-        }
+//        Cookie[] cookies = request.getCookies();
+//        for (Cookie cookie : cookies) {
+//            if(cookie != null){
+//                map.put("cookie",cookie);
+//            }
+//        }
+        Object cookie = request.getAttribute("cookie");
+        map.put("cookie",cookie);
         return map;
     }
 

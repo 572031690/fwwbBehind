@@ -76,22 +76,13 @@ public class ActController {
     public Map<String, Object> startNeedAct(Integer needid) {
         Map<String, Object> actmap = new HashMap<>();
         Map<String, Object> map = new HashMap<>();
-
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-        System.out.println(username);
-
         User user = userServise.findUser(username);
-        System.out.println(user);
-
         actmap.put("userid", user.getUserid());
-
         Need actneed = needService.findByNeedid(needid);
-
-        System.out.println(actneed);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
         System.out.println("业务ID"+processInstance.getBusinessKey());
-
         map.put("list", actneed);
         map.put("code","101");
         return map;
@@ -103,8 +94,8 @@ public class ActController {
     public List<Need> queryNeedActTask(NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-
-        Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
+        User user = userServise.findUser(username);
+        Task task = taskService.createTaskQuery().taskAssignee(String.valueOf(user.getUserid())).processDefinitionKey("needAudit").singleResult();
         String processInstanceId = task.getProcessInstanceId();
         ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         String businessKey = instance.getBusinessKey();
@@ -124,23 +115,28 @@ public class ActController {
         String username = String.valueOf(subject.getPrincipals());
 
         Set<String> roles = userServise.findRoleByUserName(username);
+        System.out.println(roles);
         if (roles.contains("需求经理") || roles.contains("购买经理") || roles.contains("总经理")) {
-            taskService.claim(String.valueOf(taskId), userServise.findUser(username).getRealname());
+            taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
         Task task = taskService.createTaskQuery().taskId(String.valueOf(taskId)).singleResult();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+
         System.out.println(task);
+        System.out.println(processInstance);
 
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
         HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
-        HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(userServise.findUser(username).getRealname()).singleResult();
-        System.out.println(processDefinitionKey);
+        HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
 
-        if (processDefinitionKey.equals("need")) {
+        System.out.println(processDefinitionKey);
+        System.out.println(instance.getAssignee());
+
+        if (processDefinitionKey.equals("needAudit")) {
             if (roles.contains("需求专员")) {
                 taskService.complete(String.valueOf(taskId));
                 Act_Need act_need = new Act_Need();
-                act_need.setUpname(task.getAssignee());
+                act_need.setUpname(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                 act_need.setStarttime(String.valueOf(instance.getStartTime()));
                 act_need.setEndTime(String.valueOf(instance.getEndTime()));
@@ -158,8 +154,8 @@ public class ActController {
                     taskService.complete(String.valueOf(taskId));
                     Need need1 = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                     Act_Need act_need = new Act_Need();
-                    act_need.setUpname(String.valueOf(need1.getNeederid()));
-                    act_need.setAuther(task.getAssignee());
+                    act_need.setUpname(userServise.findbyid(need1.getNeederid()).getRealname());
+                    act_need.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                     act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                     act_need.setStarttime(String.valueOf(instance.getStartTime()));
                     act_need.setEndTime(String.valueOf(instance.getEndTime()));
@@ -180,8 +176,8 @@ public class ActController {
                 map1.put("needStatus", "审批完成");
                 Need need1 = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Need act_need = new Act_Need();
-                act_need.setUpname(String.valueOf(need1.getNeederid()));
-                act_need.setAuther(task.getAssignee());
+                act_need.setUpname(userServise.findbyid(need1.getNeederid()).getRealname());
+                act_need.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                 act_need.setStarttime(String.valueOf(instance.getStartTime()));
                 act_need.setEndTime(String.valueOf(instance.getEndTime()));

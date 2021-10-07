@@ -1,6 +1,7 @@
 package com.xhy.domain;
 
 import lombok.Data;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Need implements Serializable {
     private String itemtype;
     private int neednum;
     private String unit;
-    private String needday;
+    private DateTime needday;
     private int neederid;
     private String comment;
     private int uptype;

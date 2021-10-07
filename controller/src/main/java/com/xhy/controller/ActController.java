@@ -134,7 +134,6 @@ public class ActController {
 
         if (processDefinitionKey.equals("needAudit")) {
             if (roles.contains("需求专员")) {
-                taskService.complete(String.valueOf(taskId));
                 Act_Need act_need = new Act_Need();
                 act_need.setUpname(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
@@ -142,6 +141,7 @@ public class ActController {
                 act_need.setEndTime(String.valueOf(instance.getEndTime()));
                 act_need.setText(text);
                 act_need.setId(1);
+                taskService.complete(String.valueOf(taskId));
                 Integer actNeed = actService.addActNeed(act_need);
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 need.setUptype(1);

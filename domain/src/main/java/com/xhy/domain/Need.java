@@ -15,7 +15,7 @@ public class Need implements Serializable {
     private String itemtype;
     private int neednum;
     private String unit;
-    private DateTime needday;
+    private String needday;
     private int neederid;
     private String comment;
     private int uptype;

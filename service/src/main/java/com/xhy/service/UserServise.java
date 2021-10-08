@@ -49,8 +49,15 @@ public interface UserServise {
      */
     Boolean updateUserRole(UserRole userRole);
 
+
     /**
-     * 查询当前帐号所有权限
+     *查询角色用户关联
+     * */
+
+    List<UserRole> findUserRole(int roleId);
+
+    /**
+     * 删除当前帐号所有权限
      */
     Boolean deleteUserRole(int userId);
 

@@ -84,6 +84,16 @@
 
 
     <!--***************用户角色中间表***********-->
+    <!--查找用户角色中间表-->
+    <select id="findUserRole" parameterType="int" resultType="com.xhy.domain.UserRole">
+        select *  from tb_user_role
+        <where>
+            <if test="roleId != null and roleId!=null">
+                roleId = #{roleId}
+            </if>
+        </where>
+    </select>
+
     <!--    向角色用户表添加-->
     <insert id="addUserRole" parameterType="com.xhy.domain.UserRole">
         insert into tb_user_role (roleId, userId)
@@ -98,7 +108,7 @@
     </update>
 
     <!--删除用户角色关联-->
-    <delete id="deleteUserRole" parameterType="int">
+    <delete id="deleteUserRole" parameterType="int" >
         delete
         from tb_user_role
         where userId = #{userId};

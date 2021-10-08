@@ -123,6 +123,11 @@ public class UserServiceimpl implements UserServise {
     }
 
     @Override
+    public List<UserRole> findUserRole(int roleId) {
+        return userMapper.findUserRole(roleId);
+    }
+
+    @Override
     public Boolean deleteUserRole(int userId) {
         return userMapper.deleteUserRole(userId);
     }

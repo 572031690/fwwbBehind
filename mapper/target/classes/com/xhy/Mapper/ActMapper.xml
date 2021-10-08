@@ -14,11 +14,11 @@
 
     <!--存储需求相关信息-->
     <insert id="addActNeed" parameterType="com.xhy.domain.Act_Need" >
-        insert into need_act values (id=#{id},businessId = #{businessId},startTime=#{starttime},endTime=#{endTime},upname=#{upname},auther=#{auther},text=#{text})
+        insert into need_act values (#{id},#{businessId},#{starttime},#{endTime},#{upname},#{auther},#{text})
     </insert>
 
     <!--查看需求审批状态-->
-    <select id="findActNeed" parameterType="Integer">
+    <select id="findActNeed" parameterType="Integer" resultType="com.xhy.domain.Act_Need">
         select * from need_act where businessId=#{businessKey}
     </select>
 </mapper>

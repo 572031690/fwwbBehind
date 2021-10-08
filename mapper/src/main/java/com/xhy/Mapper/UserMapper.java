@@ -32,6 +32,7 @@ public interface UserMapper {
     * */
     List<String> findPermissionById(int userId);
 
+
     /*
     * 添加用户角色关联
     * */
@@ -49,10 +50,10 @@ public interface UserMapper {
     boolean deleteUserRole(int userId);
 
     /*
-    * 查询处理人的id
+    * 查询用户角色表
     * */
 
-    List<Integer> getAssigneeId(User user);
+    List<UserRole> findUserRole(int roleId);
 
 
     /**

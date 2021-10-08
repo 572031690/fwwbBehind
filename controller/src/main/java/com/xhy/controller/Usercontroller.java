@@ -66,9 +66,20 @@ public class Usercontroller {
             }
             User user = userServise.findUser(adminUserVO.getUsername());
             List<Integer> roleIdByName = userServise.getRoleIdByName(adminUserVO.getUsername());
+
             if (roleIdByName.size() != 0) {
                 for (Integer roleId : roleIdByName) {
-                    user.setRoleId(Collections.singletonList(roleId));
+                    if(user.getRoleId()==null){
+                        user.setRoleId(Collections.singletonList(roleId));
+                    }
+                    else{
+                        List<Integer> userRole = new ArrayList<>();
+                        for(Integer i : user.getRoleId()){
+                            userRole.add(i);
+                        }
+                        userRole.add(roleId);
+                        user.setRoleId(userRole);
+                    }
                 }
             } else {
                 user.setRoleId(Collections.singletonList(0));

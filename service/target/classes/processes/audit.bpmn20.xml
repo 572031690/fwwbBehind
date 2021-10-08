@@ -6,8 +6,8 @@
     <endEvent id="_5" name="EndEvent"/>
     <sequenceFlow id="sid-1142c373-9f64-414d-9536-30797b6dae21" sourceRef="_1" targetRef="_2"/>
     <sequenceFlow id="sid-2fe54908-1b19-42c6-85db-ef4af52e9d1e" sourceRef="_2" targetRef="_3"/>
-    <userTask id="_3" name="部门经理审批" activiti:assignee="${assignee}"/>
-    <userTask id="_4" name="总经理审批" activiti:assignee="${manager}"/>
+    <userTask id="_3" name="部门经理审批" activiti:candidateUsers="${assignee}"/>
+    <userTask id="_4" name="总经理审批" activiti:candidateUsers="${manager}"/>
     <sequenceFlow id="sid-ca4d2a5a-7b0d-4e29-ba84-eafcb357b5f3" sourceRef="_3" targetRef="_4"/>
     <sequenceFlow id="sid-e91e69a4-3f4c-47a8-8c53-e829cc06b48f" sourceRef="_4" targetRef="_5"/>
   </process>

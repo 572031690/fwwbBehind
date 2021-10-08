@@ -17,7 +17,6 @@ public class Buy implements Serializable {
     private int num;
     private int uptype;
     private int taskId;
-    //    private int buytype;
 
 
 }

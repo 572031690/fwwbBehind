@@ -68,20 +68,7 @@ public class NeedController {
         }
     }
 
-//    @RequestMapping(value = "/findNeedById",method = RequestMethod.GET)
-//    public @ResponseBody Map<String,Object> findNeedById(int needid){
-//        Map<String,Object> map = new HashMap<String,Object>();
-//        Need need1 = needService.findByNeedid(needid);
-//        PageInfo pageInfo1 = new PageInfo(need1);
-//        int count = pageInfo1.getSize();
-//        map.put("count",count);
-//       Need need2 = needService.findByNeedid(needid);
-//        PageInfo pageInfo2 = new PageInfo(need2);
-//        int pageNum = pageInfo2.getPageNum();
-//        map.put("list",need2);
-//        map.put("page",pageNum);
-//        return map;
-//    }
+
 
 //    @RequiresPermissions("needer:addNeed")
     @RequestMapping(value = "/addNeed",method = RequestMethod.POST)

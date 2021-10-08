@@ -198,11 +198,11 @@ public class ActController {
                 act_need.setText(text);
                 act_need.setId(2);
                 Integer actNeed = actService.addActNeed(act_need);
-                List<Act_Need> actNeedList = actService.findActNeed(Integer.parseInt(processInstance.getBusinessKey()));
+//                List<Act_Need> actNeedList = actService.findActNeed(Integer.parseInt(processInstance.getBusinessKey()));
                 if (actNeed != 0) {
                     map.put("code", "101");
                     map.put("status", "经理审批同意");
-                    map.put("list", actNeedList);
+//                    map.put("list", actNeedList);
                 }
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 need.setUptype(2);
@@ -211,8 +211,7 @@ public class ActController {
                     map.put("success", "状态修改");
                 }
 
-            }
-           else if (roles.contains("总经理")) {
+            } else if (roles.contains("总经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
@@ -231,18 +230,16 @@ public class ActController {
                 System.out.println(act_need);
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 need.setUptype(3);
-
-                System.out.println(need);
                 Integer upneed = needService.updateStatus(need);
                 if (upneed != 0) {
                     map.put("success", "状态修改");
                 }
                 Integer actNeed = actService.addActNeed(act_need);
-                List<Act_Need> actNeedList = actService.findActNeed(Integer.parseInt(processInstance.getBusinessKey()));
+//                List<Act_Need> actNeedList = actService.findActNeed(Integer.parseInt(processInstance.getBusinessKey()));
                 if (actNeed != 0) {
                     map.put("code", "101");
                     map.put("status", "总经理审批通过");
-                    map.put("list", actNeedList);
+//                    map.put("list", actNeedList);
                 }
             }
         }
@@ -264,7 +261,6 @@ public class ActController {
         }
         Task task = taskService.createTaskQuery().taskId(String.valueOf(taskId)).singleResult();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-        String s = processInstance.getBusinessKey();
 
         HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
         HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(userServise.findUser(username).getRealname()).singleResult();
@@ -290,7 +286,22 @@ public class ActController {
         runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
         return map;
     }
+
+
+    /**
+     * 查看历史审批
+     **/
+
+    @GetMapping("/findHistoty")
+    @ResponseBody
+    public Map<String, Object> findHistoty(int needid) {
+        Map<String,Object> map =  new HashMap<>();
+        List<Act_Need> actNeedList = actService.findActNeed(needid);
+        map.put("list",actNeedList);
+        return map;
+    }
 }
+
 
 
 

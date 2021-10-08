@@ -75,6 +75,10 @@
                 /webMonthsales/findAllMonthsales=anon
                 /webMonthsalesup/findAll=anon
                 /activiti/startNeedAct=anon
+                /activiti/queryNeedActTask=anon
+                /activiti/completeprocess=anon
+                /activiti/deleteprocess=anon
+                /activiti/startNeedActAgain=anon
                 /**=user
             </value>
         </property>

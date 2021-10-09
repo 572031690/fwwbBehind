@@ -88,6 +88,50 @@ public class ActController {
 
     }
 
+    /*修改并重启采购流程*/
+    @PostMapping("/startBuyActAgain")
+    public Map<String, Object> startBuyActAgain(@RequestBody Buy buy) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> actmap = new HashMap<>();
+        buy.setUptype(0);
+        buyService.updateStatus(buy);
+
+        Subject subject = SecurityUtils.getSubject();
+        String username = String.valueOf(subject.getPrincipals());
+        List<Role> roles = roleService.findRole();
+        List<Integer> assignee = new ArrayList<>();
+        List<Integer> manager = new ArrayList<>();
+        for (Role role : roles) {
+            if (role.getRolename().equals("需求经理")) {
+                List<UserRole> userRoles = userServise.findUserRole(role.getRoleId());
+                for (UserRole userRole : userRoles) {
+                    assignee.add(userRole.getUserId());
+                }
+            } else if (role.getRolename().equals("总经理")) {
+                List<UserRole> userRoles = userServise.findUserRole(role.getRoleId());
+                for (UserRole userRole : userRoles) {
+                    manager.add(userRole.getUserId());
+                }
+            }
+        }
+
+        User user = userServise.findUser(username);
+        actmap.put("userid", user.getUserid());
+        actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
+        actmap.put("manager", StringUtils.join(manager.toArray(), ","));
+        Buy actbuy = buyService.findBuyById(buy.getBuyid());
+        runtimeService.startProcessInstanceByKey("buyAudit", String.valueOf(buy.getBuyid()), actmap);
+        Task task = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
+        actbuy.setTaskId(task.getId());
+        if (actbuy.getUptype() == 0) {
+            System.out.println("已修改审批状态");
+        }
+        map.put("code", "101");
+        map.put("list", actbuy);
+        return map;
+
+    }
+
      /*启动需求流程*/
     @ResponseBody
     @GetMapping("/startNeedAct")

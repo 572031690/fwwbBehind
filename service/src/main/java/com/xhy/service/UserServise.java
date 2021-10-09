@@ -75,4 +75,6 @@ public interface UserServise {
 
 
     List<String> findRoleById(int userId);
+
+    Boolean updateUserPassword(int userid, String oldpassword, String password);
 }

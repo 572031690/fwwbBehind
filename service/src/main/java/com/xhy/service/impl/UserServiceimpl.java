@@ -177,5 +177,31 @@ public class UserServiceimpl implements UserServise {
         return userMapper.findRoleById(userId);
     }
 
+    @Override
+    public Boolean updateUserPassword(int userid, String oldpassword, String password) {
+        CodeUtil codeUtil = new CodeUtil();
+        User user = userMapper.findbyid(userid);
+        User userCode = new User();
+        userCode.setPassword(oldpassword);
+        userCode.setUsername(user.getUsername());
+        User newUser =codeUtil.CodeHash(userCode);
+        if(user.getPassword().equals(newUser.getPassword())){
+            userCode.setPassword(password);
+            userCode.setUsername(user.getUsername());
+            User updateUser =codeUtil.CodeHash(userCode);
+            user.setPassword(updateUser.getPassword());
+            Integer status = userMapper.updatePassword(user);
+            if(status !=0){
+                return true;
+            }
+            else{
+                return  false;
+            }
+        }
+        else{
+            return  false;
+
+        }
+    }
 
 }

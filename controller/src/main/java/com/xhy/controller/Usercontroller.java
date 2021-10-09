@@ -244,7 +244,6 @@ public class Usercontroller {
         //参数定义
         Map<String, Object> map = new HashMap<String, Object>();
         List<User> userList = new ArrayList<>();
-        String nameLog = null;
         int count = 0;
 
         //获取count
@@ -439,7 +438,7 @@ public class Usercontroller {
     public Map<String,Object> updateUserRole(Integer userid){
         Map<java.lang.String, java.lang.Object> map = new HashMap<>();
         Boolean aBoolean= userServise.updatePassword(userid);
-        if(aBoolean = true){
+        if(aBoolean == true){
             map.put("code","101");
         }else
         {
@@ -459,13 +458,28 @@ public class Usercontroller {
     public Map<String,Object> updateStatus(Integer userid){
         Map<java.lang.String, java.lang.Object> map = new HashMap<>();
         Boolean aBoolean= userServise.updateStatus(userid);
-        if(aBoolean = true){
+        if(aBoolean == true){
             map.put("code","101");
         }
         else
         {
             map.put("code","102");
         }
+        return map;
+    }
+
+
+    @RequestMapping(value = "/updateUserPassword" , method = RequestMethod.GET)
+    public @ResponseBody Map<String,Object> updateUserPassword(int userid, String oldpassword, String password){
+        Map<String,Object> map =new HashMap<>();
+        Boolean aBoolean = userServise.updateUserPassword(userid,oldpassword,password);
+        if(aBoolean == true){
+            map.put("code","101");
+        }
+        else{
+            map.put("code","102");
+        }
+
         return map;
     }
 }

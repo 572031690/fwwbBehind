@@ -53,4 +53,7 @@
         where needid = #{needid};
     </update>
 
+    <select id="findNeed" resultType="com.xhy.domain.Need" >
+        SELECT * FROM tb_need
+    </select>
 </mapper>

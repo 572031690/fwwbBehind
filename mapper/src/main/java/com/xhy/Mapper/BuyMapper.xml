@@ -42,5 +42,15 @@
         from tb_buy
         where buyid = #{buyid};
     </delete>
+
+    <update id="updateStatus" parameterType="com.xhy.domain.Buy">
+        update tb_buy
+        set uptype=#{uptype}
+        where buyid = #{buyid};
+    </update>
+
+    <select id="findBuy" resultType="com.xhy.domain.Buy" >
+        SELECT * FROM tb_buy
+    </select>
 </mapper>
 

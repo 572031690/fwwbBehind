@@ -22,10 +22,9 @@ public interface NeedService {
 //  根据ID查询
     Need  findByNeedid(int needid);
 
-//    查找个人代办任务
-
-    Need queryActNeed(Integer page,Integer limit,String username);
 
     Integer updateStatus(Need need);
+
+    List<Need> findNeed();
 
 }

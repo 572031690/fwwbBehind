@@ -20,5 +20,9 @@ public interface BuyService {
     Integer deleteBuy(int buyid);
 
     //  根据ID查询
-    List<Buy> findBuyById(int startNum,int pageSize,int buyid);
+    Buy findBuyById(int buyid);
+
+    Integer updateStatus(Buy buy);
+
+    List<Buy> findBuy();
 }

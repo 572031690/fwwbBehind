@@ -2,15 +2,13 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Buy;
+import com.xhy.domain.Need;
 import com.xhy.domain.User;
 import com.xhy.service.BuyService;
 import com.xhy.vo.BuyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,22 +64,22 @@ public class BuyController {
         }
     }
 
-    @RequestMapping(value = "/findBuyById", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Object> findBuyById(int page, int limit, int buyid) {
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        List<Buy> buyList1 = buyService.findBuyById(0, 0, buyid);
-        PageInfo pageInfo1 = new PageInfo(buyList1);
-        int count = pageInfo1.getSize();
-        map.put("count", count);
-        List<Buy> buyList2 = buyService.findBuyById(page, limit, buyid);
-        PageInfo pageInfo2 = new PageInfo(buyList2);
-        int pageNum = pageInfo2.getPageNum();
-        map.put("list", buyList2);
-        map.put("page", pageNum);
-        return map;
-    }
+//    @RequestMapping(value = "/findBuyById", method = RequestMethod.GET)
+//    public @ResponseBody
+//    Map<String, Object> findBuyById(int page, int limit, int buyid) {
+//
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        List<Buy> buyList1 = buyService.findBuyById(0, 0, buyid);
+//        PageInfo pageInfo1 = new PageInfo(buyList1);
+//        int count = pageInfo1.getSize();
+//        map.put("count", count);
+//        List<Buy> buyList2 = buyService.findBuyById(page, limit, buyid);
+//        PageInfo pageInfo2 = new PageInfo(buyList2);
+//        int pageNum = pageInfo2.getPageNum();
+//        map.put("list", buyList2);
+//        map.put("page", pageNum);
+//        return map;
+//    }
 
     @RequestMapping(value = "/addBuy", method = RequestMethod.POST)
     public @ResponseBody
@@ -114,5 +112,30 @@ public class BuyController {
                 map.put("code", "102");
                 return map;
             }
+    }
+
+
+    /*查看需求相关信息*/
+    @GetMapping("/getBuyCount")
+    @ResponseBody
+    public Map<String,Object> getBuyCount(){
+        Map<String,Object> map = new HashMap<>();
+        List<Buy> buyList = buyService.findBuy();
+        Integer approve = 0;
+        Integer reject = 0;
+        Integer sum = 0;
+        for(Buy buy : buyList){
+            if(buy.getUptype()==3){
+                approve++;
+            }
+            else if(buy.getUptype()==4){
+                reject++;
+            }
+            sum++;
+        }
+        map.put("approve",approve);
+        map.put("reject",reject);
+        map.put("sum",sum);
+        return map;
     }
 }

@@ -1,5 +1,6 @@
 package com.xhy.Mapper;
 
+import com.xhy.domain.Act_Buy;
 import com.xhy.domain.Act_Need;
 import com.xhy.domain.Need;
 
@@ -14,4 +15,10 @@ public interface ActMapper {
 
     /*查看需求审批表的信息*/
     List<Act_Need> findActNeed(Integer businessKey);
+
+    /*添加采购审批表的信息*/
+    Integer addActBuy(Act_Buy act_buy);
+
+    /*查看采购审批表的信息*/
+    List<Act_Buy> findActBuy(Integer businessKey);
 }

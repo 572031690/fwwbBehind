@@ -63,7 +63,7 @@ public class NeedController {
                 return map;
             }
         } else {
-            map.put("code", "103");
+            map.put("code", "102");
             return map;
         }
     }
@@ -103,6 +103,30 @@ public class NeedController {
             }
     }
 
+
+    /*查看需求相关信息*/
+    @GetMapping("/getNeedCount")
+    @ResponseBody
+    public Map<String,Object> getNeedCount(){
+        Map<String,Object> map = new HashMap<>();
+        List<Need> needList = needService.findNeed();
+        Integer approve = 0;
+        Integer reject = 0;
+        Integer sum = 0;
+        for(Need need : needList){
+            if(need.getUptype()==3){
+                approve++;
+            }
+            else if(need.getUptype()==4){
+                reject++;
+            }
+            sum++;
+        }
+        map.put("approve",approve);
+        map.put("reject",reject);
+        map.put("sum",sum);
+        return map;
+    }
 
 
 }

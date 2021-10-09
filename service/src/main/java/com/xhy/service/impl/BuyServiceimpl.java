@@ -39,8 +39,17 @@ public class BuyServiceimpl implements BuyService {
     }
 
     @Override
-    public List<Buy> findBuyById(int startNum, int pageSize, int buyid) {
-        PageHelper.startPage(startNum,pageSize);
+    public Buy findBuyById( int buyid) {
         return buyMapper.findbyid(buyid);
+    }
+
+    @Override
+    public Integer updateStatus(Buy buy) {
+        return buyMapper.updateStatus(buy);
+    }
+
+    @Override
+    public List<Buy> findBuy() {
+        return buyMapper.findBuy();
     }
 }

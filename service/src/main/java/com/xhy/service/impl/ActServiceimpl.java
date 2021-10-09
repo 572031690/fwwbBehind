@@ -2,6 +2,7 @@ package com.xhy.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.xhy.Mapper.ActMapper;
+import com.xhy.domain.Act_Buy;
 import com.xhy.domain.Act_Need;
 import com.xhy.domain.Need;
 import com.xhy.service.ActService;
@@ -32,6 +33,16 @@ public class ActServiceimpl implements ActService {
     @Override
     public List<Act_Need> findActNeed(Integer businessKey) {
         return actMapper.findActNeed(businessKey);
+    }
+
+    @Override
+    public Integer addActBuy(Act_Buy act_buy) {
+        return actMapper.addActBuy(act_buy);
+    }
+
+    @Override
+    public List<Act_Buy> findActBuy(Integer businessKey) {
+        return actMapper.findActBuy(businessKey);
     }
 
 

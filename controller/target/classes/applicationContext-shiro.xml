@@ -79,6 +79,7 @@
                 /activiti/completeprocess=anon
                 /activiti/deleteprocess=anon
                 /activiti/startNeedActAgain=anon
+                /activiti/findHistoty=anon
                 /**=user
             </value>
         </property>

@@ -21,4 +21,15 @@
     <select id="findActNeed" parameterType="Integer" resultType="com.xhy.domain.Act_Need">
         select * from need_act where businessId=#{businessKey}
     </select>
+
+    <!--存储采购相关信息-->
+    <insert id="addActBuy" parameterType="com.xhy.domain.Act_Buy" >
+        insert into buy_act values (#{id},#{businessId},#{starttime},#{endTime},#{upname},#{auther},#{text})
+    </insert>
+
+    <!--查看采购审批状态-->
+    <select id="findActBuy" parameterType="Integer" resultType="com.xhy.domain.Act_Buy">
+        select * from buy_act where businessId=#{businessKey}
+    </select>
+
 </mapper>

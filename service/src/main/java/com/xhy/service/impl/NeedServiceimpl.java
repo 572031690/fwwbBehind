@@ -35,17 +35,6 @@ public class NeedServiceimpl implements NeedService {
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    RuntimeService runtimeService;
-
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    HistoryService historyService;
-
-    @Autowired
-    RepositoryService repositoryService;
 
     @Override
     public List<Need> findAllNeed(NeedVO needVO) {
@@ -73,17 +62,15 @@ public class NeedServiceimpl implements NeedService {
         return needMapper.findbyid(needid);
     }
 
-    @Override
-    public Need queryActNeed(Integer page, Integer limit,String username) {
-
-        Task task = taskService.createTaskQuery().taskAssignee(username).processDefinitionKey("needAudit").singleResult();
-
-        return null;
-    }
 
     @Override
     public Integer updateStatus(Need need) {
         return needMapper.updateStatus(need);
+    }
+
+    @Override
+    public List<Need> findNeed() {
+        return needMapper.findNeed();
     }
 
 

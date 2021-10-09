@@ -20,6 +20,6 @@ public interface NeedMapper {
 
     Integer updateStatus(Need need);
 
-
+    List<Need> findNeed();
 
 }

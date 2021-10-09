@@ -15,11 +15,6 @@
 
 
 
-    <bean id="AuthenFilter" class="com.xhy.shiro.filter.AuthenFilter">
-        <property name="loginUrl" value="/web/unauth"/>
-    </bean>
-    <bean id="corsFilter" class="com.xhy.shiro.filter.CORSFilter"></bean>
-
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!--shiro 核心安全接口-->
         <property name="securityManager" ref="securityManager"/>
@@ -31,12 +26,8 @@
         <property name="successUrl" value="/web/getCookie"/>
         <!--读取初始自定义权限内容-->
         <!--如果使用authc验证,则需要重写rememberMe的过滤器,或配置fromAuthernticationFilter的Bean-->
-        <property name="filters" >
-            <map>
-                <entry key="authc" value-ref="AuthenFilter"/>
-                <entry key="authc" value-ref="corsFilter"/>
-            </map>
-        </property>
+<!--        <property name="filters" >-->
+<!--        </property>-->
         <property name="filterChainDefinitions">
             <value>
 <!--                /web/logon=anon-->

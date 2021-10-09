@@ -135,7 +135,7 @@ public class RoleController {
     }
 
     /**
-     * 修改用户角色关联
+     * 修改角色权限关联
      * */
 //    @RequiresRoles("admin:updateRolePerm")
     @PostMapping("/updateRolePerm")
@@ -153,5 +153,7 @@ public class RoleController {
         map.put("code","101");
         return map;
     }
+
+
 
 }

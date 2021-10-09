@@ -15,11 +15,6 @@
 
 
 
-    <bean id="AuthenFilter" class="com.xhy.shiro.filter.AuthenFilter">
-        <property name="loginUrl" value="/web/unauth"/>
-    </bean>
-    <bean id="corsFilter" class="com.xhy.shiro.filter.CORSFilter"></bean>
-
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!--shiro 核心安全接口-->
         <property name="securityManager" ref="securityManager"/>
@@ -31,75 +26,80 @@
         <property name="successUrl" value="/web/getCookie"/>
         <!--读取初始自定义权限内容-->
         <!--如果使用authc验证,则需要重写rememberMe的过滤器,或配置fromAuthernticationFilter的Bean-->
-        <property name="filters" >
-            <map>
-                <entry key="authc" value-ref="AuthenFilter"/>
-                <entry key="authc" value-ref="corsFilter"/>
-            </map>
-        </property>
+<!--        <property name="filters" >-->
+<!--        </property>-->
         <property name="filterChainDefinitions">
             <value>
-                /web/logon=anon
-                /web/logout=anon
-                /web/shirologin=anon
-                /getCookie=anon
-                /web/invertPassword=anon
-                /web/updateUserRole=anon
-                /web/getUserRole=anon
-                /web/deleteUser=anon
-                /web/updateUser=anon
-                /web/addUser=anon
-                /web/listUser=anon
-                /web/getUserRole=anon
-                /web/addUserRole=anon
-                /web/invertPassword=anon
-                /web/updateStatus=anon
-                /webitem/findAllitem=anon
-                /webitem/updateItem=anon
-                /webitem/addItem=anon
-                /webitem/deleteItem=anon
-                /Role/listRole=anon
-                /Role/addRole=anon
-                /Role/updateRole=anon
-                /Role/deleteRole=anon
-                /Perm/listPerm=anon
-                /Perm/addPerm=anon
-                /Perm/updatePerm=anon
-                /Perm/deletePerm=anon
-                /webneed/findAllNeed=anon
-                /webneed/addNeed=anon
-                /webneed/updateNeed=anon
-                /webneed/deleteNeed=anon
-                /webneed/getNeedCount=anon
-                /webbuy/getBuyCount=anon
-                /webbuy/findAllBuy=anon
-                /webbuy/updateBuy=anon
-                /webbuy/addBuy=anon
-                /webbuy/deleteBuy=anon
-                /webCountrysale/findAll=anon
-                /webCompany/findAllCompany=anon
-                /webMonthsales/findAllMonthsales=anon
-                /webMonthsalesup/findAll=anon
-                /activiti/startNeedAct=anon
-                /activiti/queryNeedActTask=anon
-                /activiti/completeprocess=anon
-                /activiti/deleteprocess=anon
-                /activiti/startNeedActAgain=anon
-                /activiti/findHistoty=anon
-                /**=user
+<!--                /web/logon=anon-->
+<!--                /web/shirologin=anon-->
+<!--                /web/invertPassword=anon-->
+<!--                /web/updateUserRole=anon-->
+<!--                /web/getUserRole=anon-->
+<!--                /web/deleteUser=anon-->
+<!--                /web/updateUser=anon-->
+<!--                /web/addUser=anon-->
+<!--                /web/listUser=anon-->
+<!--                /web/getUserRole=anon-->
+<!--                /web/addUserRole=anon-->
+<!--                /web/invertPassword=anon-->
+<!--                /web/updateStatus=anon-->
+<!--                /webitem/findAllitem=anon-->
+<!--                /webitem/updateItem=anon-->
+<!--                /webitem/addItem=anon-->
+<!--                /webitem/deleteItem=anon-->
+<!--                /Role/listRole=anon-->
+<!--                /Role/addRole=anon-->
+<!--                /Role/updateRole=anon-->
+<!--                /Role/deleteRole=anon-->
+<!--                /Perm/listPerm=anon-->
+<!--                /Perm/addPerm=anon-->
+<!--                /Perm/updatePerm=anon-->
+<!--                /Perm/deletePerm=anon-->
+<!--                /webneed/findAllNeed=anon-->
+<!--                /webneed/addNeed=anon-->
+<!--                /webneed/updateNeed=anon-->
+<!--                /webneed/deleteNeed=anon-->
+<!--                /webneed/getNeedCount=anon-->
+<!--                /webbuy/getBuyCount=anon-->
+<!--                /webbuy/findAllBuy=anon-->
+<!--                /webbuy/updateBuy=anon-->
+<!--                /webbuy/addBuy=anon-->
+<!--                /webbuy/deleteBuy=anon-->
+<!--                /webCountrysale/findAll=anon-->
+<!--                /webCompany/findAllCompany=anon-->
+<!--                /webMonthsales/findAllMonthsales=anon-->
+<!--                /webMonthsalesup/findAll=anon-->
+<!--                /activiti/startNeedAct=anon-->
+<!--                /activiti/queryNeedActTask=anon-->
+<!--                /activiti/completeprocess=anon-->
+<!--                /activiti/deleteprocess=anon-->
+<!--                /activiti/startNeedActAgain=anon-->
+<!--                /activiti/findHistoty=anon-->
+<!--                /**=user-->
+
+
             </value>
+
+
         </property>
+        <!--权限map给到过滤器-->
+        <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
     </bean>
+
+    <!--通过动态获取授权类调用它的createFilterChainDefinitionMap方法 获取权限map-->
+    <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="createFilterChainDefinitionMap"/>
+    <!--引入动态获取授权类-->
+    <bean id="filterChainDefinitionMapBuilder" class="com.xhy.shiro.Map.FilterChainDefinitionMapBuilder"/>
 
 
     <!--2.安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="useRealm"/>
           <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="sessionManager" ref="CrmSessionManager"/>
     </bean>
 
-
-
+    <bean id="CrmSessionManager" class="com.xhy.shiro.Session.CrmSessionManager"/>
 
     <!--    3.配置自定义的Realm-->
     <bean id="useRealm" class="com.xhy.shiro.realm.UserRealm">

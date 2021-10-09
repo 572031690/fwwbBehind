@@ -70,6 +70,12 @@
                 /webneed/addNeed=anon
                 /webneed/updateNeed=anon
                 /webneed/deleteNeed=anon
+                /webneed/getNeedCount=anon
+                /webbuy/getBuyCount=anon
+                /webbuy/findAllBuy=anon
+                /webbuy/updateBuy=anon
+                /webbuy/addBuy=anon
+                /webbuy/deleteBuy=anon
                 /webCountrysale/findAll=anon
                 /webCompany/findAllCompany=anon
                 /webMonthsales/findAllMonthsales=anon

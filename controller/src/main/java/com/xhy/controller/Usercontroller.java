@@ -15,7 +15,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -50,13 +48,13 @@ public class Usercontroller {
     //    权限登录
     @RequestMapping(value = "/shirologin", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> login(@RequestBody AdminUserVO adminUserVO, HttpServletRequest request) {
+    public Map<String, Object> login(@RequestBody AdminUserVO adminUserVO) {
         Map<String, Object> map = new HashMap<String, Object>();
+        Subject subject=null;
         try {
             if(adminUserVO!=null) {
                 //创建主体
-                Subject subject = SecurityUtils.getSubject();
-                Session session = subject.getSession();
+                subject = SecurityUtils.getSubject();
                 UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(adminUserVO.getUsername(), adminUserVO.getPassword());
                 subject.login(usernamePasswordToken);
                 if(adminUserVO.isRemember()) {
@@ -85,6 +83,7 @@ public class Usercontroller {
                 user.setRoleId(Collections.singletonList(0));
             }
             map.put("code", "101");
+            map.put("sessionId",subject.getSession().getId()); //回传sessionId
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);

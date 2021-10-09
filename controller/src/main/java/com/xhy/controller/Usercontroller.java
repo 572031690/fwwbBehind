@@ -48,9 +48,9 @@ public class Usercontroller {
 
 
     //    权限登录
-    @RequestMapping(value = "/shirologin", method = RequestMethod.GET)
+    @RequestMapping(value = "/shirologin", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> login(AdminUserVO adminUserVO, HttpServletRequest request) {
+    public Map<String, Object> login(@RequestBody AdminUserVO adminUserVO, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             if(adminUserVO!=null) {

@@ -3036,9 +3036,9 @@ TENANT_ID_</ColNames>
       <Position>11</Position>
       <DataType>int(10)|0s</DataType>
     </column>
-    <column id="786" parent="263" name="receiptNumber">
+    <column id="786" parent="263" name="comment">
       <Position>12</Position>
-      <DataType>varchar(30)|0s</DataType>
+      <DataType>varchar(100)|0s</DataType>
     </column>
     <key id="787" parent="263" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

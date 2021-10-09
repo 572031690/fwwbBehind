@@ -299,8 +299,12 @@ public class ActController {
 //                    map.put("list", actNeedList);
                 }
                 Buy buy = new Buy();
+                buy.setBuytitle(need.getNeedtitle());
                 buy.setItemtype(need.getItemtype());
                 buy.setItemid(need.getItemid());
+                buy.setNum(need.getNeednum());
+                buy.setUnit(need.getUnit());
+                buy.setComment(need.getComment());
                 buy.setNeederid(String.valueOf(need.getNeederid()));
                 buyService.addBuy(buy);
             }

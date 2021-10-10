@@ -15,14 +15,13 @@ import java.util.List;
 @RequestMapping("/webCompany")
 public class CompanyController {
     @Autowired
-    private CompanyService companyService;
+    CompanyService companyService;
 
     @RequiresPermissions("echart:company")
     @RequestMapping(value = "/findAllCompany",method = RequestMethod.GET)
-    private @ResponseBody
+    public @ResponseBody
     List<Company> findAllCompany(){
-        List<Company> alllist = companyService.findAll();
-
+        List<Company> alllist = companyService.findAllCompany();
         return alllist;
     }
 }

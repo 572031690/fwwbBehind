@@ -5,5 +5,5 @@ import com.xhy.domain.Company;
 import java.util.List;
 
 public interface CompanyService {
-    List<Company> findAll();
+    List<Company> findAllCompany();
 }

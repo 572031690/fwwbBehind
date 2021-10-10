@@ -27,6 +27,7 @@ public class FilterChainDefinitionMapBuilder {
             map.put(permission.getUrl(),"perms["+permission.getPermission()+"]");
         }
         map.put("/**","user");
+        System.out.println(map);
         return map;
     }
 }

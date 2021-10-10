@@ -9,6 +9,7 @@ import com.xhy.service.PermissionService;
 import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.AdminUserVO;
+import com.xhy.vo.UpdatePasswordVO;
 import com.xhy.vo.UserRoleVO;
 import com.xhy.vo.UserVO;
 import org.apache.shiro.SecurityUtils;
@@ -352,7 +353,7 @@ public class Usercontroller {
      * */
 
 
-    @RequiresPermissions("admin:addUserRole")
+    @RequiresPermissions("admin:addUerRole")
     @PostMapping("/addUserRole")
     @ResponseBody
     public Map<String,Object> addUserRole(@RequestBody UserRoleVO userRole){
@@ -456,11 +457,10 @@ public class Usercontroller {
     }
 
 
-    @RequiresPermissions("user:updateUserPassword")
     @RequestMapping(value = "/updateUserPassword" , method = RequestMethod.POST)
-    public @ResponseBody Map<String,Object> updateUserPassword(@RequestParam(value = "userid" ) int userid, @RequestParam(value = "oldpassword")String oldpassword, @RequestParam(value = "password")String password){
+    public @ResponseBody Map<String,Object> updateUserPassword(@RequestBody UpdatePasswordVO updatePasswordVO){
         Map<String,Object> map =new HashMap<>();
-        Boolean aBoolean = userServise.updateUserPassword(userid,oldpassword,password);
+        Boolean aBoolean = userServise.updateUserPassword(updatePasswordVO.getUserid(),updatePasswordVO.getOldpassword(),updatePasswordVO.getPassword());
         if(aBoolean == true){
             map.put("code","101");
         }

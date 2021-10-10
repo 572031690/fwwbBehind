@@ -22,7 +22,7 @@ public class MonthsalesController {
     @RequiresPermissions("echart:monthsale")
     @ResponseBody
     @RequestMapping(value = "/findAllMonthsales", method = RequestMethod.GET)
-    private List<Monthsales> findAllMonthsales() {
+        public List<Monthsales> findAllMonthsales() {
 
         List<Monthsales> allist = monthsalesService.findAll();
         return allist;

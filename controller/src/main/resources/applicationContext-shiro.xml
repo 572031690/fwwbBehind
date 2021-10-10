@@ -32,6 +32,7 @@
             <value>
 <!--                /web/logon=anon-->
 <!--                /web/shirologin=anon-->
+<!--                /webneed/getNeedCount=anon-->
 <!--                /web/invertPassword=anon-->
 <!--                /web/updateUserRole=anon-->
 <!--                /web/getUserRole=anon-->
@@ -76,11 +77,7 @@
 <!--                /activiti/startNeedActAgain=anon-->
 <!--                /activiti/findHistoty=anon-->
 <!--                /**=user-->
-
-
             </value>
-
-
         </property>
         <!--权限map给到过滤器-->
         <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>

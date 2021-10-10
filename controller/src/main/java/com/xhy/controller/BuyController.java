@@ -6,6 +6,7 @@ import com.xhy.domain.Need;
 import com.xhy.domain.User;
 import com.xhy.service.BuyService;
 import com.xhy.vo.BuyVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class BuyController {
     @Autowired
     BuyService buyService;
 
+    @RequiresPermissions("buyer:listBuy")
     @RequestMapping(value = "/findAllBuy", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> findAllBuy(BuyVo buyVo) {
@@ -44,6 +46,7 @@ public class BuyController {
         return map;
     }
 
+    @RequiresPermissions("buyer:updateBuy")
     @RequestMapping(value = "/updateBuy", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> updateBuy(@RequestBody Buy buy) {
@@ -81,6 +84,7 @@ public class BuyController {
 //        return map;
 //    }
 
+    @RequiresPermissions("buyer:addBuy")
     @RequestMapping(value = "/addBuy", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> addBuy(@RequestBody Buy buy) {
@@ -100,6 +104,7 @@ public class BuyController {
         }
     }
 
+    @RequiresPermissions("buyer:deleteBuy")
     @RequestMapping(value = "/deleteBuy", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> deleteBuy(int buyid) {

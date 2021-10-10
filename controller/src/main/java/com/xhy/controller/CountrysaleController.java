@@ -2,6 +2,7 @@ package com.xhy.controller;
 
 import com.xhy.domain.Countrysale;
 import com.xhy.service.CountrysaleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ public class CountrysaleController {
     @Autowired
     private CountrysaleService countrysaleService;
 
+    @RequiresPermissions("ecahrt:countrysale")
     @RequestMapping(value = "/findAll",method = RequestMethod.GET)
     public @ResponseBody
     List<Countrysale> findAllCountrysale(){

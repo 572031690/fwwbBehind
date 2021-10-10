@@ -15,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,7 +224,7 @@ public class Usercontroller {
     }
 
 
-//    @RequiresPermissions("admin:userlist")
+    @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> ListUser(UserVO uservo) {
@@ -291,7 +292,7 @@ public class Usercontroller {
         return map;
     }
 
-//    @RequiresPermissions("admin:addUser")
+    @RequiresPermissions("admin:addUser")
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> addUser(@RequestBody User user) {
@@ -309,7 +310,7 @@ public class Usercontroller {
     }
 
 
-//    @RequiresPermissions("admin:updateUser")
+    @RequiresPermissions("admin:updateUser")
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> updateUser(@RequestBody User user) {
@@ -327,7 +328,7 @@ public class Usercontroller {
         }
     }
 
-//    @RequiresPermissions("admin:deleteUser")
+    @RequiresPermissions("admin:deleteUser")
     @RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> deleteUser(int userid) {
@@ -351,7 +352,7 @@ public class Usercontroller {
      * */
 
 
-//    @RequiresPermissions("admin:addUserRole")
+    @RequiresPermissions("admin:addUserRole")
     @PostMapping("/addUserRole")
     @ResponseBody
     public Map<String,Object> addUserRole(@RequestBody UserRoleVO userRole){
@@ -376,7 +377,7 @@ public class Usercontroller {
      * 获取当前用户的所有角色和角色列表
     * */
 
-//    @RequiresPermissions("admin:getUserRole")
+    @RequiresPermissions("admin:getUserRole")
     @GetMapping("/getUserRole")
     @ResponseBody
     public Map<String,Object> getUserRole(String username){
@@ -418,7 +419,7 @@ public class Usercontroller {
     /**
      *重置密码
      * */
-//    @RequiresPermissions("admin:invertPassword")
+    @RequiresPermissions("admin:invertPassword")
     @ResponseBody
     @GetMapping("/invertPassword")
     public Map<String,Object> updateUserRole(Integer userid){
@@ -438,7 +439,7 @@ public class Usercontroller {
      * 状态修改
      * */
 
-//    @RequiresPermissions("admin:updateStatus")
+    @RequiresPermissions("admin:updateStatus")
     @ResponseBody
     @GetMapping("/updateStatus")
     public Map<String,Object> updateStatus(Integer userid){
@@ -455,6 +456,7 @@ public class Usercontroller {
     }
 
 
+    @RequiresPermissions("user:updateUserPassword")
     @RequestMapping(value = "/updateUserPassword" , method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> updateUserPassword(@RequestParam(value = "userid" ) int userid, @RequestParam(value = "oldpassword")String oldpassword, @RequestParam(value = "password")String password){
         Map<String,Object> map =new HashMap<>();

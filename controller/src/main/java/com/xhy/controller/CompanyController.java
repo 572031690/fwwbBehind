@@ -2,6 +2,7 @@ package com.xhy.controller;
 
 import com.xhy.domain.Company;
 import com.xhy.service.CompanyService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import java.util.List;
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
+
+    @RequiresPermissions("ecahrt:company")
     @RequestMapping(value = "/findAllCompany",method = RequestMethod.GET)
     private @ResponseBody
     List<Company> findAllCompany(){

@@ -13,6 +13,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,7 @@ public class ActController {
 
 
 
+    @RequiresPermissions("needer:startAgain")
     /*修改并重启审批流程*/
     @PostMapping("/startNeedActAgain")
     public Map<String, Object> startNeedActAgain(@RequestBody Need need) {
@@ -88,6 +90,7 @@ public class ActController {
 
     }
 
+    @RequiresPermissions("buyer:startAgain")
     /*修改并重启采购流程*/
     @PostMapping("/startBuyActAgain")
     public Map<String, Object> startBuyActAgain(@RequestBody Buy buy) {
@@ -132,6 +135,7 @@ public class ActController {
 
     }
 
+    @RequiresPermissions("needer:startNeed")
      /*启动需求流程*/
     @ResponseBody
     @GetMapping("/startNeedAct")
@@ -171,6 +175,7 @@ public class ActController {
         return map;
     }
 
+    @RequiresPermissions("buyer:startBuy")
     /*启动采购流程*/
     @ResponseBody
     @GetMapping("/startBuyAct")
@@ -210,7 +215,9 @@ public class ActController {
         return map;
     }
 
+
     /*找出需求个人待办任务*/
+    @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
     @GetMapping("/queryNeedActTask")
     public List<Need> queryNeedActTask(NeedVO needVO) {
@@ -229,7 +236,10 @@ public class ActController {
         }
         return needList;
     }
+
+
     /*找出购买个人代办任务*/
+    @RequiresPermissions("buyManger:aduitBuy")
     @ResponseBody
     @GetMapping("/queryBuyActTask")
     public List<Buy> queryBuyActTask(BuyVo buyVo) {
@@ -250,6 +260,7 @@ public class ActController {
     }
 
     /*完成审批节点*/
+    @RequiresPermissions("Manger:activitiComplete")
     @RequestMapping("/completeprocess")
     @ResponseBody
     public Map<String, Object> completeprocess(Integer taskId, String text) {
@@ -436,6 +447,7 @@ public class ActController {
     }
 
     /*驳回审批节点*/
+    @RequiresPermissions("Manger:deleteprocess")
     @GetMapping("/deleteprocess")
     @ResponseBody
     public Map<String, Object> deleteprocess(Integer taskId, String text) {
@@ -496,6 +508,7 @@ public class ActController {
      * 查看需求历史审批
      **/
 
+    @RequiresPermissions("need:needHistory")
     @GetMapping("/findHistoty")
     @ResponseBody
     public Map<String, Object> findHistoty(int needid) {
@@ -509,6 +522,7 @@ public class ActController {
     /**
      *查看购买历史审批
      * */
+    @RequiresPermissions("buy:buyHistory")
     @GetMapping("/findHistotyBuy")
     @ResponseBody
     public Map<String, Object> findHistotyBuy(int buyid) {

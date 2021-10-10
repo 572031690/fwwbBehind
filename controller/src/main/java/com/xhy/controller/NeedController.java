@@ -7,6 +7,7 @@ import com.xhy.domain.User;
 import com.xhy.service.NeedService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.NeedVO;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class NeedController {
     @Autowired
     UserServise userServise;
 
-//    @RequiresPermissions("needer:listNeed")
+    @RequiresPermissions("needer:listNeed")
     @RequestMapping(value = "/findAllNeed",method = RequestMethod.GET)
     public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
     {
@@ -49,7 +50,7 @@ public class NeedController {
         return map;
     }
 
-//    @RequiresPermissions("needer:updateNeed")
+    @RequiresPermissions("needer:updateNeed")
     @RequestMapping(value = "/updateNeed",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> updateNeed(@RequestBody Need need){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -70,7 +71,7 @@ public class NeedController {
 
 
 
-//    @RequiresPermissions("needer:addNeed")
+    @RequiresPermissions("needer:addNeed")
     @RequestMapping(value = "/addNeed",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> addNeed(@RequestBody Need need){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -89,7 +90,7 @@ public class NeedController {
         }
     }
 
-//    @RequiresPermissions("needer:deleteNeed")
+    @RequiresPermissions("needer:deleteNeed")
     @RequestMapping(value = "/deleteNeed",method = RequestMethod.GET)
     public @ResponseBody Map<String,Object> deleteNeed(int needid){
         Map<String,Object> map = new HashMap<String,Object>();
@@ -102,6 +103,7 @@ public class NeedController {
                 return map;
             }
     }
+
 
 
     /*查看需求相关信息*/

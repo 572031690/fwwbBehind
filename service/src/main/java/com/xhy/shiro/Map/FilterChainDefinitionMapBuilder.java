@@ -17,6 +17,8 @@ public class FilterChainDefinitionMapBuilder {
         Map<String,String> map = new LinkedHashMap<>();
         map.put("/web/shirologin","anon");
         map.put("/web/logon","anon");
+        map.put("/webneed/getNeedCount","anon");
+        map.put("/webbuy/getBuyCount","anon");
         //查询数据库中权限对应的资源路径
         List<Permission> permissions = permissionService.findPermission();
         //遍历,添加

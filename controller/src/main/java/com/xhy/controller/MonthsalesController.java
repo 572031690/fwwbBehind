@@ -4,6 +4,7 @@ package com.xhy.controller;
 import com.xhy.domain.Monthsales;
 import com.xhy.service.MonthsalesService;
 import com.xhy.service.impl.MonthsalesServiceimpl;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class MonthsalesController {
     @Autowired
     MonthsalesService monthsalesService;
 
+    @RequiresPermissions("echart:monthsale")
     @ResponseBody
     @RequestMapping(value = "/findAllMonthsales", method = RequestMethod.GET)
     private List<Monthsales> findAllMonthsales() {

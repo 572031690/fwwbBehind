@@ -26,7 +26,7 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-//    @RequiresPermissions("item:listItem")
+    @RequiresPermissions("item:listItem")
     @RequestMapping(value = "/findAllitem", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> findAllitem(ItemVO itemVO) {
@@ -54,14 +54,14 @@ public class ItemController {
 
     }
 
-    @RequestMapping(value = "/findItemById", method = RequestMethod.GET)
-    public @ResponseBody
-    Item findItemById(int page, int limit, String itemid) {
+//    @RequestMapping(value = "/findItemById", method = RequestMethod.GET)
+//    public @ResponseBody
+//    Item findItemById(int page, int limit, String itemid) {
+//
+//        return itemService.findItemById(page, limit, itemid);
+//    }
 
-        return itemService.findItemById(page, limit, itemid);
-    }
-
-//    @RequiresPermissions("item:addItem")
+    @RequiresPermissions("item:addItem")
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> addItem(@RequestBody Item item) {
@@ -81,7 +81,7 @@ public class ItemController {
         }
     }
 
-//    @RequiresPermissions("item:udpateItem")
+    @RequiresPermissions("item:udpateItem")
     @RequestMapping(value = "/updateItem", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> updateItem(@RequestBody Item item) {
@@ -100,7 +100,7 @@ public class ItemController {
             return map;
         }
     }
-//    @RequiresPermissions("item:deleteItem")
+    @RequiresPermissions("item:deleteItem")
     @RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> deleteItem(String itemid) {

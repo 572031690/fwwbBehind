@@ -53,7 +53,7 @@ public class UserRealm extends AuthorizingRealm {
         SimpleHash newSalt  = new SimpleHash("md5",salt,null,2);
         String mdpassword = simpleHash.toString();
         User user = userServise.findUser(username);
-        if(!username.equals(user.getUsername()) || username == null){
+        if( user==null|| !username.equals(user.getUsername())){
             throw new UnknownAccountException("账号不存在或输入的账号不正确");
         }
         if(!mdpassword.equals(user.getPassword())){

@@ -15,15 +15,12 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -130,7 +127,7 @@ public class Usercontroller {
     /**
      * 用户退出登录
      * */
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     @ResponseBody
     public Map<String,Object> logout(){
         Map<String,Object> map = new HashMap<>();
@@ -144,7 +141,7 @@ public class Usercontroller {
     /**
      * 账号被禁用
      * */
-    @GetMapping("/stopAccount")
+    @PostMapping("/stopAccount")
     @ResponseBody
     public Map<String,Object>  stopAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -156,7 +153,7 @@ public class Usercontroller {
     /**
      * 账号不存在或输入的账号不正确
      * */
-    @GetMapping("/unknowAccount")
+    @PostMapping("/unknowAccount")
     @ResponseBody
     public Map<String,Object>  unknowAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -168,7 +165,7 @@ public class Usercontroller {
     /**
      * 您输入的密码不正确
      * */
-    @GetMapping("/Incorrect")
+    @PostMapping("/Incorrect")
     @ResponseBody
     public Map<String,Object>  Incorrect(){
         Map<String,Object> map = new HashMap<>();
@@ -177,28 +174,18 @@ public class Usercontroller {
         return map;
     }
 
-//    @GetMapping("/goGetCookie")
-//    public String goGetCookie(){
-//        return "redirect:/web/getCookie";
-//    }
+    /**
+     * 用户登录成功
+     * */
 
-    /*获取cookie*/
-    @GetMapping("/getCookie")
+    @PostMapping(value = "/success")
     @ResponseBody
-    public Map<String,Object>  getCookie(HttpServletRequest request){
+    public Map<String,Object> success(){
         Map<String,Object> map = new HashMap<>();
-//        Cookie[] cookies = request.getCookies();
-//        for (Cookie cookie : cookies) {
-//            if(cookie != null){
-//                map.put("cookie",cookie);
-//            }
-//        }
-        Object cookie = request.getAttribute("cookie");
-        map.put("cookie",cookie);
+        map.put("code","101");
+        map.put("error","登陆成功");
         return map;
     }
-
-
 
     /**
     * 用户注册
@@ -468,8 +455,8 @@ public class Usercontroller {
     }
 
 
-    @RequestMapping(value = "/updateUserPassword" , method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> updateUserPassword(int userid, String oldpassword, String password){
+    @RequestMapping(value = "/updateUserPassword" , method = RequestMethod.POST)
+    public @ResponseBody Map<String,Object> updateUserPassword(@RequestParam(value = "userid" ) int userid, @RequestParam(value = "oldpassword")String oldpassword, @RequestParam(value = "password")String password){
         Map<String,Object> map =new HashMap<>();
         Boolean aBoolean = userServise.updateUserPassword(userid,oldpassword,password);
         if(aBoolean == true){

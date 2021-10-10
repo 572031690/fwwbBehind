@@ -24,9 +24,9 @@
             <props>
                 <prop key="org.apache.shiro.authz.UnauthorizedException">/web/unauthorized</prop>
                 <prop key="org.apache.shiro.authz.UnauthenticatedException">/web/unauthorized</prop>
-                <prop key="org.apache.shiro.authc.AuthenticationException">/web/stopAccount</prop>
                 <prop key="org.apache.shiro.authc.UnknownAccountException">/web/unknowAccount</prop>
                 <prop key="org.apache.shiro.authc.IncorrectCredentialsException">/web/Incorrect</prop>
+                <prop key="org.apache.shiro.authc.AuthenticationException">/web/stopAccount</prop>
             </props>
         </property>
     </bean>

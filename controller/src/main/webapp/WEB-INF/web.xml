@@ -33,32 +33,6 @@
         </init-param>
     </filter>
 
-    <!--跨域问题-->
-    <filter>
-        <filter-name>CORS</filter-name>
-        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
-        <init-param>
-            <param-name>cors.allowOrigin</param-name>   <!--配置授信的白名单的域名！ -->
-            <param-value>*</param-value>
-        </init-param>
-        <init-param>
-            <param-name>cors.supportedMethods</param-name>
-            <param-value> GET, POST, HEAD, PUT, DELETE </param-value>
-        </init-param>
-        <init-param>
-            <param-name>cors.supportedHeaders</param-name>
-            <param-value> Accept, Origin, X-Requested-With, Content-Type, Last-Modified </param-value>
-        </init-param>
-        <init-param>
-            <param-name>cors.exposedHeaders</param-name>
-            <param-value>Set-Cookie</param-value>
-        </init-param>
-        <init-param>
-            <param-name>cors.supportsCredentials</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
-
     <!--shiro前端过滤器-->
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>
@@ -67,12 +41,6 @@
 
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!--跨域问题-->
-    <filter-mapping>
-        <filter-name>CORS</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
@@ -93,21 +61,9 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet>
-    <servlet-name>cookie</servlet-name>
-    <servlet-class>com.xhy.Utils.GetCookie</servlet-class>
-    </servlet>
-
-
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet-mapping>
-        <servlet-name>cookie</servlet-name>
-        <url-pattern>/web/getCookie</url-pattern>
     </servlet-mapping>
 
 

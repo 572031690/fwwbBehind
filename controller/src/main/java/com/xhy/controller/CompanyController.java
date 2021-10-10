@@ -17,7 +17,7 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @RequiresPermissions("ecahrt:company")
+    @RequiresPermissions("echart:company")
     @RequestMapping(value = "/findAllCompany",method = RequestMethod.GET)
     private @ResponseBody
     List<Company> findAllCompany(){

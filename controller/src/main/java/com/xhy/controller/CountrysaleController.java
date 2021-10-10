@@ -17,7 +17,7 @@ public class CountrysaleController {
     @Autowired
     private CountrysaleService countrysaleService;
 
-    @RequiresPermissions("ecahrt:countrysale")
+    @RequiresPermissions("echart:countrysale")
     @RequestMapping(value = "/findAll",method = RequestMethod.GET)
     public @ResponseBody
     List<Countrysale> findAllCountrysale(){

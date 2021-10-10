@@ -44,13 +44,15 @@ public class ActController {
 
 
 
-
-    @RequiresPermissions("needer:startAgain")
     /*修改并重启审批流程*/
-    @PostMapping("/startNeedActAgain")
-    public Map<String, Object> startNeedActAgain(@RequestBody Need need) {
+    @RequiresPermissions("needer:startAgain")
+    @ResponseBody
+    @GetMapping("/startNeedActAgain")
+    public Map<String, Object> startNeedActAgain(Integer needid) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> actmap = new HashMap<>();
+        Need need = new Need();
+        need.setNeederid(needid);
         need.setUptype(0);
         needService.updateStatus(need);
 
@@ -77,7 +79,7 @@ public class ActController {
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
         actmap.put("manager", StringUtils.join(manager.toArray(), ","));
-        Need actneed = needService.findByNeedid(need.getNeedid());
+        Need actneed = needService.findByNeedid(needid);
         runtimeService.startProcessInstanceByKey("needAudit", String.valueOf(need.getNeedid()), actmap);
         Task task = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actneed.setTaskId(task.getId());
@@ -89,13 +91,15 @@ public class ActController {
         return map;
 
     }
-
-    @RequiresPermissions("buyer:startAgain")
     /*修改并重启采购流程*/
+    @RequiresPermissions("buyer:startAgain")
+    @ResponseBody
     @PostMapping("/startBuyActAgain")
-    public Map<String, Object> startBuyActAgain(@RequestBody Buy buy) {
+    public Map<String, Object> startBuyActAgain(Integer buyid) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> actmap = new HashMap<>();
+        Buy buy = new Buy();
+        buy.setBuyid(buyid);
         buy.setUptype(0);
         buyService.updateStatus(buy);
 
@@ -122,7 +126,7 @@ public class ActController {
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
         actmap.put("manager", StringUtils.join(manager.toArray(), ","));
-        Buy actbuy = buyService.findBuyById(buy.getBuyid());
+        Buy actbuy = buyService.findBuyById(buyid);
         runtimeService.startProcessInstanceByKey("buyAudit", String.valueOf(buy.getBuyid()), actmap);
         Task task = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actbuy.setTaskId(task.getId());
@@ -134,9 +138,8 @@ public class ActController {
         return map;
 
     }
-
+    /*启动需求流程*/
     @RequiresPermissions("needer:startNeed")
-     /*启动需求流程*/
     @ResponseBody
     @GetMapping("/startNeedAct")
     public Map<String, Object> startNeedAct(Integer needid) {
@@ -175,8 +178,8 @@ public class ActController {
         return map;
     }
 
-    @RequiresPermissions("buyer:startBuy")
     /*启动采购流程*/
+    @RequiresPermissions("buyer:startBuy")
     @ResponseBody
     @GetMapping("/startBuyAct")
     public Map<String, Object> startBuyAct(Integer buyid) {
@@ -220,7 +223,7 @@ public class ActController {
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
     @GetMapping("/queryNeedActTask")
-    public List<Need> queryNeedActTask(NeedVO needVO) {
+    public List<Need> queryNeedActTask() {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);

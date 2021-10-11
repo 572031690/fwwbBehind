@@ -86,8 +86,8 @@ public class BuyController {
 
     @RequiresPermissions("buyer:addBuy")
     @RequestMapping(value = "/addBuy", method = RequestMethod.POST)
-    public @ResponseBody
-    Map<String, Object> addBuy(@RequestBody Buy buy) {
+    @ResponseBody
+    public Map<String, Object> addBuy(@RequestBody Buy buy) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (buy != null) {
             Integer addBuy = buyService.addBuy(buy);

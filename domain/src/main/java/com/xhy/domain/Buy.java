@@ -10,7 +10,7 @@ import java.util.Date;
 public class Buy implements Serializable {
     private int buyid;
     private String buytitle;
-    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date btime;
     private String itemtype;
     private String itemid;
@@ -22,6 +22,5 @@ public class Buy implements Serializable {
     private int uptype;
     private String comment;
     private String taskId;
-
 
 }

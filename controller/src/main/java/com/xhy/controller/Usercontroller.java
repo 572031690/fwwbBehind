@@ -84,8 +84,8 @@ public class Usercontroller {
             map.put("code", "101");
             map.put("sessionId",subject.getSession().getId()); //回传sessionId
             map.put("user", user);
-            List<Permission> permission = permissionService.findPermission();
-            map.put("permission",permission);
+//            List<Permission> permission = permissionService.findPermission();
+//            map.put("permission",permission);
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");

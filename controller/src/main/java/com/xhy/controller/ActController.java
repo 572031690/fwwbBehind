@@ -232,8 +232,8 @@ public class ActController {
     /*找出需求个人待办任务*/
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
-    @PostMapping("/queryNeedActTask")
-    public Map<String, Object> queryNeedActTask(@RequestBody NeedVO needVO) {
+    @GetMapping("/queryNeedActTask")
+    public Map<String, Object> queryNeedActTask(NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Map<String, Object> map = new HashMap<>();
@@ -279,8 +279,8 @@ public class ActController {
     /*找出购买个人代办任务*/
     @RequiresPermissions("buyManger:aduitBuy")
     @ResponseBody
-    @PostMapping("/queryBuyActTask")
-    public Map<String,Object> queryBuyActTask(@RequestBody BuyVo buyVo) {
+    @GetMapping("/queryBuyActTask")
+    public Map<String,Object> queryBuyActTask(BuyVo buyVo) {
         Map<String,Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());

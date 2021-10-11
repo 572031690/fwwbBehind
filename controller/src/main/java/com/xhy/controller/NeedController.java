@@ -39,7 +39,7 @@ public class NeedController {
         needVO1.setSelectName(needVO.getSelectName());
         List<Need> needList1 = needService.findAllNeed(needVO1);
         for(Need j : needList1){
-            count+=1;
+            count++;
         }
         map.put("count",count);
         List<Need> needList2 = needService.findAllNeed(needVO);

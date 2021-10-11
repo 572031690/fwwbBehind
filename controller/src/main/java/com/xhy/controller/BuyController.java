@@ -35,7 +35,7 @@ public class BuyController {
         buyVo1.setSelectName(buyVo.getSelectName());
         List<Buy> buyList1 = buyService.findAllBuy(buyVo1);
         for(Buy j : buyList1){
-            count+=1;
+            count++;
         }
         map.put("count", count);
         List<Buy> buyList2 = buyService.findAllBuy(buyVo);

@@ -169,11 +169,15 @@ public class ActController {
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
         actmap.put("manager", StringUtils.join(manager.toArray(), ","));
-        Need actneed = needService.findByNeedid(needid);
+        List<Need> needList = new ArrayList<>();
         runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
-        Task task = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
-        actneed.setTaskId(task.getId());
-        map.put("list", actneed);
+        List<Task> taskList = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).list();
+        for(Task task:taskList){
+            Need actneed = needService.findByNeedid(needid);
+            actneed.setTaskId(task.getId());
+            needList.add(actneed);
+        }
+        map.put("list", needList);
         map.put("code", "101");
         return map;
     }
@@ -209,11 +213,15 @@ public class ActController {
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
         actmap.put("manager", StringUtils.join(manager.toArray(), ","));
-        Buy actbuy = buyService.findBuyById(buyid);
+        List<Buy> buyList = new ArrayList<>();
         runtimeService.startProcessInstanceByKey("buyAudit", buyid.toString(), actmap);
-        Task task = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
-        actbuy.setTaskId(task.getId());
-        map.put("list", actbuy);
+        List<Task> taskList = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).list();
+        for(Task task:taskList){
+            Buy actbuy = buyService.findBuyById(buyid);
+            actbuy.setTaskId(task.getId());
+            buyList.add(actbuy);
+        }
+        map.put("list",buyList );
         map.put("code", "101");
         return map;
     }
@@ -222,13 +230,16 @@ public class ActController {
     /*找出需求个人待办任务*/
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
-    @GetMapping("/queryNeedActTask")
-    public List<Need> queryNeedActTask() {
+    @PostMapping("/queryNeedActTask")
+    public Map<String,Object> queryNeedActTask(@RequestBody NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
+        Map<String,Object> map = new HashMap<>();
         User user = userServise.findUser(username);
+        int count = 0;
         List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(String.valueOf(user.getUserid())).processDefinitionKey("needAudit").list();
         List<Need> needList = new ArrayList<>();
+        List<Need> finalNeed = new ArrayList<>();
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -237,7 +248,13 @@ public class ActController {
             need.setTaskId(task.getId());
             needList.add(need);
         }
-        return needList;
+        for(Need i: needList){count++;}
+        for(Need need:needList){
+
+        }
+        map.put("count",count);
+        map.put("list",needList);
+        return map;
     }
 
 
@@ -425,8 +442,8 @@ public class ActController {
                 map1.put("needStatus", "审批完成");
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Buy act_buy = new Act_Buy();
-                act_buy.setUpname(userServise.findbyid(Integer.parseInt(buy.getBuyerid())).getRealname());
-                act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
+                act_buy.setAuther(userServise.findbyid(Integer.parseInt(buy.getBuyerid())).getRealname());
+                act_buy.setUpname(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                 act_buy.setStarttime(instance.getStartTime());
                 act_buy.setEndTime(instance.getEndTime());

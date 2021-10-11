@@ -240,6 +240,7 @@ public class ActController {
         User user = userServise.findUser(username);
         int count = 0;
         int flag = 0;
+        int index = 0;
         List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(String.valueOf(user.getUserid())).processDefinitionKey("needAudit").list();
         List<Need> needList = new ArrayList<>();
         List<Need> finalNeed = new ArrayList<>();
@@ -252,10 +253,12 @@ public class ActController {
             needList.add(need);
             count++;
         }
+        System.out.println(needList);
         if (needVO.getSearchName().equals(null) | needVO.getSearchName().isEmpty()) {
             for (Need need : needList) {
-                if (flag <= needVO.getLimit()) {
-                    if (need.equals(needList.get(needVO.getPage()))) {
+                index++;
+                if (index >= needVO.getPage()) {
+                    if (flag < needVO.getLimit()) {
                         finalNeed.add(need);
                         flag++;
                     }

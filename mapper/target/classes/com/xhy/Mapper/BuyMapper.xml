@@ -30,7 +30,7 @@
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">
         update tb_buy set
         buytitle=#{buytitle},btime=#{btime},itemtype=#{itemtype},itemid=#{itemid},num=#{num},unit=#{unit}
-        ,buyerid=#{buyerid},neederid=#{neederid}
+        ,buyerid=#{buyerid},neederid=#{neederid},auditid=#{auditid}
         <if test="uptype!=null and uptype!=''">
             , uptype=#{uptype}
         </if>

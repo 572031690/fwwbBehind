@@ -14,7 +14,7 @@
 
     <!--存储需求相关信息-->
     <insert id="addActNeed" parameterType="com.xhy.domain.Act_Need" >
-        insert into need_act values (#{id},#{businessId},#{starttime},#{endTime},#{upname},#{auther},#{text})
+        insert into need_act values (#{id},#{businessId},#{starttime},#{endTime},#{auther},#{upname},#{text})
     </insert>
 
     <!--查看需求审批状态-->
@@ -24,7 +24,7 @@
 
     <!--存储采购相关信息-->
     <insert id="addActBuy" parameterType="com.xhy.domain.Act_Buy" >
-        insert into buy_act values (#{id},#{businessId},#{starttime},#{endTime},#{upname},#{auther},#{text})
+        insert into buy_act values (#{id},#{businessId},#{starttime},#{endTime},#{auther},#{upname},#{text})
     </insert>
 
     <!--查看采购审批状态-->

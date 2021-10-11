@@ -95,7 +95,7 @@ public class ActController {
     /*修改并重启采购流程*/
     @RequiresPermissions("buyer:startAgain")
     @ResponseBody
-    @PostMapping("/startBuyActAgain")
+    @GetMapping("/startBuyActAgain")
     public Map<String, Object> startBuyActAgain(Integer buyid) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> actmap = new HashMap<>();

@@ -12,7 +12,6 @@ public class Buy implements Serializable {
     private String buytitle;
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date btime;
-    private int bdaytype;
     private String itemtype;
     private String itemid;
     private String unit;

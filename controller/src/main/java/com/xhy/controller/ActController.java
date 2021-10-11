@@ -368,14 +368,18 @@ public class ActController {
             } else if (roles.contains("需求经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
-                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
+                List<HistoricActivityInstance> list = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).list();
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Need act_need = new Act_Need();
                 act_need.setUpname(userServise.findbyid(need.getNeederid()).getRealname());
                 act_need.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-                act_need.setStarttime(instance.getStartTime());
-                act_need.setEndTime(instance.getEndTime());
+                for(HistoricActivityInstance instance : list){
+                    if(instance.getTaskId().equals(taskId)){
+                        act_need.setStarttime(instance.getStartTime());
+                        act_need.setEndTime(instance.getEndTime());
+                    }
+                }
                 act_need.setText(text);
                 act_need.setId(2);
                 Integer actNeed = actService.addActNeed(act_need);
@@ -394,7 +398,7 @@ public class ActController {
             } else if (roles.contains("总经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
-                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
+                List<HistoricActivityInstance> list = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).list();
                 HashMap<Object, Object> map1 = new HashMap<>();
                 map1.put("id", processInstance.getBusinessKey());
                 map1.put("needStatus", "审批完成");
@@ -403,8 +407,11 @@ public class ActController {
                 act_need.setUpname(userServise.findbyid(need.getNeederid()).getRealname());
                 act_need.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-                act_need.setStarttime(instance.getStartTime());
-                act_need.setEndTime(instance.getEndTime());
+                for(HistoricActivityInstance instance:list){
+                    if(instance.getTaskId().equals(taskId))
+                    act_need.setStarttime(instance.getStartTime());
+                    act_need.setEndTime(instance.getEndTime());
+                }
                 act_need.setText(text);
                 act_need.setId(3);
                 need.setUptype(3);
@@ -455,14 +462,18 @@ public class ActController {
             } else if (roles.contains("购买经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
-                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
+                List<HistoricActivityInstance> list = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).list();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Buy act_buy = new Act_Buy();
                 act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
                 act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-                act_buy.setStarttime(instance.getStartTime());
-                act_buy.setEndTime(instance.getEndTime());
+                for(HistoricActivityInstance instance : list){
+                    if(instance.getTaskId().equals(taskId)){
+                        act_buy.setStarttime(instance.getStartTime());
+                        act_buy.setEndTime(instance.getEndTime());
+                    }
+                }
                 act_buy.setText(text);
                 act_buy.setId(2);
                 Integer actBuy = actService.addActBuy(act_buy);
@@ -481,7 +492,7 @@ public class ActController {
             } else if (roles.contains("总经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
-                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
+                List<HistoricActivityInstance> list = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).list();
                 HashMap<Object, Object> map1 = new HashMap<>();
                 map1.put("id", processInstance.getBusinessKey());
                 map1.put("needStatus", "审批完成");
@@ -490,8 +501,12 @@ public class ActController {
                 act_buy.setAuther(userServise.findbyid(buy.getBuyerid()).getRealname());
                 act_buy.setUpname(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-                act_buy.setStarttime(instance.getStartTime());
-                act_buy.setEndTime(instance.getEndTime());
+                for(HistoricActivityInstance instance:list){
+                    if(instance.getTaskId().equals(taskId)){
+                        act_buy.setStarttime(instance.getStartTime());
+                        act_buy.setEndTime(instance.getEndTime());
+                    }
+                }
                 act_buy.setText(text);
                 act_buy.setId(3);
                 buy.setUptype(3);

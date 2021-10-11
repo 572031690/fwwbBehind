@@ -18,6 +18,7 @@ public class Buy implements Serializable {
     private String unit;
     private String buyerid;
     private String neederid;
+    private int auditid;
     private int num;
     private int uptype;
     private String comment;

@@ -1,5 +1,6 @@
 package com.xhy.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.xhy.domain.*;
 import com.xhy.service.*;
 import com.xhy.vo.BuyVo;
@@ -41,7 +42,6 @@ public class ActController {
     TaskService taskService;
     @Autowired
     HistoryService historyService;
-
 
 
     /*修改并重启审批流程*/
@@ -91,6 +91,7 @@ public class ActController {
         return map;
 
     }
+
     /*修改并重启采购流程*/
     @RequiresPermissions("buyer:startAgain")
     @ResponseBody
@@ -138,6 +139,7 @@ public class ActController {
         return map;
 
     }
+
     /*启动需求流程*/
     @RequiresPermissions("needer:startNeed")
     @ResponseBody
@@ -172,7 +174,7 @@ public class ActController {
         List<Need> needList = new ArrayList<>();
         runtimeService.startProcessInstanceByKey("needAudit", needid.toString(), actmap);
         List<Task> taskList = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).list();
-        for(Task task:taskList){
+        for (Task task : taskList) {
             Need actneed = needService.findByNeedid(needid);
             actneed.setTaskId(task.getId());
             needList.add(actneed);
@@ -216,12 +218,12 @@ public class ActController {
         List<Buy> buyList = new ArrayList<>();
         runtimeService.startProcessInstanceByKey("buyAudit", buyid.toString(), actmap);
         List<Task> taskList = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).list();
-        for(Task task:taskList){
+        for (Task task : taskList) {
             Buy actbuy = buyService.findBuyById(buyid);
             actbuy.setTaskId(task.getId());
             buyList.add(actbuy);
         }
-        map.put("list",buyList );
+        map.put("list", buyList);
         map.put("code", "101");
         return map;
     }
@@ -231,12 +233,13 @@ public class ActController {
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
     @PostMapping("/queryNeedActTask")
-    public Map<String,Object> queryNeedActTask(@RequestBody NeedVO needVO) {
+    public Map<String, Object> queryNeedActTask(@RequestBody NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         User user = userServise.findUser(username);
         int count = 0;
+        int flag = 0;
         List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(String.valueOf(user.getUserid())).processDefinitionKey("needAudit").list();
         List<Need> needList = new ArrayList<>();
         List<Need> finalNeed = new ArrayList<>();
@@ -247,13 +250,28 @@ public class ActController {
             Need need = needService.findByNeedid(Integer.parseInt(businessKey));
             need.setTaskId(task.getId());
             needList.add(need);
+            count++;
         }
-        for(Need i: needList){count++;}
-        for(Need need:needList){
-
+        if (needVO.getSearchName().equals(null) | needVO.getSearchName().isEmpty()) {
+            for (Need need : needList) {
+                if (flag <= needVO.getLimit()) {
+                    if (need.equals(needList.get(needVO.getPage()))) {
+                        finalNeed.add(need);
+                        flag++;
+                    }
+                } else{
+                    break;
+                }
+            }
+        }else{
+            for (Need need : needList) {
+                if (need.getNeedtitle().equals(needVO.getSearchName())) {
+                    finalNeed.add(need);
+                }
+            }
         }
-        map.put("count",count);
-        map.put("list",needList);
+        map.put("count", count);
+        map.put("list", finalNeed);
         return map;
     }
 
@@ -261,13 +279,17 @@ public class ActController {
     /*找出购买个人代办任务*/
     @RequiresPermissions("buyManger:aduitBuy")
     @ResponseBody
-    @GetMapping("/queryBuyActTask")
-    public List<Buy> queryBuyActTask(BuyVo buyVo) {
+    @PostMapping("/queryBuyActTask")
+    public Map<String,Object> queryBuyActTask(@RequestBody BuyVo buyVo) {
+        Map<String,Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);
+        int count = 0;
+        int flag = 0;
         List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(String.valueOf(user.getUserid())).processDefinitionKey("buyAudit").list();
         List<Buy> buyList = new ArrayList<>();
+        List<Buy> finalBuy = new ArrayList<>();
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -275,8 +297,29 @@ public class ActController {
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
             buyList.add(buy);
+            count++;
         }
-        return buyList;
+        if (buyVo.getSearchName().equals(null) | buyVo.getSearchName().isEmpty()) {
+            for (Buy buy : buyList) {
+                if (flag <= buyVo.getLimit()) {
+                    if (buy.equals(buyList.get(buyVo.getPage()))) {
+                        finalBuy.add(buy);
+                        flag++;
+                    }
+                } else{
+                    break;
+                }
+            }
+        }else{
+            for (Buy buy : buyList) {
+                if (buy.getBuytitle().equals(buyVo.getSearchName())) {
+                    finalBuy.add(buy);
+                }
+            }
+        }
+        map.put("count", count);
+        map.put("list", finalBuy);
+        return map;
     }
 
     /*完成审批节点*/
@@ -383,8 +426,7 @@ public class ActController {
                 buy.setNeederid(String.valueOf(need.getNeederid()));
                 buyService.addBuy(buy);
             }
-        }
-        else if(processDefinitionKey.equals("buyAudit")){
+        } else if (processDefinitionKey.equals("buyAudit")) {
             if (roles.contains("购买专员")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
@@ -512,7 +554,7 @@ public class ActController {
             needService.updateStatus(need);
             map.put("code", "101");
             map.put("status", "审批驳回");
-        }else if(task.getProcessDefinitionId().contains("buyAudit")){
+        } else if (task.getProcessDefinitionId().contains("buyAudit")) {
             actService.addActBuy(act_buy);
             buyService.updateStatus(buy);
             map.put("code", "101");
@@ -532,23 +574,23 @@ public class ActController {
     @GetMapping("/findHistoty")
     @ResponseBody
     public Map<String, Object> findHistoty(int needid) {
-        Map<String,Object> map =  new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         List<Act_Need> actNeedList = actService.findActNeed(needid);
-        map.put("list",actNeedList);
+        map.put("list", actNeedList);
         return map;
     }
 
 
     /**
-     *查看购买历史审批
-     * */
+     * 查看购买历史审批
+     */
     @RequiresPermissions("buy:buyHistory")
     @GetMapping("/findHistotyBuy")
     @ResponseBody
     public Map<String, Object> findHistotyBuy(int buyid) {
-        Map<String,Object> map =  new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         List<Act_Buy> actBuy = actService.findActBuy(buyid);
-        map.put("list",actBuy);
+        map.put("list", actBuy);
         return map;
     }
 

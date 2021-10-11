@@ -23,8 +23,8 @@
     </select>
 
     <insert id="addBuy" parameterType="com.xhy.domain.Buy">
-        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid, uptype,comment)
-        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid}, #{neederid}, 0,#{comment});
+        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid,auditid, uptype,comment)
+        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid}, #{neederid},#{auditid}, 0,#{comment});
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">

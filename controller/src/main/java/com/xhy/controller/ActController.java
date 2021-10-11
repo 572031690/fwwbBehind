@@ -423,7 +423,7 @@ public class ActController {
                 buy.setNum(need.getNeednum());
                 buy.setUnit(need.getUnit());
                 buy.setComment(need.getComment());
-                buy.setNeederid(String.valueOf(need.getNeederid()));
+                buy.setNeederid(need.getNeederid());
                 buyService.addBuy(buy);
             }
         } else if (processDefinitionKey.equals("buyAudit")) {
@@ -455,7 +455,7 @@ public class ActController {
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).singleResult();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Buy act_buy = new Act_Buy();
-                act_buy.setUpname(userServise.findbyid(Integer.parseInt(buy.getBuyerid())).getRealname());
+                act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
                 act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                 act_buy.setStarttime(instance.getStartTime());
@@ -484,7 +484,7 @@ public class ActController {
                 map1.put("needStatus", "审批完成");
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 Act_Buy act_buy = new Act_Buy();
-                act_buy.setAuther(userServise.findbyid(Integer.parseInt(buy.getBuyerid())).getRealname());
+                act_buy.setAuther(userServise.findbyid(buy.getBuyerid()).getRealname());
                 act_buy.setUpname(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
                 act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
                 act_buy.setStarttime(instance.getStartTime());
@@ -541,7 +541,7 @@ public class ActController {
 
         Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
         Act_Buy act_buy = new Act_Buy();
-        act_buy.setUpname(userServise.findbyid(Integer.parseInt(buy.getBuyerid())).getRealname());
+        act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
         act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
         act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
         act_buy.setStarttime(instance.getStartTime());

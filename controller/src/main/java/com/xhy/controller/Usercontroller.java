@@ -155,7 +155,7 @@ public class Usercontroller {
     /**
      * 账号不存在或输入的账号不正确
      * */
-    @PostMapping("/unknowAccount")
+    @GetMapping("/unknowAccount")
     @ResponseBody
     public Map<String,Object>  unknowAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -167,7 +167,7 @@ public class Usercontroller {
     /**
      * 您输入的密码不正确
      * */
-    @PostMapping("/Incorrect")
+    @GetMapping("/Incorrect")
     @ResponseBody
     public Map<String,Object>  Incorrect(){
         Map<String,Object> map = new HashMap<>();

@@ -13,6 +13,7 @@
                 and uptype = #{selectName}
             </if>
         </where>
+        order by needid DESC
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Need">

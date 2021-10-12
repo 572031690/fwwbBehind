@@ -12,8 +12,8 @@
             <if test="searchName!=null and searchName!=''">
                 and buytitle like '%${searchName}%'
             </if>
-
         </where>
+        order by buyid desc
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Buy">

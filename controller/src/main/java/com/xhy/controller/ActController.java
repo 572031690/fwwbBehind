@@ -51,11 +51,9 @@ public class ActController {
     public Map<String, Object> startNeedActAgain(Integer needid) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> actmap = new HashMap<>();
-        Need need = new Need();
-        need.setNeederid(needid);
+        Need need = needService.findByNeedid(needid);
         need.setUptype(0);
-        needService.updateStatus(need);
-
+        Integer upStatus = needService.updateStatus(need);
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         List<Role> roles = roleService.findRole();
@@ -74,7 +72,6 @@ public class ActController {
                 }
             }
         }
-
         User user = userServise.findUser(username);
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
@@ -83,13 +80,13 @@ public class ActController {
         runtimeService.startProcessInstanceByKey("needAudit", String.valueOf(need.getNeedid()), actmap);
         Task task = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actneed.setTaskId(task.getId());
-        if (actneed.getUptype() == 0) {
+        if (upStatus != 0) {
             System.out.println("已修改审批状态");
+            map.put("status","已修改审批状态");
         }
         map.put("code", "101");
         map.put("list", actneed);
         return map;
-
     }
 
     /*修改并重启采购流程*/
@@ -99,10 +96,10 @@ public class ActController {
     public Map<String, Object> startBuyActAgain(Integer buyid) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> actmap = new HashMap<>();
-        Buy buy = new Buy();
+        Buy buy = buyService.findBuyById(buyid);
         buy.setBuyid(buyid);
         buy.setUptype(0);
-        buyService.updateStatus(buy);
+        Integer status = buyService.updateStatus(buy);
 
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
@@ -131,13 +128,14 @@ public class ActController {
         runtimeService.startProcessInstanceByKey("buyAudit", String.valueOf(buy.getBuyid()), actmap);
         Task task = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actbuy.setTaskId(task.getId());
-        if (actbuy.getUptype() == 0) {
+        if (status != 0) {
             System.out.println("已修改审批状态");
+
+            map.put("status", "已修改审批状态");
         }
         map.put("code", "101");
-        map.put("list", actbuy);
+        map.put("list",actbuy);
         return map;
-
     }
 
     /*启动需求流程*/
@@ -453,7 +451,9 @@ public class ActController {
                 actBuy = actService.addActBuy(act_buy);
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 buy.setUptype(1);
-                upbuy = buyService.updateStatus(buy);
+                buy.setBuyerid(userServise.findUser(username).getUserid());
+//                upbuy = buyService.updateStatus(buy);
+                upbuy = buyService.updateBuy(buy);
                 if (upbuy != 0) {
                     map.put("success", "状态修改");
                 }
@@ -527,67 +527,120 @@ public class ActController {
         String username = String.valueOf(subject.getPrincipals());
         Set<String> roles = userServise.findRoleByUserName(username);
         if (roles.contains("需求经理") || roles.contains("购买经理") || roles.contains("总经理")) {
-            taskService.claim(String.valueOf(taskId), userServise.findUser(username).getRealname());
+            taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
         Task task = taskService.createTaskQuery().taskId(String.valueOf(taskId)).singleResult();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
+
         if (processDefinitionKey.contains("needAudit")) {
-            HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).activityId("_4");
-            HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(userServise.findUser(username).getRealname()).singleResult();
-            Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
-            upname = userServise.findbyid(need.getNeederid()).getRealname();
-            auther = userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname();
-            Act_Need act_need = new Act_Need();
-            act_need.setUpname(upname);
-            act_need.setAuther(auther);
-            act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-            act_need.setStarttime(instance.getStartTime());
-            act_need.setEndTime(instance.getEndTime());
-            act_need.setText(text);
-            act_need.setId(4);
-            need.setUptype(4);
-            Integer actNeed = actService.addActNeed(act_need);
-            Integer upneed = needService.updateStatus(need);
-            map.put("code", "101");
-            map.put("status", "审批驳回");
-            if (upneed != 0) {
-                map.put("success", "状态修改");
-            }
-            if (actNeed != 0) {
+            if(roles.contains("需求经理")){
+                HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
+                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
+                Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
+                upname = userServise.findbyid(need.getNeederid()).getRealname();
+                auther = userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname();
+                Act_Need act_need = new Act_Need();
+                act_need.setUpname(upname);
+                act_need.setAuther(auther);
+                act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
+                act_need.setStarttime(instance.getStartTime());
+                act_need.setEndTime(instance.getEndTime());
+                act_need.setText(text);
+                act_need.setId(4);
+                need.setUptype(4);
+                Integer actNeed = actService.addActNeed(act_need);
+                Integer upneed = needService.updateStatus(need);
                 map.put("code", "101");
                 map.put("status", "审批驳回");
-            }
-            String processInstanceId = task.getProcessInstanceId();
-            runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
-        } else if (processDefinitionKey.contains("buyAudit")) {
-            HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).activityId("_4");
-            List<HistoricActivityInstance> list = historicActivityInstanceQuery.taskAssignee(userServise.findUser(username).getRealname()).list();
-            Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
-            Act_Buy act_buy = new Act_Buy();
-            act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
-            act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
-            act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
-            for (HistoricActivityInstance instance : list) {
-                if (instance.getTaskId().equals(taskId)) {
-                    act_buy.setStarttime(instance.getStartTime());
-                    act_buy.setEndTime(instance.getEndTime());
+                if (upneed != 0) {
+                    map.put("success", "状态修改");
                 }
-            }
-            act_buy.setText(text);
-            act_buy.setId(4);
-            buy.setUptype(4);
-            Integer actBuy = actService.addActBuy(act_buy);
-            Integer upbuy = buyService.updateStatus(buy);
-            if (upbuy != 0) {
-                map.put("success", "状态修改");
-            }
-            if (actBuy != 0) {
+                if (actNeed != 0) {
+                    map.put("code", "101");
+                    map.put("status", "审批驳回");
+                }
+                String processInstanceId = task.getProcessInstanceId();
+                runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
+            }else if(roles.contains("总经理")){
+                HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
+                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_4").singleResult();
+                Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
+                upname = userServise.findbyid(need.getNeederid()).getRealname();
+                auther = userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname();
+                Act_Need act_need = new Act_Need();
+                act_need.setUpname(upname);
+                act_need.setAuther(auther);
+                act_need.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
+                act_need.setStarttime(instance.getStartTime());
+                act_need.setEndTime(instance.getEndTime());
+                act_need.setText(text);
+                act_need.setId(4);
+                need.setUptype(4);
+                Integer actNeed = actService.addActNeed(act_need);
+                Integer upneed = needService.updateStatus(need);
                 map.put("code", "101");
                 map.put("status", "审批驳回");
+                if (upneed != 0) {
+                    map.put("success", "状态修改");
+                }
+                if (actNeed != 0) {
+                    map.put("code", "101");
+                    map.put("status", "审批驳回");
+                }
+                String processInstanceId = task.getProcessInstanceId();
+                runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
             }
-            String processInstanceId = task.getProcessInstanceId();
-            runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
+        } else if (processDefinitionKey.contains("buyAudit")) {
+            if(roles.contains("购买经理")){
+                HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
+                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
+                Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
+                Act_Buy act_buy = new Act_Buy();
+                act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
+                act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
+                act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
+                act_buy.setStarttime(instance.getStartTime());
+                act_buy.setEndTime(instance.getEndTime());
+                act_buy.setText(text);
+                act_buy.setId(4);
+                buy.setUptype(4);
+                Integer actBuy = actService.addActBuy(act_buy);
+                Integer upbuy = buyService.updateStatus(buy);
+                if (upbuy != 0) {
+                    map.put("success", "状态修改");
+                }
+                if (actBuy != 0) {
+                    map.put("code", "101");
+                    map.put("status", "审批驳回");
+                }
+                String processInstanceId = task.getProcessInstanceId();
+                runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
+            }else if(roles.contains("总经理")){
+                HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
+                HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_4").singleResult();
+                Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
+                Act_Buy act_buy = new Act_Buy();
+                act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
+                act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
+                act_buy.setBusinessId(Integer.parseInt(processInstance.getBusinessKey()));
+                act_buy.setStarttime(instance.getStartTime());
+                act_buy.setEndTime(instance.getEndTime());
+                act_buy.setText(text);
+                act_buy.setId(4);
+                buy.setUptype(4);
+                Integer actBuy = actService.addActBuy(act_buy);
+                Integer upbuy = buyService.updateStatus(buy);
+                if (upbuy != 0) {
+                    map.put("success", "状态修改");
+                }
+                if (actBuy != 0) {
+                    map.put("code", "101");
+                    map.put("status", "审批驳回");
+                }
+                String processInstanceId = task.getProcessInstanceId();
+                runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
+            }
         }
         return map;
     }

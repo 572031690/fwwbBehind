@@ -8,7 +8,7 @@
         select * from tb_permessions
         <where>
             <if test="name !=null and name!=''">
-                name like '%${name}%'
+                name like '%mapper%'
             </if>
         </where>
     </select>

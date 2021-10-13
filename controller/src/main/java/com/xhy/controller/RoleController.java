@@ -99,7 +99,7 @@ public class RoleController {
     @GetMapping("/getRolePerm")
     public Map<String,Object> getRolePerm(String username){
         Map<String,Object> map = new HashMap<>();
-        //查询所有角色
+        //查询所有权限
        List<Permission> permissions = permissionService.findPermission();
         Set<String> permissionByUserName = userServise.findPermissionByUserName(username);
         if(permissions != null){
@@ -114,45 +114,45 @@ public class RoleController {
     }
 
 
-    /*
-     * 处理添加数据
-     * */
-
+//    /*
+//     * 处理添加数据
+//     * */
+//
 //    @RequiresPermissions("admin:addRolePerm")
-    @PostMapping("/addRolePerm")
-    public Map<String,Object> AddUserRole(@RequestBody RolePermVO rolePermvo){
-        Map<String,Object> map = new HashMap<>();
-        List<Integer> permIds = rolePermvo.getPermId();
-        RolePerm rolePerm = new RolePerm();
-       rolePerm.setRoleId(rolePermvo.getRoleId());
-        for(Integer permId: permIds){
+//    @PostMapping("/addRolePerm")
+//    public Map<String,Object> AddUserRole(@RequestBody RolePermVO rolePermvo){
+//        Map<String,Object> map = new HashMap<>();
+//        List<Integer> permIds = rolePermvo.getPermId();
+//        RolePerm rolePerm = new RolePerm();
+//       rolePerm.setRoleId(rolePermvo.getRoleId());
+//        for(Integer permId: permIds){
+//
+//            rolePerm.setPermId(permId);
+//            roleService.addRolePerm(rolePerm);
+//        }
+//        map.put("code","101");
+//        return map;
+//    }
 
-            rolePerm.setPermId(permId);
-            roleService.addRolePerm(rolePerm);
-        }
-        map.put("code","101");
-        return map;
-    }
-
-    /**
-     * 修改角色权限关联
-     * */
+//    /**
+//     * 修改角色权限关联
+//     * */
 //    @RequiresRoles("admin:updateRolePerm")
-    @PostMapping("/updateRolePerm")
-    @ResponseBody
-    public Map<String,Object> updateRolePerm(@RequestBody RolePermVO rolePermvo){
-        Map<String,Object> map = new HashMap<>();
-        List<Integer> permIds = rolePermvo.getPermId();
-        RolePerm rolePerm = new RolePerm();
-        rolePerm.setRoleId(rolePermvo.getRoleId());
-        for(Integer permId: permIds){
-
-            rolePerm.setPermId(permId);
-            roleService.updateRolePerm(rolePerm);
-        }
-        map.put("code","101");
-        return map;
-    }
+//    @PostMapping("/updateRolePerm")
+//    @ResponseBody
+//    public Map<String,Object> updateRolePerm(@RequestBody RolePermVO rolePermvo){
+//        Map<String,Object> map = new HashMap<>();
+//        List<Integer> permIds = rolePermvo.getPermId();
+//        RolePerm rolePerm = new RolePerm();
+//        rolePerm.setRoleId(rolePermvo.getRoleId());
+//        for(Integer permId: permIds){
+//
+//            rolePerm.setPermId(permId);
+//            roleService.updateRolePerm(rolePerm);
+//        }
+//        map.put("code","101");
+//        return map;
+//    }
 
 
 

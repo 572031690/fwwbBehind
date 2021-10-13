@@ -155,7 +155,7 @@ public class Usercontroller {
     /**
      * 账号不存在或输入的账号不正确
      * */
-    @GetMapping("/unknowAccount")
+    @PostMapping("/unknowAccount")
     @ResponseBody
     public Map<String,Object>  unknowAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -167,7 +167,7 @@ public class Usercontroller {
     /**
      * 您输入的密码不正确
      * */
-    @GetMapping("/Incorrect")
+    @PostMapping("/Incorrect")
     @ResponseBody
     public Map<String,Object>  Incorrect(){
         Map<String,Object> map = new HashMap<>();
@@ -396,26 +396,6 @@ public class Usercontroller {
 
         return map;
     }
-
-//    /**
-//     * 修改用户角色关联
-//     * */
-////    @RequiresPermissions("admin:updateRole")
-//    @PostMapping("/updateUserRole")
-//    @ResponseBody
-//    public Map<String,Object> updateUserRole(@RequestBody UserRoleVO userRole){
-//        Map<String,Object> map = new HashMap<>();
-//        List<Integer> roleIds = userRole.getRoleId();
-//        UserRole userRole1 = new UserRole();
-//        userRole1.setUserId(userRole.getUserid());
-//        for(Integer roleId: roleIds){
-//            userRole1.setRoleId(roleId);
-//            userServise.updateUserRole(userRole1);
-//        }
-//        map.put("code","101");
-//        return map;
-//    }
-
 
     /**
      *重置密码

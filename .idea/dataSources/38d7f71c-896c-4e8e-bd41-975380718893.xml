@@ -3720,7 +3720,7 @@ TENANT_ID_</ColNames>
     </column>
     <column id="943" parent="285" name="realname">
       <Position>3</Position>
-      <DataType>varchar(100)|0s</DataType>
+      <DataType>varchar(50)|0s</DataType>
     </column>
     <column id="944" parent="285" name="password">
       <Position>4</Position>

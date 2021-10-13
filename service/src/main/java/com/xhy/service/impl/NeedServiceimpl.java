@@ -5,6 +5,7 @@ import com.github.pagehelper.util.StringUtil;
 import com.xhy.Mapper.NeedMapper;
 import com.xhy.Mapper.UserMapper;
 import com.xhy.domain.Need;
+import com.xhy.domain.Role;
 import com.xhy.domain.User;
 import com.xhy.service.NeedService;
 import com.xhy.vo.NeedVO;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +74,7 @@ public class NeedServiceimpl implements NeedService {
     public List<Need> findNeed() {
         return needMapper.findNeed();
     }
+
 
 
 }

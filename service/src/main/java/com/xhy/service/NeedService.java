@@ -4,6 +4,7 @@ import com.xhy.domain.Need;
 import com.xhy.vo.NeedVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface NeedService {
 

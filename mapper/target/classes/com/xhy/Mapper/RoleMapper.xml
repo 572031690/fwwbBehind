@@ -28,7 +28,7 @@
         delete from tb_roles where roleId=#{roleId}
     </delete>
 
-    
+
 
     <!--    添加角色权限信息表-->
     <insert id="addRolePerm" parameterType="com.xhy.domain.RolePerm">

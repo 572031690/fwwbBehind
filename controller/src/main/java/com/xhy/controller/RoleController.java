@@ -134,26 +134,6 @@ public class RoleController {
 //        return map;
 //    }
 
-//    /**
-//     * 修改角色权限关联
-//     * */
-//    @RequiresRoles("admin:updateRolePerm")
-//    @PostMapping("/updateRolePerm")
-//    @ResponseBody
-//    public Map<String,Object> updateRolePerm(@RequestBody RolePermVO rolePermvo){
-//        Map<String,Object> map = new HashMap<>();
-//        List<Integer> permIds = rolePermvo.getPermId();
-//        RolePerm rolePerm = new RolePerm();
-//        rolePerm.setRoleId(rolePermvo.getRoleId());
-//        for(Integer permId: permIds){
 //
-//            rolePerm.setPermId(permId);
-//            roleService.updateRolePerm(rolePerm);
-//        }
-//        map.put("code","101");
-//        return map;
-//    }
-
-
 
 }

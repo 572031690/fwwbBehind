@@ -106,6 +106,45 @@ public class NeedController {
 
 
 
+    /*查看需求相关信息*/
+    @GetMapping("/getNeedCount")
+    @ResponseBody
+    public Map<String,Object> getNeedCount(){
+        Map<String,Object> map = new HashMap<>();
+        List<Need> needList = needService.findNeed();
+        Integer approve = 0;
+        Integer reject = 0;
+        Integer sum = 0;
+        for(Need need : needList){
+            if(need.getUptype()==3){
+                approve++;
+            }
+            else if(need.getUptype()==4){
+                reject++;
+            }
+            sum++;
+        }
+        map.put("approve",approve);
+        map.put("reject",reject);
+        map.put("sum",sum);
+        return map;
+    }
+
+
+
+//    @RequiresPermissions("needer:listNeed")
+//    @RequestMapping(value = "/findHistroy",method = RequestMethod.GET)
+//    public @ResponseBody Map<String,Object> findHistroy( NeedVO needVO)
+//    {
+//        Map<String,Object> map = new HashMap<String,Object>();
+//        Map<String, Object> histroy = needService.findHistroy(needVO);
+//        map.put("list",histroy.get("list"));
+//        map.put("count",histroy.get("count"));
+//        map.put("page",histroy.get("page"));
+//        map.put("limit",histroy.get("limit"));
+//        return map;
+//    }
+
 
 
 }

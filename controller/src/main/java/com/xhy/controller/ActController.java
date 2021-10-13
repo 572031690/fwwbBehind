@@ -5,6 +5,7 @@ import com.xhy.domain.*;
 import com.xhy.service.*;
 import com.xhy.vo.BuyVo;
 import com.xhy.vo.NeedVO;
+import io.swagger.models.auth.In;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -688,16 +689,17 @@ public class ActController {
     @RequiresPermissions("needManager:findHistory")
     @GetMapping("/findFinishedNeed")
     @ResponseBody
-    public Map<String,Object> findFinishedNeed(){
+    public Map<String,Object> findFinishedNeed(int page,int limit){
         Map<String,Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-        User user = userServise.findUser(username);
+//        User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Need> needList = new ArrayList<>();
-
+        Integer count=0;
+        int index=0;
+        int flag=0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("needAudit").singleResult();
-        System.out.println(processDefinition.getId());
 
         if(roles.contains("需求经理")){
             List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskDefinitionKey("_3").list();
@@ -707,21 +709,34 @@ public class ActController {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                needList.add(need);
+                if(flag<=limit && index >=page){
+                    needList.add(need);
+                    flag++;
+                    index++;
+                }
+                count++;
             }
+            map.put("count",count);
+            map.put("page",index);
+            map.put("limit",flag);
             map.put("assigneeList",needList);
         }else if(roles.contains("总经理"))
         {
-            if(needList.equals(null) || needList.size()==0){
-                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_4").taskAssignee(String.valueOf(user.getUserid())).list();
-                for(HistoricActivityInstance activityInstance:list){
+            if(needList.equals(null) || needList.size()==0) {
+                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_4").list();
+                for (HistoricActivityInstance activityInstance : list) {
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                    needList.add(need);
+                    if (flag <= limit && index >= page) {
+                        needList.add(need);
+                        flag++;
+                        index++;
+                    }
+                    count++;
                 }
-            }else{
+            } else{
                 needList.clear();
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_4").list();
                 for(HistoricActivityInstance activityInstance:list){
@@ -729,9 +744,17 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                    needList.add(need);
+                    if (flag <= limit && index >= page) {
+                        needList.add(need);
+                        flag++;
+                        index++;
+                    }
+                    count++;
                 }
             }
+            map.put("count",count);
+            map.put("page",index);
+            map.put("limit",flag);
             map.put("managerList",needList);
         }
         return map;
@@ -743,15 +766,16 @@ public class ActController {
     @RequiresPermissions("buyManager:findHistory")
     @GetMapping("/findFinishedBuy")
     @ResponseBody
-    public Map<String,Object> findFinishedBuy(){
+    public Map<String,Object> findFinishedBuy(int page,int limit){
         Map<String,Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-        User user = userServise.findUser(username);
+//        User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Buy> buyList = new ArrayList<>();
-
-
+        Integer count=0;
+        int index=0;
+        int flag=0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("buyAudit").singleResult();
         System.out.println(processDefinition.getId());
 
@@ -762,8 +786,16 @@ public class ActController {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                buyList.add(buy);
+                if (flag <= limit && index >= page) {
+                    buyList.add(buy);
+                    flag++;
+                    index++;
+                }
+                count++;
             }
+            map.put("count",count);
+            map.put("page",index);
+            map.put("limit",flag);
             map.put("assigneeList",buyList);
         }else if(roles.contains("总经理"))
         {
@@ -774,7 +806,12 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                    buyList.add(buy);
+                    if (flag <= limit && index >= page) {
+                        buyList.add(buy);
+                        flag++;
+                        index++;
+                    }
+                    count++;
                 }
             }else{
                 buyList.clear();
@@ -784,9 +821,17 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                    buyList.add(buy);
+                    if (flag <= limit && index >= page) {
+                        buyList.add(buy);
+                        flag++;
+                        index++;
+                    }
+                    count++;
                 }
             }
+            map.put("count",count);
+            map.put("page",index);
+            map.put("limit",flag);
             map.put("managerList",buyList);
         }
         return map;

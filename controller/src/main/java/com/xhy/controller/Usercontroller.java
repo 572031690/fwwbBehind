@@ -12,6 +12,8 @@ import com.xhy.vo.AdminUserVO;
 import com.xhy.vo.UpdatePasswordVO;
 import com.xhy.vo.UserRoleVO;
 import com.xhy.vo.UserVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -25,9 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-
+@Api(tags = "Usercontroller" , value = "用户管理")
 @Controller
-
 @RequestMapping(value = "/web")
 public class Usercontroller {
 
@@ -45,6 +46,8 @@ public class Usercontroller {
 
 
     //    权限登录
+
+    @ApiOperation("用户登录")
     @RequestMapping(value = "/shirologin", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login(@RequestBody AdminUserVO adminUserVO) {
@@ -381,13 +384,11 @@ public class Usercontroller {
 //    @RequiresPermissions("admin:getUserRole")
     @GetMapping("/getUserRole")
     @ResponseBody
-    public Map<String,Object> getUserRole(String username){
+    public Map<String,Object> getUserRole(){
         Map<String,Object> map=new HashMap<>();
         List<Role> role = roleService.findRole();
-        Set<String> roleByUserName = userServise.findRoleByUserName(username);
         if(role != null){
             map.put("code","101");
-            map.put("list",roleByUserName);
             map.put("roleList",role);
         }
         else{

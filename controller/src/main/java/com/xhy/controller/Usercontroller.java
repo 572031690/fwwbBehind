@@ -378,7 +378,7 @@ public class Usercontroller {
      * 获取当前用户的所有角色和角色列表
     * */
 
-    @RequiresPermissions("admin:getUserRole")
+//    @RequiresPermissions("admin:getUserRole")
     @GetMapping("/getUserRole")
     @ResponseBody
     public Map<String,Object> getUserRole(String username){

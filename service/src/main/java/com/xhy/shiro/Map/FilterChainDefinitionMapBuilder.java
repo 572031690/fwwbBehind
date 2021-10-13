@@ -20,6 +20,7 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/web/updateUserPassword","anon");
         map.put("/webneed/getNeedCount","anon");
         map.put("/webbuy/getBuyCount","anon");
+        map.put("/web/getUserRole","anon");
         //查询数据库中权限对应的资源路径
         List<Permission> permissions = permissionService.findPermission();
         //遍历,添加

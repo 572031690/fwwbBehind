@@ -314,7 +314,6 @@ public class ActController {
             buyList.add(buy);
             count++;
         }
-
         System.out.println(buyList);
         if (buyVo.getSearchName().equals(null) | buyVo.getSearchName().isEmpty()) {
             for (Buy buy : buyList) {
@@ -349,8 +348,8 @@ public class ActController {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Set<String> roles = userServise.findRoleByUserName(username);
-
-        if (roles.contains("需求经理") || roles.contains("购买经理") || roles.contains("总经理")) {
+        System.out.println(roles);
+        if (roles.contains("需求经理") | roles.contains("购买经理") | roles.contains("总经理")) {
             taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
 
@@ -460,7 +459,6 @@ public class ActController {
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
                 buy.setUptype(1);
                 buy.setBuyerid(userServise.findUser(username).getUserid());
-//                upbuy = buyService.updateStatus(buy);
                 upbuy = buyService.updateBuy(buy);
                 if (upbuy != 0) {
                     map.put("success", "状态修改");
@@ -697,13 +695,12 @@ public class ActController {
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Need> needList = new ArrayList<>();
         Integer count=0;
-        int index=0;
+        int index=1;
         int flag=0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("needAudit").singleResult();
 
         if(roles.contains("需求经理")){
             List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).taskDefinitionKey("_3").list();
-            System.out.println(list);
             for(HistoricTaskInstance instance:list){
                 String processInstanceId = instance.getProcessInstanceId();
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -719,7 +716,7 @@ public class ActController {
             map.put("count",count);
             map.put("page",index);
             map.put("limit",flag);
-            map.put("assigneeList",needList);
+            map.put("list",needList);
         }else if(roles.contains("总经理"))
         {
             if(needList.equals(null) || needList.size()==0) {
@@ -755,7 +752,7 @@ public class ActController {
             map.put("count",count);
             map.put("page",index);
             map.put("limit",flag);
-            map.put("managerList",needList);
+            map.put("list",needList);
         }
         return map;
     }
@@ -770,17 +767,15 @@ public class ActController {
         Map<String,Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
-//        User user = userServise.findUser(username);
+        User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Buy> buyList = new ArrayList<>();
         Integer count=0;
-        int index=0;
+        int index=1;
         int flag=0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("buyAudit").singleResult();
-        System.out.println(processDefinition.getId());
-
         if(roles.contains("购买经理")){
-            List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_3").list();
+            List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_3").list();
             for(HistoricActivityInstance activityInstance:list){
                 String processInstanceId = activityInstance.getProcessInstanceId();
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -796,11 +791,11 @@ public class ActController {
             map.put("count",count);
             map.put("page",index);
             map.put("limit",flag);
-            map.put("assigneeList",buyList);
+            map.put("list",buyList);
         }else if(roles.contains("总经理"))
         {
             if(buyList.equals(null) || buyList.size()==0){
-                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_4").list();
+                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
                 for(HistoricActivityInstance activityInstance:list){
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -815,7 +810,7 @@ public class ActController {
                 }
             }else{
                 buyList.clear();
-                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).activityId("_4").list();
+                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
                 for(HistoricActivityInstance activityInstance:list){
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
@@ -832,7 +827,7 @@ public class ActController {
             map.put("count",count);
             map.put("page",index);
             map.put("limit",flag);
-            map.put("managerList",buyList);
+            map.put("list",buyList);
         }
         return map;
     }

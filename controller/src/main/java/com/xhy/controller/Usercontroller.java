@@ -106,7 +106,7 @@ public class Usercontroller {
      * 用户未登录
      * */
 
-    @RequestMapping(value = "/unauth")
+    @RequestMapping(value = "/unauth",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> unauth(){
         Map<String,Object> map = new HashMap<>();
@@ -120,7 +120,7 @@ public class Usercontroller {
      * 用户未授权
      * */
 
-    @RequestMapping(value = "/unauthorized")
+    @RequestMapping(value = "/unauthorized",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> unauthorized(){
         Map<String,Object> map = new HashMap<>();
@@ -384,11 +384,13 @@ public class Usercontroller {
 //    @RequiresPermissions("admin:getUserRole")
     @GetMapping("/getUserRole")
     @ResponseBody
-    public Map<String,Object> getUserRole(){
+    public Map<String,Object> getUserRole(String username){
         Map<String,Object> map=new HashMap<>();
         List<Role> role = roleService.findRole();
+        Set<String> roleList = userServise.findRoleByUserName(username);
         if(role != null){
             map.put("code","101");
+            map.put("userRoleList",roleList);
             map.put("roleList",role);
         }
         else{

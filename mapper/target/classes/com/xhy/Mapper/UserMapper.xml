@@ -6,11 +6,10 @@
     <!--配置查询所有，resultType的作用就是返回封装的位置，如果你要是不写的话，最后mybatis是不知道你到底要封装到哪里，会出现错误，我这个是User表，查询的也是这个，最后返回的结果就封装在User类中-->
     <select id="findAll" resultType="com.xhy.domain.User" parameterType="String">
         SELECT userId,username,realname, telNum, employeeid, isDisabled FROM tb_users
-        <where>
+            where isDisplayed=1
             <if test="searchName !=null and   searchName!=''">
-                realname like '%${searchName}%'
+              and   realname like '%${searchName}%'
             </if>
-        </where>
     </select>
 
     <select id="findUser" parameterType="String" resultType="com.xhy.domain.User">
@@ -41,7 +40,7 @@
 
     <insert id="addUser" parameterType="com.xhy.domain.User">
         insert into tb_users
-        values (null, #{username}, #{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0);
+        values (null, #{username}, #{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0,1);
     </insert>
 
     <update id="updateUser" parameterType="com.xhy.domain.User">
@@ -75,6 +74,15 @@
     <!--    查询当前用户所有权限-->
     <select id="findPermissionById" parameterType="int" resultType="java.lang.String">
         SELECT DISTINCT p.permission
+        from tb_permessions p
+                 INNER JOIN tb_role_permission rp on p.id = rp.permId
+                 INNER JOIN tb_roles r on r.roleId = rp.roleId
+                 INNER JOIN tb_user_role ur on ur.roleId = r.roleId
+        where ur.userid = #{userId};
+    </select>
+
+    <select id="findPermissionId" parameterType="int" resultType="int">
+        SELECT DISTINCT p.id
         from tb_permessions p
                  INNER JOIN tb_role_permission rp on p.id = rp.permId
                  INNER JOIN tb_roles r on r.roleId = rp.roleId
@@ -137,5 +145,12 @@
         update tb_users
         set isDisabled=#{isDisabled}
         where userId = #{userid};
+    </update>
+
+    <!--逻辑删除-->
+    <update id="updateDisplayed" parameterType="com.xhy.domain.User">
+    update tb_users
+    set isDisplayed=0
+    where userId = #{userid};
     </update>
 </mapper>

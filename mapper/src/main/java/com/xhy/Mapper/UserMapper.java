@@ -21,6 +21,10 @@ public interface UserMapper {
     Integer updateUser(User user);
 
     Integer deleteUser(int userid);
+    /*
+    * 逻辑删除
+    * */
+    Integer updateDisplayed(int userid);
 
     User findbyname(String username);
     /*
@@ -31,6 +35,11 @@ public interface UserMapper {
     * 查询当前用户的权限
     * */
     List<String> findPermissionById(int userId);
+
+    /*
+    * 查询当前用户权限的id
+    * */
+    List<Integer> findPermissionId(int userId);
 
 
     /*
@@ -66,6 +75,8 @@ public interface UserMapper {
      * */
 
     Integer updateStatus(User user);
+
+
 
 
 

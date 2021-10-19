@@ -12,6 +12,8 @@ public class Buy implements Serializable {
     private String buytitle;
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date btime;
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    private Date arrivaltime;
     private String itemtype;
     private String itemid;
     private String unit;
@@ -22,5 +24,6 @@ public class Buy implements Serializable {
     private int uptype;
     private String comment;
     private String taskId;
+
 
 }

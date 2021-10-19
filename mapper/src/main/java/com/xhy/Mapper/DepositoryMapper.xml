@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.DepositoryMapper">
+    <select id="findAll" resultType="com.xhy.domain.Depository" parameterType="com.xhy.vo.DepositoryVO">
+        SELECT * FROM tb_repository
+        <where>
+            <if test="searchName!=null and searchName!=''">
+                name like '%${searchName}%'
+            </if>
+            <if test="selectName != null and selectName!=''">
+                    itemcode=#{selectName}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addDepository" parameterType="com.xhy.domain.Depository" >
+        insert into tb_repository(itemcode, name, comment, stock, totalstock) values (#{itemcode},#{name},#{comment},#{stock},#{totalstock})
+    </insert>
+
+    <update id="updataDepository" parameterType="com.xhy.domain.Depository">
+        update tb_repository set itemcode=#{itemcode},name=#{name},comment=#{comment},stock=#{stock},totalstock=#{totalstock} where id = #{id};
+    </update>
+
+    <delete id="deleteDepository" parameterType="Integer">
+        delete from tb_repository where id = #{id};
+    </delete>
+</mapper>

@@ -8,6 +8,7 @@ import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.RolePermVO;
 import com.xhy.vo.UserRoleVO;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/Role")
+@Api(value = "/web",tags = "角色管理接口")
 public class RoleController {
 
     @Autowired

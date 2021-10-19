@@ -20,6 +20,7 @@ public class Need implements Serializable {
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date needday;
     private int neederid;
+    private String department;
     private String comment;
     private int uptype;
     private String taskId;

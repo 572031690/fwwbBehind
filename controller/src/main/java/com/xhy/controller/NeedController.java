@@ -35,8 +35,6 @@ public class NeedController {
         NeedVO needVO1 = new NeedVO();
         needVO1.setLimit(0);
         needVO1.setPage(0);
-        needVO1.setSearchName(needVO.getSearchName());
-        needVO1.setSelectName(needVO.getSelectName());
         List<Need> needList1 = needService.findAllNeed(needVO1);
         for(Need j : needList1){
             count++;

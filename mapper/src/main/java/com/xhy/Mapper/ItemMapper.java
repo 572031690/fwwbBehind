@@ -1,12 +1,16 @@
 package com.xhy.Mapper;
 
 import com.xhy.domain.Item;
+import com.xhy.vo.ItemVO;
 
 import java.util.List;
 
 public interface ItemMapper {
 
-    List<Item> findAll(String searchName);
+    List<Item> findAll(ItemVO itemVO);
+
+    /*查找所需名称*/
+    List<Item> findItemName(String itemtype);
 
     Item findbyid(String itemid);
 
@@ -14,6 +18,6 @@ public interface ItemMapper {
 
     Integer updataItem(Item item);
 
-    Integer deleteItem(String itemid);
+    Integer deleteItem(Integer itemid);
 
 }

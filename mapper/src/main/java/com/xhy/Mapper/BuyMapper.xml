@@ -13,7 +13,20 @@
                 and buytitle like '%${searchName}%'
             </if>
         </where>
-        order by buyid desc
+        order by
+        <if test="importancetype==1'">
+            importance
+        </if>
+        <if test="arrivaltimetype==1">
+            ,arrivaltime
+        </if>
+        <if test="btimetype==1">
+            ,btime
+        </if>
+        ,buyid
+        <if test="ordertype == 1">
+            desc
+        </if>
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Buy">
@@ -23,19 +36,24 @@
     </select>
 
     <insert id="addBuy" parameterType="com.xhy.domain.Buy">
-        insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid,auditid, uptype,comment)
-        values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid}, #{neederid},#{auditid}, 0,#{comment});
+        insert into tb_buy(buyid, buytitle, btime, arrivaltime, itemtype, itemid, num, unit, buyerid, neederid, auditid,
+                           uptype, comment, importance)
+        values (null, #{buytitle}, #{btime}, #{arrivaltime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid},
+                #{neederid}, #{auditid}, 0, #{comment}, #{importance});
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">
         update tb_buy set
         buytitle=#{buytitle},btime=#{btime},itemtype=#{itemtype},itemid=#{itemid},num=#{num},unit=#{unit}
-        ,buyerid=#{buyerid},neederid=#{neederid},auditid=#{auditid}
+        ,buyerid=#{buyerid},neederid=#{neederid},auditid=#{auditid},importance=#{importance}
         <if test="uptype!=null and uptype!=''">
             , uptype=#{uptype}
         </if>
         <if test="comment!=null and comment!=''">
             ,comment=#{comment}
+        </if>
+        <if test="arrivaltime!=null and arrivaltime!=''">
+            ,arrivaltime=#{arrivaltime}
         </if>
         where buyid = #{buyid};
     </update>
@@ -52,8 +70,9 @@
         where buyid = #{buyid};
     </update>
 
-    <select id="findBuy" resultType="com.xhy.domain.Buy" >
-        SELECT * FROM tb_buy
+    <select id="findBuy" resultType="com.xhy.domain.Buy">
+        SELECT *
+        FROM tb_buy
     </select>
 </mapper>
 

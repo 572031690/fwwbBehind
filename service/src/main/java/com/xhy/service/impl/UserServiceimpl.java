@@ -64,7 +64,7 @@ public class UserServiceimpl implements UserServise {
 
     @Override
     public Integer deleteUser(int userid) {
-        return userMapper.deleteUser(userid);
+        return userMapper.updateDisplayed(userid);
     }
 
     @Override
@@ -108,6 +108,15 @@ public class UserServiceimpl implements UserServise {
         Set<String>  allsetperm = new HashSet<>();
         allsetperm.addAll(allperm);
         return allsetperm;
+    }
+
+    @Override
+    public Set<Integer> findPermissionId(String username) {
+        User user = userMapper.findUser(username);
+        List<Integer> permissionId = userMapper.findPermissionId(user.getUserid());
+        Set<Integer> permissionIds = new HashSet<>();
+        permissionIds.addAll(permissionId);
+        return permissionIds;
     }
 
     @Override

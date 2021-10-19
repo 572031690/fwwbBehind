@@ -39,6 +39,11 @@ public interface UserServise {
     Set<String> findPermissionByUserName(String username);
 
     /**
+     * 查询当前帐号所有权限id
+     * */
+    Set<Integer> findPermissionId(String username);
+
+    /**
      * @Desctiption:添加管理员用户和角色关联
      * */
 
@@ -57,7 +62,7 @@ public interface UserServise {
     List<UserRole> findUserRole(int roleId);
 
     /**
-     * 删除当前帐号所有权限
+     * 删除当前帐号角色
      */
     Boolean deleteUserRole(int userId);
 

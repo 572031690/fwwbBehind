@@ -9,6 +9,12 @@ public interface ItemService {
     //    查看所有
     List<Item> findAllItem(ItemVO itemVO);
 
+    /**
+    * 查看所需名称
+     * */
+
+    List<Item> findItemName(String itemtype);
+
     //  添加
     Integer addItem(Item item);
 
@@ -16,7 +22,7 @@ public interface ItemService {
     Integer updateItem(Item item);
 
     //  删除
-    Integer deleteItem(String itemid);
+    Integer deleteItem(Integer itemid);
 
     //  根据ID查询
     Item findItemById(int startNum,int pageSize,String itemid);

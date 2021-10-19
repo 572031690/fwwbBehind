@@ -6,10 +6,8 @@ import java.io.Serializable;
 @Data
 public class Item implements Serializable {
 
-    private String itemid;
+    private int itemid;
     private String itemtype;
     private String comment;
-    private int stock;
-    private String unit;
-    private int totalStock;
+    private int parentid;
 }

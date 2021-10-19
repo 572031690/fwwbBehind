@@ -12,6 +12,18 @@
             <if test="selectName != null and selectName !=''">
                 and uptype = #{selectName}
             </if>
+            <if test="department != null and department !=''">
+                and department = #{department}
+            </if>
+            <if test="itemtype != null and itemtype !=''">
+                and itemtype = #{itemtype}
+            </if>
+            <if test="itemid != null and itemid !=''">
+                and itemid = #{itemid}
+            </if>
+            <if test="needday != null and needday !=''">
+                and itemid = #{needday}
+            </if>
         </where>
         order by needid DESC
     </select>
@@ -25,8 +37,8 @@
 
 
     <insert id="addNeed" parameterType="com.xhy.domain.Need">
-        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, unit, needday, neederid, comment, uptype)
-        values (null, #{needtitle}, #{itemtype}, #{itemid}, #{neednum}, #{unit}, #{needday}, #{neederid},
+        insert into tb_need(needid, needtitle, itemtype, itemid, neednum, unit, needday,department,neederid, comment, uptype)
+        values (null, #{needtitle}, #{itemtype}, #{itemid}, #{neednum}, #{unit}, #{needday}, #{department},#{neederid}
                 #{comment}, 0);
     </insert>
 
@@ -38,6 +50,7 @@
           , neednum=#{neednum}
           , unit=#{unit}
           , needday=#{needday}
+          ,department=#{department}
           , neederid=#{neederid}
           , comment=#{comment}
         where needid = #{needid};

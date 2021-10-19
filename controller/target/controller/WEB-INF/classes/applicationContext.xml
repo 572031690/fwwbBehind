@@ -30,4 +30,25 @@
         <property name="basePackage" value="com.xhy.Mapper"/>
     </bean>
 
+    <context:component-scan base-package="com.xhy">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">/web/unauthorized</prop>
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">/web/unauthorized</prop>
+                <prop key="org.apache.shiro.authc.UnknownAccountException">/web/unknowAccount</prop>
+                <prop key="org.apache.shiro.authc.IncorrectCredentialsException">/web/Incorrect</prop>
+                <prop key="org.apache.shiro.authc.AuthenticationException">/web/stopAccount</prop>
+            </props>
+        </property>
+    </bean>
+
 </beans>

@@ -17,6 +17,7 @@ public class User implements Serializable {
     private String telNum;
     private String employeeid;
     private int isDisabled;
+    private int isDisplayed;
     private List<Integer> roleId;
 
     public User(){};

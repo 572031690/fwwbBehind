@@ -27,9 +27,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@Api(tags = "Usercontroller" , value = "用户管理")
+
 @Controller
 @RequestMapping(value = "/web")
+@Api(value = "/web",tags = "用户管理接口")
 public class Usercontroller {
 
     @Autowired
@@ -47,7 +48,6 @@ public class Usercontroller {
 
     //    权限登录
 
-    @ApiOperation("用户登录")
     @RequestMapping(value = "/shirologin", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login(@RequestBody AdminUserVO adminUserVO) {
@@ -87,8 +87,10 @@ public class Usercontroller {
             map.put("code", "101");
             map.put("sessionId",subject.getSession().getId()); //回传sessionId
             map.put("user", user);
-//            List<Permission> permission = permissionService.findPermission();
-//            map.put("permission",permission);
+            List<Permission> permission = permissionService.findPermission();
+            map.put("permission",permission);
+            Set<Integer> permissionId = userServise.findPermissionId(adminUserVO.getUsername());
+            map.put("permissionId",permissionId);
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");
@@ -106,7 +108,7 @@ public class Usercontroller {
      * 用户未登录
      * */
 
-    @RequestMapping(value = "/unauth",method = RequestMethod.POST)
+    @RequestMapping(value = "/unauth")
     @ResponseBody
     public Map<String,Object> unauth(){
         Map<String,Object> map = new HashMap<>();
@@ -120,7 +122,7 @@ public class Usercontroller {
      * 用户未授权
      * */
 
-    @RequestMapping(value = "/unauthorized",method = RequestMethod.POST)
+    @RequestMapping(value = "/unauthorized")
     @ResponseBody
     public Map<String,Object> unauthorized(){
         Map<String,Object> map = new HashMap<>();
@@ -129,24 +131,11 @@ public class Usercontroller {
         return map;
     }
 
-    /**
-     * 用户退出登录
-     * */
-    @PostMapping("/logout")
-    @ResponseBody
-    public Map<String,Object> logout(){
-        Map<String,Object> map = new HashMap<>();
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        map.put("code","407");
-        map.put("error","退出登录");
-        return map;
-    }
 
     /**
      * 账号被禁用
      * */
-    @PostMapping("/stopAccount")
+    @RequestMapping("/stopAccount")
     @ResponseBody
     public Map<String,Object>  stopAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -158,7 +147,7 @@ public class Usercontroller {
     /**
      * 账号不存在或输入的账号不正确
      * */
-    @PostMapping("/unknowAccount")
+    @RequestMapping ("/unknowAccount")
     @ResponseBody
     public Map<String,Object>  unknowAccount(){
         Map<String,Object> map = new HashMap<>();
@@ -228,6 +217,7 @@ public class Usercontroller {
     }
 
 
+    @ApiOperation(value = "获取全部用户列表", notes = "获取全部用户列表", httpMethod = "GET", response = User.class)
     @RequiresPermissions("admin:userlist")
     @RequestMapping(value = "/listUser", method = RequestMethod.GET)
     public @ResponseBody
@@ -250,7 +240,6 @@ public class Usercontroller {
         map.put("count", count);
         //获取page&list
         List<User> list2 = userServise.findalluser(uservo);
-        System.out.println(list2);
         PageInfo pageInfo2 = new PageInfo(list2);
         int pageNum = pageInfo2.getPageNum();
         for( User user1:list2){
@@ -275,7 +264,15 @@ public class Usercontroller {
                     userList.add(user1);
                 }
         }
-        map.put("list",userList);
+        List<User>  users = new ArrayList<>();
+        for (User user : userList){
+            for (Integer integer : user.getRoleId()) {
+                if(integer!=10000){
+                    users.add(user);
+                }
+            }
+        }
+        map.put("list",users);
         map.put("page", pageNum);
         //查询筛选状态
         if(uservo.getSelectName()!=null && !uservo.getSelectName().isEmpty()){
@@ -289,7 +286,6 @@ public class Usercontroller {
                 }
             }
             map.put("list",selectUserList);
-            System.out.println(selectUserList);
         }
 
 

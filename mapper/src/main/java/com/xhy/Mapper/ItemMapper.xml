@@ -3,11 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xhy.Mapper.ItemMapper">
-    <select id="findAll" resultType="com.xhy.domain.Item" parameterType="String">
+    <select id="findAll" resultType="com.xhy.domain.Item" parameterType="com.xhy.vo.ItemVO">
+        <if test="selectName != null and selectName!=''">
+            select * from tb_item where itemtype=#{selectName}
+            union
+        </if>
         SELECT * FROM tb_item
         <where>
-            <if test="itemtype!=null and itemtype!=''">
+            <if test="searchName!=null and searchName!=''">
                 itemtype like '%${searchName}%'
+            </if>
+            <if test="selectName != null and selectName!=''">
+                and parentid in (select itemid from tb_item where itemtype=#{selectName})
             </if>
         </where>
     </select>
@@ -16,16 +23,20 @@
         select * from tb_item where itemid = #{itemid}
     </select>
 
+    <!--查找材料名称-->
+    <select id="findItemName" parameterType="String" resultType="com.xhy.domain.Item">
+        select * from tb_item where parentid in (select itemid from tb_item where itemtype = #{itemtype});
+    </select>
 
     <insert id="addItem" parameterType="com.xhy.domain.Item" >
-        insert into tb_item values (#{itemid} ,#{itemtype},#{comment},#{stock},#{unit},#{totalStock});
+        insert into tb_item(itemtype, comment, parentid) values (#{itemtype},#{comment},#{parentid});
     </insert>
 
     <update id="updataItem" parameterType="com.xhy.domain.Item">
-        update tb_item set itemtype=#{itemtype},comment=#{comment},stock=#{stock},unit=#{unit},totalStock=#{totalStock} where itemid = #{itemid};
+        update tb_item set itemtype=#{itemtype},comment=#{comment},parentid=#{parentid} where itemid = #{itemid};
     </update>
 
-    <delete id="deleteItem" parameterType="String">
+    <delete id="deleteItem" parameterType="Integer">
         delete from tb_item where itemid = #{itemid};
     </delete>
 </mapper>

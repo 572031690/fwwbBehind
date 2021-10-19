@@ -20,7 +20,12 @@ public class ItemServiceimpl implements ItemService {
     public List<Item> findAllItem(ItemVO itemVO) {
 
         PageHelper.startPage(itemVO.getPage(),itemVO.getLimit());
-        return itemMapper.findAll(itemVO.getSearchName());
+        return itemMapper.findAll(itemVO);
+    }
+
+    @Override
+    public List<Item> findItemName(String itemtype) {
+        return itemMapper.findItemName(itemtype);
     }
 
     @Override
@@ -34,7 +39,7 @@ public class ItemServiceimpl implements ItemService {
     }
 
     @Override
-    public Integer deleteItem(String itemid) {
+    public Integer deleteItem(Integer itemid) {
         return  itemMapper.deleteItem(itemid);
     }
 

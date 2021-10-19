@@ -7,13 +7,11 @@ import com.xhy.domain.Permission;
 import com.xhy.domain.User;
 import com.xhy.service.ItemService;
 import com.xhy.vo.ItemVO;
+import io.swagger.models.auth.In;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,35 +29,32 @@ public class ItemController {
     public @ResponseBody
     Map<String, Object> findAllitem(ItemVO itemVO) {
         Map<String, Object> map = new HashMap<String, Object>();
-        int count = 0;
-
-        ItemVO itemCount = new ItemVO();
-        itemCount.setPage(0);
-        itemCount.setLimit(0);
-        itemCount.setSearchName(itemVO.getSearchName());
-        itemCount.setSelectName(itemVO.getSelectName());
-        List<Item> itemList = itemService.findAllItem(itemCount);
-        for(Item j : itemList){
-            count+=1;
-        }
-        map.put("count", count);
-        List<Item> itemList2 = itemService.findAllItem(itemVO);
-        PageInfo pageInfo2 = new PageInfo(itemList2);
-        int pageNum = pageInfo2.getPageNum();
-        map.put("list", itemList2);
+        List<Item> itemList = itemService.findAllItem(itemVO);
+        PageInfo pageInfo = new PageInfo(itemList);
+        int pageNum = pageInfo.getPageNum();
+        long total = pageInfo.getTotal();
+        map.put("count",total);
+        map.put("list", itemList);
         map.put("page", pageNum);
-
         return map;
 
 
     }
 
-//    @RequestMapping(value = "/findItemById", method = RequestMethod.GET)
-//    public @ResponseBody
-//    Item findItemById(int page, int limit, String itemid) {
-//
-//        return itemService.findItemById(page, limit, itemid);
-//    }
+    @RequiresPermissions("item:findItemName")
+    @ResponseBody
+    @GetMapping("/findItemName")
+    public Map<String,Object> findItemName( String itemtype){
+        Map<String ,Object> map = new HashMap<>();
+        List<Item> item = itemService.findItemName(itemtype);
+        if(item.equals(null) || item.size()==0){
+            map.put("code","101");
+            map.put("list",item);
+        }else{
+            map.put("code","102");
+        }
+        return map;
+    }
 
     @RequiresPermissions("item:addItem")
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)
@@ -81,7 +76,7 @@ public class ItemController {
         }
     }
 
-    @RequiresPermissions("item:udpateItem")
+    @RequiresPermissions("item:updateItem")
     @RequestMapping(value = "/updateItem", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> updateItem(@RequestBody Item item) {
@@ -103,7 +98,7 @@ public class ItemController {
     @RequiresPermissions("item:deleteItem")
     @RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> deleteItem(String itemid) {
+    Map<String, Object> deleteItem(Integer itemid) {
         Map<String, Object> map = new HashMap<>();
         Integer integer = itemService.deleteItem(itemid);
         if (integer != 0) {

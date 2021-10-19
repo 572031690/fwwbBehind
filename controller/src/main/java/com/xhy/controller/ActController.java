@@ -115,7 +115,7 @@ public class ActController {
         List<Integer> assignee = new ArrayList<>();
         List<Integer> manager = new ArrayList<>();
         for (Role role : roles) {
-            if (role.getRolename().equals("需求经理")) {
+            if (role.getRolename().equals("采购经理")) {
                 List<UserRole> userRoles = userServise.findUserRole(role.getRoleId());
                 for (UserRole userRole : userRoles) {
                     assignee.add(userRole.getUserId());
@@ -209,7 +209,7 @@ public class ActController {
         List<Integer> assignee = new ArrayList<>();
         List<Integer> manager = new ArrayList<>();
         for (Role role : roles) {
-            if (role.getRolename().equals("购买经理")) {
+            if (role.getRolename().equals("采购经理")) {
                 List<UserRole> userRoles = userServise.findUserRole(role.getRoleId());
                 for (UserRole userRole : userRoles) {
                     assignee.add(userRole.getUserId());
@@ -349,7 +349,7 @@ public class ActController {
         String username = String.valueOf(subject.getPrincipals());
         Set<String> roles = userServise.findRoleByUserName(username);
         System.out.println(roles);
-        if (roles.contains("需求经理") | roles.contains("购买经理") | roles.contains("总经理")) {
+        if (roles.contains("需求经理") | roles.contains("采购经理") | roles.contains("总经理")) {
             taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
 
@@ -445,7 +445,7 @@ public class ActController {
             Act_Buy act_buy = new Act_Buy();
             Integer actBuy = 0;
             Integer upbuy = 0;
-            if (roles.contains("购买专员")) {
+            if (roles.contains("采购专员")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_2").singleResult();
@@ -467,7 +467,7 @@ public class ActController {
                     map.put("code", "101");
                     map.put("status", "提交");
                 }
-            } else if (roles.contains("购买经理")) {
+            } else if (roles.contains("采购经理")) {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
@@ -532,7 +532,7 @@ public class ActController {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Set<String> roles = userServise.findRoleByUserName(username);
-        if (roles.contains("需求经理") || roles.contains("购买经理") || roles.contains("总经理")) {
+        if (roles.contains("需求经理") || roles.contains("采购经理") || roles.contains("总经理")) {
             taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
         Task task = taskService.createTaskQuery().taskId(String.valueOf(taskId)).singleResult();
@@ -598,7 +598,7 @@ public class ActController {
                 runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
             }
         } else if (processDefinitionKey.contains("buyAudit")) {
-            if(roles.contains("购买经理")){
+            if(roles.contains("采购经理")){
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
@@ -774,7 +774,7 @@ public class ActController {
         int index=1;
         int flag=0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("buyAudit").singleResult();
-        if(roles.contains("购买经理")){
+        if(roles.contains("采购经理")){
             List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_3").list();
             for(HistoricActivityInstance activityInstance:list){
                 String processInstanceId = activityInstance.getProcessInstanceId();
@@ -831,7 +831,6 @@ public class ActController {
         }
         return map;
     }
-
 
 }
 

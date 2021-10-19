@@ -3,7 +3,6 @@ package com.xhy.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.xhy.Mapper.BuyMapper;
 import com.xhy.domain.Buy;
-import com.xhy.domain.Need;
 import com.xhy.service.BuyService;
 import com.xhy.vo.BuyVo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -44,10 +44,10 @@ public class ItemController {
     @RequiresPermissions("item:findItemName")
     @ResponseBody
     @GetMapping("/findItemName")
-    public Map<String,Object> findItemName( String itemtype){
+    public Map<String,Object> findItemName( Integer itemid){
         Map<String ,Object> map = new HashMap<>();
-        List<Item> item = itemService.findItemName(itemtype);
-        if(item.equals(null) || item.size()==0){
+        List<Item> item = itemService.findItemName(itemid);
+        if(!item.equals(null) || item.size()==0){
             map.put("code","101");
             map.put("list",item);
         }else{

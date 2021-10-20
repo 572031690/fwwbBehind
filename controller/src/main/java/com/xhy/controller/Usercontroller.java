@@ -30,7 +30,6 @@ import java.util.*;
 
 @Controller
 @RequestMapping(value = "/web")
-@Api(value = "/web",tags = "用户管理接口")
 public class Usercontroller {
 
     @Autowired

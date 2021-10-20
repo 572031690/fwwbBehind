@@ -10,7 +10,7 @@ public interface ItemMapper {
     List<Item> findAll(ItemVO itemVO);
 
     /*查找所需名称*/
-    List<Item> findItemName(String itemtype);
+    List<Item> findItemName(Integer itemid);
 
     Item findbyid(String itemid);
 

@@ -9,8 +9,10 @@ import com.xhy.service.UserServise;
 import com.xhy.vo.RolePermVO;
 import com.xhy.vo.UserRoleVO;
 import io.swagger.annotations.Api;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,17 +39,13 @@ public class RoleController {
     @GetMapping("/listRole")
     public @ResponseBody Map<String,Object> ListRole(Integer page, Integer limit, String rolename){
         Map<String, Object> map = new HashMap<String, Object>();
-        int count=0;
-        List<Role> list1 = roleService.findAllRole(0,0,rolename);
-        for(Role j : list1){
-            count+=1;
-        }
-        map.put("count", count);
-        List<Role> list2 = roleService.findAllRole(page, limit, rolename);
-        PageInfo pageInfo2 = new PageInfo(list2);
-        int pageNum = pageInfo2.getPageNum();
+        List<Role> list = roleService.findAllRole(page, limit, rolename);
+        PageInfo pageInfo = new PageInfo(list);
+        int pageNum = pageInfo.getPageNum();
+        long total = pageInfo.getTotal();
         map.put("page", pageNum);
-        map.put("list", list2);
+        map.put("list", list);
+        map.put("count",total);
         return map;
     }
 
@@ -82,8 +80,8 @@ public class RoleController {
     public @ResponseBody Map<String,Object> deleteRole(int roleId){
         Map<String,Object> map = new HashMap<>();
         String delete = roleService.deleteRole(roleId);
-        roleService.deleteRolePerm(roleId);
-        if(delete!=null || delete!=""){
+        Boolean aBoolean = roleService.deleteRolePerm(roleId);
+        if(delete!=null || delete!="" & aBoolean){
             map.put("code","101");
         }else {
             map.put("code","102");
@@ -95,10 +93,11 @@ public class RoleController {
 
 
     /*
-     * 拿到角色表中所有角色
+     * 拿到角色权限关联
      * */
-//    @RequiresPermissions("admin:getRolePerm")
+    @RequiresPermissions("admin:getRolePerm")
     @GetMapping("/getRolePerm")
+    @ResponseBody
     public Map<String,Object> getRolePerm(String username){
         Map<String,Object> map = new HashMap<>();
         //查询所有权限
@@ -116,25 +115,31 @@ public class RoleController {
     }
 
 
-//    /*
-//     * 处理添加数据
-//     * */
-//
-//    @RequiresPermissions("admin:addRolePerm")
-//    @PostMapping("/addRolePerm")
-//    public Map<String,Object> AddUserRole(@RequestBody RolePermVO rolePermvo){
-//        Map<String,Object> map = new HashMap<>();
-//        List<Integer> permIds = rolePermvo.getPermId();
-//        RolePerm rolePerm = new RolePerm();
-//       rolePerm.setRoleId(rolePermvo.getRoleId());
-//        for(Integer permId: permIds){
-//
-//            rolePerm.setPermId(permId);
-//            roleService.addRolePerm(rolePerm);
-//        }
-//        map.put("code","101");
-//        return map;
-//    }
+    /*
+     * 处理添加数据
+     * */
+
+    @RequiresPermissions("admin:addRolePerm")
+    @PostMapping("/addRolePerm")
+    @ResponseBody
+    public Map<String,Object> AddUserRole(@RequestBody RolePermVO rolePermvo){
+        Map<String,Object> map = new HashMap<>();
+        List<Integer> permIds = rolePermvo.getPermId();
+        RolePerm rolePerm = new RolePerm();
+        rolePerm.setRoleId(rolePermvo.getRoleId());
+        List<RolePerm> rolePerm1 = roleService.getRolePerm(rolePermvo.getRoleId());
+        if(!rolePerm1.isEmpty()){
+            roleService.deleteRolePerm(rolePermvo.getRoleId());
+        }
+        for(Integer permId: permIds){
+            rolePerm.setPermId(permId);
+            roleService.addRolePerm(rolePerm);
+        }
+        if(rolePerm1.size()!=0) {
+            map.put("code", "101");
+        }
+        return map;
+    }
 
 //
 

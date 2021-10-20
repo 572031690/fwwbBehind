@@ -5,18 +5,16 @@
 <mapper namespace="com.xhy.Mapper.ItemMapper">
     <select id="findAll" resultType="com.xhy.domain.Item" parameterType="com.xhy.vo.ItemVO">
         <if test="selectName != null and selectName!=''">
-            select * from tb_item where itemtype=#{selectName}
+            select * from tb_item where itemid=#{selectName}
             union
         </if>
-        SELECT * FROM tb_item
-        <where>
+        SELECT * FROM tb_item where parentid != ''
             <if test="searchName!=null and searchName!=''">
-                itemtype like '%${searchName}%'
+                 and itemtype like '%${searchName}%'
             </if>
-            <if test="selectName != null and selectName!=''">
-                and parentid in (select itemid from tb_item where itemtype=#{selectName})
+            <if test="selectName != null and selectName !=''">
+                and parentid =#{selectName}
             </if>
-        </where>
     </select>
 
     <select id="findbyid" parameterType="String" resultType="com.xhy.domain.Item">
@@ -24,8 +22,8 @@
     </select>
 
     <!--查找材料名称-->
-    <select id="findItemName" parameterType="String" resultType="com.xhy.domain.Item">
-        select * from tb_item where parentid in (select itemid from tb_item where itemtype = #{itemtype});
+    <select id="findItemName" parameterType="Integer" resultType="com.xhy.domain.Item">
+        select * from tb_item where parentid =#{parentid};
     </select>
 
     <insert id="addItem" parameterType="com.xhy.domain.Item" >

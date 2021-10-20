@@ -31,17 +31,17 @@ public interface RoleMapper {
 
 
 
+    /**
+     * 获取角色权限
+     * */
+    List<RolePerm> getRolePerm(int roleId);
+
+
     /*
      * 添加角色权限
      * */
 
     Boolean addRolePerm(RolePerm rolePerm);
-
-    /*
-     * 修改角色权限
-     * */
-
-    Boolean updateRolePerm(RolePerm rolePerm);
 
     /*
      * 删除角色权限

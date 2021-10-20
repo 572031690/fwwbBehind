@@ -17,6 +17,7 @@ public class RoleServiceimpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+
     @Override
     public List<Role> findAllRole(int startNum, int pageSize,String rolename) {
         PageHelper.startPage(startNum,pageSize);
@@ -48,15 +49,15 @@ public class RoleServiceimpl implements RoleService {
     }
 
     @Override
+    public List<RolePerm> getRolePerm(int roleId) {
+        return roleMapper.getRolePerm(roleId);
+    }
+
+    @Override
     public Boolean addRolePerm(RolePerm rolePerm) {
         return roleMapper.addRolePerm(rolePerm);
     }
 
-    @Override
-    public Boolean updateRolePerm(RolePerm rolePerm) {
-        roleMapper.deleteRolePerm(rolePerm.getRoleId());
-        return roleMapper.updateRolePerm(rolePerm);
-    }
 
     @Override
     public Boolean deleteRolePerm(int roleId) {

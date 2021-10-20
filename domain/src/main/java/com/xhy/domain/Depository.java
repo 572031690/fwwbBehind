@@ -10,4 +10,5 @@ public class Depository {
     private String comment;
     private int stock;
     private int totalstock;
+    private String unit;
 }

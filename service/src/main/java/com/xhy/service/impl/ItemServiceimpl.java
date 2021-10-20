@@ -24,8 +24,8 @@ public class ItemServiceimpl implements ItemService {
     }
 
     @Override
-    public List<Item> findItemName(String itemtype) {
-        return itemMapper.findItemName(itemtype);
+    public List<Item> findItemName(Integer itemid) {
+        return itemMapper.findItemName(itemid);
     }
 
     @Override

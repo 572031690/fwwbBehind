@@ -31,17 +31,16 @@ public interface RoleService {
 
     List<Role> findRole();
 
+    /**
+     * 获取角色权限
+     * */
+    List<RolePerm> getRolePerm(int roleId);
+
     /*
     * 添加角色权限的关联
     * */
 
     Boolean addRolePerm (RolePerm rolePerm);
-
-    /**
-     * 修改角色权限关联
-     * */
-
-    Boolean updateRolePerm(RolePerm rolePerm);
 
     /**
      * 删除角色权限关联

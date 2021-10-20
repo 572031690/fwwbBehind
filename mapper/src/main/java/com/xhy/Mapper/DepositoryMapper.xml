@@ -16,11 +16,11 @@
     </select>
 
     <insert id="addDepository" parameterType="com.xhy.domain.Depository" >
-        insert into tb_repository(itemcode, name, comment, stock, totalstock) values (#{itemcode},#{name},#{comment},#{stock},#{totalstock})
+        insert into tb_repository(itemcode, name, comment, stock, totalstock,unit) values (#{itemcode},#{name},#{comment},#{stock},#{totalstock},#{unit})
     </insert>
 
     <update id="updataDepository" parameterType="com.xhy.domain.Depository">
-        update tb_repository set itemcode=#{itemcode},name=#{name},comment=#{comment},stock=#{stock},totalstock=#{totalstock} where id = #{id};
+        update tb_repository set itemcode=#{itemcode},name=#{name},comment=#{comment},stock=#{stock},totalstock=#{totalstock},unit=#{unit} where id = #{id};
     </update>
 
     <delete id="deleteDepository" parameterType="Integer">

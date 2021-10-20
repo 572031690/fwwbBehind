@@ -13,7 +13,7 @@ public interface ItemService {
     * 查看所需名称
      * */
 
-    List<Item> findItemName(String itemtype);
+    List<Item> findItemName(Integer itemid);
 
     //  添加
     Integer addItem(Item item);

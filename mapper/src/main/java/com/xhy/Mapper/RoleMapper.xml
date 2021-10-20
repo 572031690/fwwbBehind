@@ -28,17 +28,15 @@
         delete from tb_roles where roleId=#{roleId}
     </delete>
 
-
+    <!--获取角色权限信息-->
+    <select id="getRolePerm" parameterType="int" resultType="com.xhy.domain.RolePerm">
+        select * from tb_role_permission where roleId = #{roleId}
+    </select>
 
     <!--    添加角色权限信息表-->
     <insert id="addRolePerm" parameterType="com.xhy.domain.RolePerm">
         insert into tb_role_permission(roleId, permId) values (#{roleId},#{permId})
     </insert>
-
-    <!--    修改角色权限信息表-->
-    <update id="updateRolePerm" parameterType="com.xhy.domain.RolePerm">
-        update tb_role_permission set roleId = #{roleId} , permId = #{permId}
-    </update>
 
 
     <!--    删除角色权限-->

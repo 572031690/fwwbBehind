@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhy.Mapper.InRepositoryMapper">
+    <!--查询入库列表-->
+    <select id="findInRepository" parameterType="com.xhy.vo.InRepositoryVO" resultType="com.xhy.domain.InRepository">
+        select * from tb_inrepository
+        <where>
+            <if test="searchName!=null and searchName !=''">
+                name like '%${searchName}%'
+            </if>
+            <if test="selectName!=null and selectName!=''">
+                and   buyid = #{selectName}
+            </if>
+        </where>
+    </select>
+    <!--添加入库信息-->
+    <insert id="addInRepository" parameterType="com.xhy.domain.InRepository">
+        insert into tb_inrepository values(null,#{name},#{itemid},#{time},#{num},#{unit},#{inRept},#{buyid});
+    </insert>
+
+    <!--修改入库信息-->
+    <update id="updateInRepository" parameterType="com.xhy.domain.InRepository">
+        update tb_inrepository set name=#{name},itemid=#{itemid},time=#{time},num=#{num},unit=#{unit} where id=#{id}
+    </update>
+
+    <!--删除入库信息-->
+    <delete id="deleteInRepository" parameterType="int">
+        delete from tb_inrepository where id = #{id}
+    </delete>
+
+</mapper>

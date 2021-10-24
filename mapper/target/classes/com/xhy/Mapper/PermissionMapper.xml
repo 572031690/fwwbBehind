@@ -4,18 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xhy.Mapper.PermissionMapper">
     <!--查询所有权限-->
-    <select id="findAllPermission" resultType="com.xhy.domain.Permission" parameterType="String">
-        select * from tb_permessions
-        <where>
-            <if test="name !=null and name!=''">
-                name like '%mapper%'
+    <select id="findAllPermission" resultType="com.xhy.domain.Permission" parameterType="com.xhy.vo.PermissionVO">
+        select * from tb_permessions where isDisplayed=0
+            <if test="searchName !=null and searchName!=''">
+               and name like '%${searchName}%'
             </if>
-        </where>
+        <if test="selectName!= null and selectName!=''">
+            and isDisabled=#{selectName}
+        </if>
     </select>
 
     <!--增加权限-->
     <insert id="addPermission" parameterType="com.xhy.domain.Permission" >
-        insert into tb_permessions values(null,#{name},#{type},#{url},#{permission},0)
+        insert into tb_permessions values(null,#{name},#{type},#{url},#{permission},0,0)
     </insert>
 
 <!--    修改权限-->
@@ -25,8 +26,8 @@
     </update>
 
 <!--    删除权限-->
-    <delete id="deletePermission" parameterType="int">
-        delete from tb_permessions where id=#{id}
-    </delete>
+    <update id="deletePermission" parameterType="int">
+        update  tb_permessions set isDisplayed=1 where id=#{id}
+    </update>
 
 </mapper>

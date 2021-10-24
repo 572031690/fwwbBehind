@@ -6,6 +6,7 @@ import com.xhy.Mapper.RoleMapper;
 import com.xhy.domain.Role;
 import com.xhy.domain.RolePerm;
 import com.xhy.service.RoleService;
+import com.xhy.vo.RoleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,28 +20,27 @@ public class RoleServiceimpl implements RoleService {
 
 
     @Override
-    public List<Role> findAllRole(int startNum, int pageSize,String rolename) {
-        PageHelper.startPage(startNum,pageSize);
-        return roleMapper.findAllRole(rolename);
+    public List<Role> findAllRole(RoleVO roleVO) {
+        PageHelper.startPage(roleVO.getPage(),roleVO.getLimit());
+        return roleMapper.findAllRole(roleVO);
     }
 
     @Override
-    public String addRole(Role role) {
-        roleMapper.addRole(role);
-        return null;
+    public Integer addRole(Role role) {
+
+        return roleMapper.addRole(role);
     }
 
     @Override
-    public String updateRole(Role role) {
-        roleMapper.updateRole(role);
+    public Integer updateRole(Role role) {
 
-        return null;
+
+        return roleMapper.updateRole(role);
     }
 
     @Override
-    public String deleteRole(int roleId) {
-        roleMapper.deleteRole(roleId);
-        return null;
+    public Integer deleteRole(int roleId) {
+        return roleMapper.deleteRole(roleId);
     }
 
     @Override
@@ -61,6 +61,7 @@ public class RoleServiceimpl implements RoleService {
 
     @Override
     public Boolean deleteRolePerm(int roleId) {
+
         return roleMapper.deleteRolePerm(roleId);
     }
 

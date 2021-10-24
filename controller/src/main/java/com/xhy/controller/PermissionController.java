@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Permission;
 import com.xhy.domain.Role;
 import com.xhy.service.PermissionService;
+import com.xhy.vo.PermissionVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,19 +25,15 @@ public class PermissionController {
     @RequiresPermissions("admin:listPerm")
     @GetMapping("/listPerm")
     public @ResponseBody
-    Map<String,Object> ListPerm(Integer page, Integer limit, String name){
+    Map<String,Object> ListPerm(PermissionVO permissionVO){
         Map<String, Object> map = new HashMap<String, Object>();
-        int count = 0;
-        List<Permission> list1 = permissionService.findAllPermission(0,0,name);
-        for(Permission j : list1){
-            count+=1;
-        }
-        map.put("count", count);
-        List<Permission> list2 = permissionService.findAllPermission(page,limit,name);
-        PageInfo pageInfo2 = new PageInfo(list2);
-        int pageNum = pageInfo2.getPageNum();
+        List<Permission> list = permissionService.findAllPermission(permissionVO);
+        PageInfo pageInfo = new PageInfo(list);
+        int pageNum = pageInfo.getPageNum();
+        long total = pageInfo.getTotal();
         map.put("page", pageNum);
-        map.put("list", list2);
+        map.put("list", list);
+        map.put("count", total);
         return map;
     }
 

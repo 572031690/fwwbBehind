@@ -1,5 +1,6 @@
 package com.xhy.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Need;
 import com.xhy.domain.Role;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,24 +30,17 @@ public class NeedController {
     UserServise userServise;
 
     @RequiresPermissions("needer:listNeed")
-    @RequestMapping(value = "/findAllNeed",method = RequestMethod.GET)
-    public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
+    @GetMapping(value = "/findAllNeed")
+    public @ResponseBody Map<String,Object> findAllNeed(NeedVO needVO)
     {
         Map<String,Object> map = new HashMap<String,Object>();
-        int count=0;
-        NeedVO needVO1 = new NeedVO();
-        needVO1.setLimit(0);
-        needVO1.setPage(0);
-        List<Need> needList1 = needService.findAllNeed(needVO1);
-        for(Need j : needList1){
-            count++;
-        }
-        map.put("count",count);
-        List<Need> needList2 = needService.findAllNeed(needVO);
-        PageInfo pageInfo2 = new PageInfo(needList2);
-        int pageNum = pageInfo2.getPageNum();
-        map.put("list",needList2);
+        List<Need> needList = needService.findAllNeed(needVO);
+        PageInfo pageInfo = new PageInfo(needList);
+        int pageNum = pageInfo.getPageNum();
+        long total = pageInfo.getTotal();
+        map.put("list",needList);
         map.put("page",pageNum);
+        map.put("count",total);
         return map;
     }
 
@@ -54,7 +50,7 @@ public class NeedController {
         Map<String,Object> map = new HashMap<String,Object>();
         if (need != null) {
             Integer integer = needService.updateNeed(need);
-            if (integer != null) {
+            if (integer != 0) {
                 map.put("code", "101");
                 return map;
             } else {
@@ -75,7 +71,7 @@ public class NeedController {
         Map<String,Object> map = new HashMap<String,Object>();
         if (need != null) {
             Integer integer = needService.addNeed(need);
-            if (integer != null) {
+            if (integer != 0) {
                 map.put("code", "101");
                 return map;
             } else {
@@ -93,7 +89,7 @@ public class NeedController {
     public @ResponseBody Map<String,Object> deleteNeed(int needid){
         Map<String,Object> map = new HashMap<String,Object>();
             Integer integer = needService.deleteNeed(needid);
-            if (integer != null) {
+            if (integer != 0) {
                 map.put("code", "101");
                 return map;
             } else {

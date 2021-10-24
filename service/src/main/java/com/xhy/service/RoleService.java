@@ -3,6 +3,7 @@ package com.xhy.service;
 import com.xhy.domain.Role;
 import com.xhy.domain.RolePerm;
 import com.xhy.domain.UserRole;
+import com.xhy.vo.RoleVO;
 
 import java.util.List;
 
@@ -12,22 +13,22 @@ public interface RoleService {
     * 查询所有角色
     * */
 
-    List<Role> findAllRole(int startNum,int pageSize,String rolename);
+    List<Role> findAllRole(RoleVO roleVO);
 
     /*
     * 添加角色
     * */
-    String addRole(Role role);
+    Integer addRole(Role role);
 
     /*
      * 修改角色
      * */
-    String updateRole(Role role);
+    Integer updateRole(Role role);
 
     /*
      * 删除角色
      * */
-    String deleteRole(int roleId);
+    Integer deleteRole(int roleId);
 
     List<Role> findRole();
 

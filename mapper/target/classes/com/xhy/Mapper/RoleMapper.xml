@@ -4,44 +4,55 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xhy.Mapper.RoleMapper">
     <!--查询所有角色-->
-    <select id="findAllRole" resultType="com.xhy.domain.Role" parameterType="String">
-        select * from tb_roles
-        <where>
-            <if test="rolename !=null and rolename!=''">
-                rolename like '%${rolename}%'
+    <select id="findAllRole" resultType="com.xhy.domain.Role" parameterType="com.xhy.vo.RoleVO">
+        select * from tb_roles where isDeleted=0
+            <if test="selectName != null and selectName!=''">
+           and  isDisabled = #{selectName}
+             </if>
+            <if test="searchName !=null and searchName!=''">
+            and rolename like '%${searchName}%'
             </if>
-        </where>
     </select>
 
     <!--增加角色-->
-    <insert id="addRole" parameterType="com.xhy.domain.Role" >
-        insert into tb_roles values(#{roleId},#{rolename},#{description},0)
+    <insert id="addRole" parameterType="com.xhy.domain.Role">
+        insert into tb_roles
+        values (#{roleId}, #{rolename}, #{description}, 0, 0)
     </insert>
 
-<!--    修改角色-->
+    <!--    修改角色-->
     <update id="updateRole" parameterType="com.xhy.domain.Role">
-        update tb_roles set rolename=#{rolename},description=#{description} where roleId=#{roleId}
+        update tb_roles
+        set rolename=#{rolename},
+            description=#{description},
+            isDisabled=#{isDisabled}
+        where roleId = #{roleId}
     </update>
 
-<!--    删除角色-->
-    <delete id="deleteRole" parameterType="int">
-        delete from tb_roles where roleId=#{roleId}
-    </delete>
+    <!--删除角色信息-->
+    <update id="deleteRole" parameterType="int">
+        update tb_roles set isDeleted=1 where roleId=#{roleId}
+    </update>
 
     <!--获取角色权限信息-->
     <select id="getRolePerm" parameterType="int" resultType="com.xhy.domain.RolePerm">
-        select * from tb_role_permission where roleId = #{roleId}
+        select *
+        from tb_role_permission
+        where roleId = #{roleId}
     </select>
 
     <!--    添加角色权限信息表-->
     <insert id="addRolePerm" parameterType="com.xhy.domain.RolePerm">
-        insert into tb_role_permission(roleId, permId) values (#{roleId},#{permId})
+        insert into tb_role_permission(roleId, permId)
+        values (#{roleId}, #{permId})
     </insert>
 
 
     <!--    删除角色权限-->
     <delete id="deleteRolePerm" parameterType="int">
-        delete from tb_role_permission where roleId=#{roleId}
+        delete
+        from tb_role_permission
+        where roleId = #{roleId}
     </delete>
 
 </mapper>

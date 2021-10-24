@@ -2,6 +2,7 @@ package com.xhy.service;
 
 import com.xhy.domain.Permission;
 import com.xhy.domain.Role;
+import com.xhy.vo.PermissionVO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface PermissionService {
      * 查询所有权限
      * */
 
-    List<Permission> findAllPermission(int startNum, int pageSize, String name);
+    List<Permission> findAllPermission(PermissionVO permissionVO);
 
     /*
      * 添加权限

@@ -10,4 +10,5 @@ public class Role implements Serializable {
         private String rolename;
         private String description;
         private int isDeleted;
+        private int isDisabled; //启用禁用
 }

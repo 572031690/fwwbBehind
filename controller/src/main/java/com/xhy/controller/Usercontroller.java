@@ -224,22 +224,11 @@ public class Usercontroller {
         //参数定义
         Map<String, Object> map = new HashMap<String, Object>();
         List<User> userList = new ArrayList<>();
-        int count = 0;
 
-        //获取count
-        UserVO userVO = new UserVO();
-        userVO.setPage(0);
-        userVO.setLimit(0);
-        userVO.setSearchName(uservo.getSearchName());
-        userVO.setSelectName(userVO.getSelectName());
-        List<User> list1 = userServise.findalluser(userVO);
-        for(User j : list1){
-            count+=1;
-        }
-        map.put("count", count);
         //获取page&list
         List<User> list2 = userServise.findalluser(uservo);
         PageInfo pageInfo2 = new PageInfo(list2);
+        long total = pageInfo2.getTotal();
         int pageNum = pageInfo2.getPageNum();
         for( User user1:list2){
                 List<Integer> roleid = userServise.getRoleIdByName(user1.getUsername());
@@ -273,6 +262,7 @@ public class Usercontroller {
         }
         map.put("list",users);
         map.put("page", pageNum);
+        map.put("count", total);
         //查询筛选状态
         if(uservo.getSelectName()!=null && !uservo.getSelectName().isEmpty()){
             List<User> selectUserList = new ArrayList<>();
@@ -332,9 +322,9 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> deleteUser(int userid) {
         Integer status = userServise.deleteUser(userid);
-        userServise.deleteUserRole(userid);
+        Boolean aBoolean = userServise.deleteUserRole(userid);
         Map<String, Object> map = new HashMap<String, Object>();
-        if(status!=null){
+        if((status != 0 & aBoolean) == true){
             map.put("code", "101");
             return map;
         }

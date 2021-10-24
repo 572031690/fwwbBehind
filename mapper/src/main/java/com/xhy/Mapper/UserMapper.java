@@ -19,8 +19,6 @@ public interface UserMapper {
     Integer addUser(User user);
 
     Integer updateUser(User user);
-
-    Integer deleteUser(int userid);
     /*
     * 逻辑删除
     * */

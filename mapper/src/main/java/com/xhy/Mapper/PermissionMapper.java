@@ -3,6 +3,7 @@ package com.xhy.Mapper;
 import com.xhy.domain.Permission;
 import com.xhy.domain.Role;
 import com.xhy.domain.RolePerm;
+import com.xhy.vo.PermissionVO;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface PermissionMapper {
     /*
      * 查询所有权限
      * */
-    List<Permission> findAllPermission(String name);
+    List<Permission> findAllPermission(PermissionVO permissionVO);
 
     /*
      * 增加权限

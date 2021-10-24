@@ -7,12 +7,9 @@ import com.xhy.service.PermissionService;
 import com.xhy.service.RoleService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.RolePermVO;
-import com.xhy.vo.UserRoleVO;
+import com.xhy.vo.RoleVO;
 import io.swagger.annotations.Api;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +34,9 @@ public class RoleController {
 
     @RequiresPermissions("admin:listRole")
     @GetMapping("/listRole")
-    public @ResponseBody Map<String,Object> ListRole(Integer page, Integer limit, String rolename){
+    public @ResponseBody Map<String,Object> ListRole(RoleVO roleVO){
         Map<String, Object> map = new HashMap<String, Object>();
-        List<Role> list = roleService.findAllRole(page, limit, rolename);
+        List<Role> list = roleService.findAllRole(roleVO);
         PageInfo pageInfo = new PageInfo(list);
         int pageNum = pageInfo.getPageNum();
         long total = pageInfo.getTotal();
@@ -53,8 +50,9 @@ public class RoleController {
     @PostMapping ("/addRole")
     public @ResponseBody Map<String,Object> addRole(@RequestBody Role role){
         Map<String,Object> map = new HashMap<>();
-        String add = roleService.addRole(role);
-        if(add!=null || add!=""){
+        int add = roleService.addRole(role);
+        System.out.println(add);
+        if(add!=0){
             map.put("code","101");
         }else {
             map.put("code","102");
@@ -66,8 +64,8 @@ public class RoleController {
     @PostMapping("/updateRole")
     public @ResponseBody Map<String,Object> updateRole(@RequestBody Role role){
         Map<String,Object> map = new HashMap<>();
-        String update = roleService.updateRole(role);
-        if(update!=null || update!=""){
+        int update = roleService.updateRole(role);
+        if(update!=0){
             map.put("code","101");
         }else {
             map.put("code","102");
@@ -79,9 +77,9 @@ public class RoleController {
     @GetMapping("/deleteRole")
     public @ResponseBody Map<String,Object> deleteRole(int roleId){
         Map<String,Object> map = new HashMap<>();
-        String delete = roleService.deleteRole(roleId);
+        int delete = roleService.deleteRole(roleId);
         Boolean aBoolean = roleService.deleteRolePerm(roleId);
-        if(delete!=null || delete!="" & aBoolean){
+        if(delete!=0 & aBoolean){
             map.put("code","101");
         }else {
             map.put("code","102");

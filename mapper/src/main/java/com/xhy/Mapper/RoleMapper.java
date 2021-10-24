@@ -2,7 +2,7 @@ package com.xhy.Mapper;
 
 import com.xhy.domain.Role;
 import com.xhy.domain.RolePerm;
-import com.xhy.domain.UserRole;
+import com.xhy.vo.RoleVO;
 
 import java.util.List;
 
@@ -12,24 +12,22 @@ public interface RoleMapper {
     /*
     * 查询所有角色
     * */
-    List<Role> findAllRole(String rolename);
+    List<Role> findAllRole(RoleVO roleVO);
 
     /*
     * 增加角色
     * */
-    void addRole(Role role);
+    Integer addRole(Role role);
 
     /*
     * 修改角色
     * */
-    void updateRole(Role role);
+    Integer updateRole(Role role);
 
-    /*
-    * 删除角色
-    * */
-    void deleteRole(int roleId);
-
-
+    /**
+     * 删除角色
+     * */
+    Integer deleteRole(int roleId);
 
     /**
      * 获取角色权限

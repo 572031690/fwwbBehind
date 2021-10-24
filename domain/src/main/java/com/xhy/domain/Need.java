@@ -2,12 +2,9 @@ package com.xhy.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class Need implements Serializable {
@@ -23,6 +20,8 @@ public class Need implements Serializable {
     private String department;
     private String comment;
     private int uptype;
+    private String planName;
+    private int approvaltype;
     private String taskId;
 
 }

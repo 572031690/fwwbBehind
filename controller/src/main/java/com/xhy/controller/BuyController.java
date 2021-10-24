@@ -27,22 +27,13 @@ public class BuyController {
     public @ResponseBody
     Map<String, Object> findAllBuy(BuyVo buyVo) {
         Map<String, Object> map = new HashMap<String, Object>();
-        int count=0;
-        BuyVo buyVo1 = new BuyVo();
-        buyVo1.setLimit(0);
-        buyVo1.setPage(0);
-        buyVo1.setSearchName(buyVo.getSearchName());
-        buyVo1.setSelectName(buyVo.getSelectName());
-        List<Buy> buyList1 = buyService.findAllBuy(buyVo1);
-        for(Buy j : buyList1){
-            count++;
-        }
-        map.put("count", count);
-        List<Buy> buyList2 = buyService.findAllBuy(buyVo);
-        PageInfo pageInfo2 = new PageInfo(buyList2);
-        int pageNum = pageInfo2.getPageNum();
-        map.put("list", buyList2);
+        List<Buy> buyList = buyService.findAllBuy(buyVo);
+        PageInfo pageInfo = new PageInfo(buyList);
+        long total = pageInfo.getTotal();
+        int pageNum = pageInfo.getPageNum();
+        map.put("list", buyList);
         map.put("page", pageNum);
+        map.put("count", total);
         return map;
     }
 
@@ -53,7 +44,7 @@ public class BuyController {
         Map<String, Object> map = new HashMap<String, Object>();
         if (buy != null) {
             Integer updatebuy = buyService.updateBuy(buy);
-            if (updatebuy != null) {
+            if (updatebuy != 0) {
 
                 map.put("code", "101");
                 return map;
@@ -91,7 +82,7 @@ public class BuyController {
         Map<String, Object> map = new HashMap<String, Object>();
         if (buy != null) {
             Integer addBuy = buyService.addBuy(buy);
-            if (addBuy != null) {
+            if (addBuy != 0) {
                 map.put("code", "101");
                 return map;
             } else {
@@ -110,7 +101,7 @@ public class BuyController {
     Map<String, Object> deleteBuy(int buyid) {
             Map<String, Object> map = new HashMap<String, Object>();
             Integer deleteBuy =  buyService.deleteBuy(buyid);
-            if(deleteBuy != null) {
+            if(deleteBuy != 0) {
                 map.put("code", "101");
                 return map;
             } else {

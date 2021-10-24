@@ -6,7 +6,7 @@
     <!--配置查询所有，resultType的作用就是返回封装的位置，如果你要是不写的话，最后mybatis是不知道你到底要封装到哪里，会出现错误，我这个是User表，查询的也是这个，最后返回的结果就封装在User类中-->
     <select id="findAll" resultType="com.xhy.domain.User" parameterType="String">
         SELECT userId,username,realname, telNum, employeeid, isDisabled FROM tb_users
-            where isDisplayed=1
+            where isDisplayed=0
             <if test="searchName !=null and   searchName!=''">
               and   realname like '%${searchName}%'
             </if>
@@ -50,12 +50,6 @@
             employeeid=#{employeeid}
         where userId = #{userid}
     </update>
-
-    <delete id="deleteUser" parameterType="int">
-        delete
-        from tb_users
-        where userId = #{userid};
-    </delete>
 
     <select id="findbyname" parameterType="String" resultType="com.xhy.domain.User">
         select *
@@ -148,9 +142,9 @@
     </update>
 
     <!--逻辑删除-->
-    <update id="updateDisplayed" parameterType="com.xhy.domain.User">
+    <update id="updateDisplayed" parameterType="int">
     update tb_users
-    set isDisplayed=0
+    set isDisplayed=1
     where userId = #{userid};
     </update>
 </mapper>

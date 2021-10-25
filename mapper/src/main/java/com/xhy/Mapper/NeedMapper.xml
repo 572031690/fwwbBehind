@@ -24,6 +24,12 @@
             <if test="needday != null ">
                 and needday = #{needday}
             </if>
+            <if test="planName!=null and planName!=''">
+                and planName=#{planName}
+            </if>
+            <if test="approvaltype!=null and approvaltype!=''">
+                and approvaltype=#{approvaltype}
+            </if>
         </where>
         order by needid DESC
     </select>

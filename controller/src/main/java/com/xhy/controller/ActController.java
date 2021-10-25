@@ -1,5 +1,6 @@
 package com.xhy.controller;
 
+import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.github.pagehelper.PageHelper;
 import com.xhy.domain.*;
 import com.xhy.service.*;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -50,6 +52,8 @@ public class ActController {
     HistoryService historyService;
     @Autowired
     RepositoryService repositoryService;
+    @Autowired
+    DepositoryService depositoryService;
 
 
     /*修改并重启审批流程*/
@@ -238,7 +242,6 @@ public class ActController {
         return map;
     }
 
-
     /*找出需求个人待办任务*/
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
@@ -247,7 +250,9 @@ public class ActController {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Map<String, Object> map = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = userServise.findUser(username);
+
         int count = 0;
         int flag = 0;
         int index = 1;
@@ -260,6 +265,14 @@ public class ActController {
                 String businessKey = instance.getBusinessKey();
                 Need need = needService.findByNeedid(Integer.parseInt(businessKey));
                 need.setTaskId(task.getId());
+                Date startDay = need.getNeedday();
+                Date endDay = new Date();
+                long start = startDay.getTime();
+                long end = endDay.getTime();
+                long berween_days = (start - end) / (1000 * 3600 * 24);
+                if(berween_days <= 2){
+                    need.setUptype(5);
+                }
                 needList.add(need);
                 count++;
             }
@@ -309,8 +322,15 @@ public class ActController {
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-            System.out.println(buy);
             buy.setTaskId(task.getId());
+            Date startDay = buy.getBtime();
+            Date endDay = new Date();
+            long start = startDay.getTime();
+            long end = endDay.getTime();
+            long berween_days = (start - end) / (1000 * 3600 * 24);
+            if(berween_days <=2){
+                buy.setUptype(5);
+            }
             buyList.add(buy);
             count++;
         }
@@ -431,15 +451,28 @@ public class ActController {
                     map.put("code", "101");
                     map.put("status", "总经理审批通过");
                 }
-                Buy buy = new Buy();
-                buy.setBuytitle(need.getNeedtitle());
-                buy.setItemtype(need.getItemtype());
-                buy.setItemid(need.getItemid());
-                buy.setNum(need.getNeednum());
-                buy.setUnit(need.getUnit());
-                buy.setComment(need.getComment());
-                buy.setNeederid(need.getNeederid());
-                buyService.addBuy(buy);
+                Need byNeedid = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
+                Depository depository = depositoryService.findByName(byNeedid.getItemtype());
+                if(byNeedid.getNeednum() > depository.getStock()){
+                    byNeedid.setPlanName("库存供应");
+                    byNeedid.setApprovaltype(0);
+                    needService.updateNeed(byNeedid);
+
+                }
+                else {
+                    byNeedid.setPlanName("采购");
+                    byNeedid.setApprovaltype(0);
+                    needService.updateNeed(byNeedid);
+                    Buy buy = new Buy();
+                    buy.setBuytitle(need.getNeedtitle());
+                    buy.setItemtype(need.getItemtype());
+                    buy.setItemid(need.getItemid());
+                    buy.setNum(need.getNeednum());
+                    buy.setUnit(need.getUnit());
+                    buy.setComment(need.getComment());
+                    buy.setNeederid(need.getNeederid());
+                    buyService.addBuy(buy);
+                }
             }
         } else if (processDefinitionKey.equals("buyAudit")) {
             Act_Buy act_buy = new Act_Buy();

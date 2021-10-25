@@ -1,5 +1,6 @@
 package com.xhy.service;
 
+import com.xhy.domain.Depository;
 import com.xhy.vo.DepositoryVO;
 
 import java.util.List;
@@ -9,7 +10,13 @@ public interface DepositoryService {
     /**
      * 查看仓库信息
      * */
-    List<com.xhy.domain.Depository> findDepository(DepositoryVO depositoryVO);
+    List<Depository> findDepository(DepositoryVO depositoryVO);
+
+
+    /**
+     * 按物料查找仓库信息
+     * */
+    Depository findByName(String name);
 
     /**
      * 添加仓库信息

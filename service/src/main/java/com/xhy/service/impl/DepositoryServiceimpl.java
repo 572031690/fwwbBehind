@@ -23,6 +23,11 @@ public class DepositoryServiceimpl implements DepositoryService {
     }
 
     @Override
+    public Depository findByName(String name) {
+        return depositoryMapper.findByName(name);
+    }
+
+    @Override
     public Integer addDepository(Depository depository) {
         return depositoryMapper.addDepository(depository);
     }

@@ -30,8 +30,8 @@ public class NeedController {
     UserServise userServise;
 
     @RequiresPermissions("needer:listNeed")
-    @GetMapping(value = "/findAllNeed")
-    public @ResponseBody Map<String,Object> findAllNeed(NeedVO needVO)
+    @GetMapping (value = "/findAllNeed")
+    public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
     {
         Map<String,Object> map = new HashMap<String,Object>();
         List<Need> needList = needService.findAllNeed(needVO);

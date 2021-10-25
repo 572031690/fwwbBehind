@@ -21,20 +21,14 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/webneed/getNeedCount","anon");
         map.put("/webbuy/getBuyCount","anon");
         map.put("/web/getUserRole","anon");
+        map.put("/webitem/findAllitem","anon");
 
         map.put("/swagger-ui.html","anon");
         map.put("/swagger-resources/** " ,"anon");
         map.put("/v2/api-docs/**" ,"anon");
         map.put("/webjars/springfox-swagger-ui/**" ,"anon");
         map.put("/swagger/**","anon");
-//        map.put("/swagger/*","anon");
-//        map.put("/swagger/css/*","anon");
-//        map.put("/swagger/fonts/*","anon");
-//        map.put("/swagger/images/*","anon");
-//        map.put("/swagger/lang/*","anon");
-//        map.put("/swagger/lib/*","anon");
-//        map.put("/swagger/*.html","anon");
-//        map.put("/swagger/*.js","anon");
+
         //查询数据库中权限对应的资源路径
         List<Permission> permissions = permissionService.findPermission();
         //遍历,添加

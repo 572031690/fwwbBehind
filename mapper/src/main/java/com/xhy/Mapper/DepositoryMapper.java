@@ -12,6 +12,11 @@ public interface DepositoryMapper {
 
     List<Depository> findAll(DepositoryVO depositoryVO);
 
+    /**
+     * 按物料名称查找
+     * */
+    Depository findByName(String name);
+
     Integer addDepository(Depository depository);
 
     Integer updataDepository(Depository depository);

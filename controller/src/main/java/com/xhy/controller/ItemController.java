@@ -3,11 +3,8 @@ package com.xhy.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Item;
-import com.xhy.domain.Permission;
-import com.xhy.domain.User;
 import com.xhy.service.ItemService;
 import com.xhy.vo.ItemVO;
-import io.swagger.models.auth.In;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +21,6 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @RequiresPermissions("item:listItem")
     @RequestMapping(value = "/findAllitem", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> findAllitem(ItemVO itemVO) {

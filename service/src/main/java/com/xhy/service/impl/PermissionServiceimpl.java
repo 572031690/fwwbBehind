@@ -45,4 +45,9 @@ public class PermissionServiceimpl implements PermissionService {
     public List<Permission> findPermission() {
         return permissionMapper.findAllPermission(null);
     }
+
+    @Override
+    public Integer updatePermissionStatus(Permission permission) {
+        return permissionMapper.updatePermissionStatus(permission);
+    }
 }

@@ -454,13 +454,13 @@ public class ActController {
                 Need byNeedid = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 Depository depository = depositoryService.findByName(byNeedid.getItemtype());
                 if(byNeedid.getNeednum() > depository.getStock()){
-                    byNeedid.setPlanName("库存供应");
+                    byNeedid.setPlanName(2);
                     byNeedid.setApprovaltype(0);
                     needService.updateNeed(byNeedid);
 
                 }
                 else {
-                    byNeedid.setPlanName("采购");
+                    byNeedid.setPlanName(1);
                     byNeedid.setApprovaltype(0);
                     needService.updateNeed(byNeedid);
                     Buy buy = new Buy();
@@ -471,6 +471,9 @@ public class ActController {
                     buy.setUnit(need.getUnit());
                     buy.setComment(need.getComment());
                     buy.setNeederid(need.getNeederid());
+                    buy.setNeedid(need.getNeedid());
+                    buy.setDepartment(need.getDepartment());
+                    buy.setBuyerid(userServise.findUser(username).getUserid());
                     buyService.addBuy(buy);
                 }
             }

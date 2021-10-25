@@ -33,6 +33,12 @@ public interface RoleService {
     List<Role> findRole();
 
     /**
+     * 修改角色状态
+     * */
+
+    Integer updateRoleStatus(Role role);
+
+    /**
      * 获取角色权限
      * */
     List<RolePerm> getRolePerm(int roleId);

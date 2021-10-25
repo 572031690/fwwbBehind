@@ -16,7 +16,7 @@
     </select>
 
     <!--按物料名称查找-->
-    <select id="findAll" resultType="com.xhy.domain.Depository" parameterType="String">
+    <select id="findByName" resultType="com.xhy.domain.Depository" parameterType="String">
         SELECT * FROM tb_repository where name = #{name}
     </select>
 

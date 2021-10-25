@@ -62,7 +62,7 @@
         select DISTINCT rolename
         from tb_roles r
                  INNER JOIN tb_user_role ur ON r.roleId = ur.roleId
-        where ur.userId = #{userId}
+        where ur.userId = #{userId} and r.isDisabled!=1;
     </select>
 
     <!--    查询当前用户所有权限-->
@@ -72,7 +72,7 @@
                  INNER JOIN tb_role_permission rp on p.id = rp.permId
                  INNER JOIN tb_roles r on r.roleId = rp.roleId
                  INNER JOIN tb_user_role ur on ur.roleId = r.roleId
-        where ur.userid = #{userId};
+        where ur.userid = #{userId} and p.isDisabled != 1;
     </select>
 
     <select id="findPermissionId" parameterType="int" resultType="int">
@@ -81,7 +81,7 @@
                  INNER JOIN tb_role_permission rp on p.id = rp.permId
                  INNER JOIN tb_roles r on r.roleId = rp.roleId
                  INNER JOIN tb_user_role ur on ur.roleId = r.roleId
-        where ur.userid = #{userId};
+        where ur.userid = #{userId} ;
     </select>
 
 

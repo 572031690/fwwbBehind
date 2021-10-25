@@ -25,6 +25,12 @@ public interface RoleMapper {
     Integer updateRole(Role role);
 
     /**
+     * 修改角色状态
+     * */
+    Integer updateRoleStatus(Role role);
+
+
+    /**
      * 删除角色
      * */
     Integer deleteRole(int roleId);

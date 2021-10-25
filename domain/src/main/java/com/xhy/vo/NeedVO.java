@@ -20,6 +20,6 @@ public class NeedVO implements Serializable {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
     Date needday; //需求时间
-    String planName;
+    int planName;
     int approvaltype;
 }

@@ -77,5 +77,22 @@ public class PermissionController {
     }
 
 
+    /**
+     * 修改项目权限
+     * */
+
+    @RequiresPermissions("admin:updatePermissionStatus")
+    @PostMapping("/updatePermissionStatus")
+    @ResponseBody
+    public  Map<String,Object> updatePermissionStatus(@RequestBody Permission permission){
+     Map<String,Object> map = new HashMap<>();
+        Integer status = permissionService.updatePermissionStatus(permission);
+        if(status!=0){
+            map.put("code","101");
+        }else {
+            map.put("code","102");
+        }
+        return map;
+    }
 
 }

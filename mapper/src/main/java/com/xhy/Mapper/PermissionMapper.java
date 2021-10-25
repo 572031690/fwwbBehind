@@ -28,4 +28,10 @@ public interface PermissionMapper {
      * */
     Integer deletePermission(int id);
 
+    /**
+     * 修改权限状态
+     * */
+
+    Integer updatePermissionStatus(Permission permission);
+
 }

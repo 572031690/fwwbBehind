@@ -20,7 +20,7 @@ public class Need implements Serializable {
     private String department;
     private String comment;
     private int uptype;
-    private String planName;
+    private int planName;
     private int approvaltype;
     private String taskId;
 

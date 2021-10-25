@@ -32,6 +32,13 @@ public interface PermissionService {
     List<Permission> findPermission();
 
 
+    /**
+     * 修改权限状态
+     * */
+
+    Integer updatePermissionStatus(Permission permission);
+
+
 
 
 }

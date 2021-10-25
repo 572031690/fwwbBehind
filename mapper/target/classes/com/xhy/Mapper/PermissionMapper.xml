@@ -30,4 +30,9 @@
         update  tb_permessions set isDisplayed=1 where id=#{id}
     </update>
 
+    <!--修改权限状态-->
+    <update id="updatePermissionStatus" parameterType="com.xhy.domain.Permission">
+        update tb_permessions set isDisabled=#{isDisabled} where id=#{id}
+    </update>
+
 </mapper>

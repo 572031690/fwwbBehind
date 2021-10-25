@@ -12,7 +12,6 @@ import com.xhy.vo.AdminUserVO;
 import com.xhy.vo.UpdatePasswordVO;
 import com.xhy.vo.UserRoleVO;
 import com.xhy.vo.UserVO;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -88,8 +87,8 @@ public class Usercontroller {
             map.put("user", user);
             List<Permission> permission = permissionService.findPermission();
             map.put("permission",permission);
-            Set<Integer> permissionId = userServise.findPermissionId(adminUserVO.getUsername());
-            map.put("permissionId",permissionId);
+            Set<String> permissionName = userServise.findPermissionByUserName(adminUserVO.getUsername());
+            map.put("permissionName",permissionName);
         } catch (UnknownAccountException ex) {
             System.out.println("输入的账号不存在");
             map.put("code","102");

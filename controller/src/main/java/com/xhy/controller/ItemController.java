@@ -37,7 +37,6 @@ public class ItemController {
 
     }
 
-    @RequiresPermissions("item:findItemName")
     @ResponseBody
     @GetMapping("/findItemName")
     public Map<String,Object> findItemName( Integer itemid){

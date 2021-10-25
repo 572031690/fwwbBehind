@@ -24,10 +24,15 @@
     <update id="updateRole" parameterType="com.xhy.domain.Role">
         update tb_roles
         set rolename=#{rolename},
-            description=#{description},
-            isDisabled=#{isDisabled}
+            description=#{description}
         where roleId = #{roleId}
     </update>
+
+    <!--修改角色状态-->
+    <update id="updateRoleStatus" parameterType="com.xhy.domain.Role">
+        update tb_roles set isDisabled=#{isDisabled} where roleId=#{roleId}
+    </update>
+
 
     <!--删除角色信息-->
     <update id="deleteRole" parameterType="int">

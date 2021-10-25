@@ -49,6 +49,11 @@ public class RoleServiceimpl implements RoleService {
     }
 
     @Override
+    public Integer updateRoleStatus(Role role) {
+        return roleMapper.updateRoleStatus(role);
+    }
+
+    @Override
     public List<RolePerm> getRolePerm(int roleId) {
         return roleMapper.getRolePerm(roleId);
     }

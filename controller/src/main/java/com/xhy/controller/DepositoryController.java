@@ -24,7 +24,6 @@ public class DepositoryController {
     /**
      * 查看仓库信息
      * */
-    @RequiresPermissions("depository:findDepository")
     @GetMapping("/findDepository")
     @ResponseBody
     public Map<String,Object>  findDepository(DepositoryVO depositoryVO){

@@ -88,7 +88,21 @@ public class RoleController {
     }
 
 
-
+    /**
+     * 修改角色状态
+     * */
+    @RequiresPermissions("admin:updateRoleStatus")
+    @PostMapping("/updateRoleStatus")
+    @ResponseBody
+    public Map<String,Object> updateRoleStatus(@RequestBody Role role){
+        Map<String,Object> map = new HashMap<>();
+        Integer status = roleService.updateRoleStatus(role);
+        if(status!=0){
+            map.put("code","101");
+        }
+        else map.put("code","101");
+        return map;
+    }
 
     /*
      * 拿到角色权限关联
@@ -96,15 +110,15 @@ public class RoleController {
     @RequiresPermissions("admin:getRolePerm")
     @GetMapping("/getRolePerm")
     @ResponseBody
-    public Map<String,Object> getRolePerm(String username){
+    public Map<String,Object> getRolePerm(int roleId){
         Map<String,Object> map = new HashMap<>();
         //查询所有权限
        List<Permission> permissions = permissionService.findPermission();
-        Set<String> permissionByUserName = userServise.findPermissionByUserName(username);
+        List<RolePerm> rolePerm = roleService.getRolePerm(roleId);
         if(permissions != null){
             map.put("code","101");
             map.put("roles",permissions);
-            map.put("rolePerm",permissionByUserName);
+            map.put("rolePerm",rolePerm);
         }else
         {
             map.put("code","102");

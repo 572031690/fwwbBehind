@@ -131,7 +131,7 @@ public class InOutRepositoryController {
                 Integer status = buyService.updateBuy(buy);
                 if(status != 0){
                     Need need = needService.findByNeedid(buy.getNeedid());
-                    need.setPlanName("库存供应");
+                    need.setPlanName(2);
                     needService.updateStatus(need);
                     map.put("code", "101");
                 }

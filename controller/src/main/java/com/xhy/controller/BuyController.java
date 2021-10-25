@@ -112,6 +112,7 @@ public class BuyController {
 
 
     /*查看需求相关信息*/
+    @RequiresPermissions("buy:getBuyCount")
     @GetMapping("/getBuyCount")
     @ResponseBody
     public Map<String,Object> getBuyCount(){

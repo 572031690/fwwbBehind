@@ -101,6 +101,7 @@ public class NeedController {
 
 
     /*查看需求相关信息*/
+    @RequiresPermissions("need:getNeedCount")
     @GetMapping("/getNeedCount")
     @ResponseBody
     public Map<String,Object> getNeedCount(){

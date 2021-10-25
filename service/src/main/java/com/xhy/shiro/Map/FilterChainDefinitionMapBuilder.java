@@ -18,8 +18,6 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/web/shirologin","anon");
         map.put("/web/logon","anon");
         map.put("/web/updateUserPassword","anon");
-        map.put("/webneed/getNeedCount","anon");
-        map.put("/webbuy/getBuyCount","anon");
         map.put("/web/getUserRole","anon");
         map.put("/webitem/findAllitem","anon");
         map.put("/depositroy/findDepository","anon");

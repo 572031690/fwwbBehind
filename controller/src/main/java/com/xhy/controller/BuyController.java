@@ -23,9 +23,9 @@ public class BuyController {
     BuyService buyService;
 
     @RequiresPermissions("buyer:listBuy")
-    @RequestMapping(value = "/findAllBuy", method = RequestMethod.GET)
+    @PostMapping("/findAllBuy")
     public @ResponseBody
-    Map<String, Object> findAllBuy(BuyVo buyVo) {
+    Map<String, Object> findAllBuy(@RequestBody BuyVo buyVo) {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Buy> buyList = buyService.findAllBuy(buyVo);
         PageInfo pageInfo = new PageInfo(buyList);

@@ -66,6 +66,15 @@ public class InOutRepositoryController {
     @ResponseBody
     public Map<String, Object> addInRepository(@RequestBody InRepository inRepository) {
         Map<String, Object> map = new HashMap<>();  //用于存放回传的数据
+        int flag = 0;//记录出库次数
+        InRepositoryVO inRepositoryVO = new InRepositoryVO();
+        inRepositoryVO.setSelectName(String.valueOf(inRepository.getBuyid()));
+        List<InRepository> inRepositoryList = inRepositoryService.findInRepository(inRepositoryVO);
+        for (InRepository i : inRepositoryList){
+            i.getInRept();
+            flag++;
+        }
+        inRepository.setInRept(flag);
         Integer integer = inRepositoryService.addInRepository(inRepository);
         if (integer != 0) {
             map.put("code", "101");
@@ -197,6 +206,15 @@ public class InOutRepositoryController {
     @ResponseBody
     public Map<String, Object> addOutRepository(@RequestBody OutRepository outRepository) {
         Map<String, Object> map = new HashMap<>();  //用于存放回传的数据
+        int flag = 0;//记录入库次数
+        OutRepositoryVO outRepositoryVO = new OutRepositoryVO();
+        outRepositoryVO.setSelectName(String.valueOf(outRepository.getNeedid()));
+        List<OutRepository> outRepositoryList = outRepositoryService.findOutRepository(outRepositoryVO);
+        for (OutRepository i : outRepositoryList){
+            i.getOutRept();
+            flag++;
+        }
+        outRepository.setOutRept(flag);
         Integer integer = outRepositoryService.addOutRepository(outRepository);
         if (integer != 0) {
             map.put("code", "101");

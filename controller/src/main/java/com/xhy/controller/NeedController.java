@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Character.getType;
+
 @Controller
 @RequestMapping("/webneed")
 public class NeedController {
@@ -30,9 +32,11 @@ public class NeedController {
     UserServise userServise;
 
     @RequiresPermissions("needer:listNeed")
-    @GetMapping (value = "/findAllNeed")
-    public @ResponseBody Map<String,Object> findAllNeed( NeedVO needVO)
+    @PostMapping ("/findAllNeed")
+    public @ResponseBody Map<String,Object> findAllNeed(@RequestBody NeedVO needVO)
     {
+
+        System.out.println(needVO);
         Map<String,Object> map = new HashMap<String,Object>();
         List<Need> needList = needService.findAllNeed(needVO);
         PageInfo pageInfo = new PageInfo(needList);

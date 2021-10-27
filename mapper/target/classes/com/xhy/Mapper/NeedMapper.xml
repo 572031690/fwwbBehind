@@ -24,10 +24,10 @@
             <if test="needday != null ">
                 and needday = #{needday}
             </if>
-            <if test="planName!=null and planName!=''">
+            <if test="planName==1 or planName == 2">
                 and planName=#{planName}
             </if>
-            <if test="approvaltype!=null and approvaltype!=''">
+            <if test="approvaltype == 1 or approvaltype == 2">
                 and approvaltype=#{approvaltype}
             </if>
         </where>

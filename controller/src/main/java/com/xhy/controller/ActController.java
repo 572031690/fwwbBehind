@@ -271,7 +271,8 @@ public class ActController {
                 long end = endDay.getTime();
                 long berween_days = (start - end) / (1000 * 3600 * 24);
                 if(berween_days <= 2){
-                    need.setUptype(5);
+                    need.setUptype(5); //审批逾期
+                    taskService.deleteTask(task.getId());
                 }
                 needList.add(need);
                 count++;
@@ -330,6 +331,7 @@ public class ActController {
             long berween_days = (start - end) / (1000 * 3600 * 24);
             if(berween_days <=2){
                 buy.setUptype(5);
+                taskService.deleteTask(task.getId());
             }
             buyList.add(buy);
             count++;
@@ -457,7 +459,6 @@ public class ActController {
                     byNeedid.setPlanName(2);
                     byNeedid.setApprovaltype(0);
                     needService.updateNeed(byNeedid);
-
                 }
                 else {
                     byNeedid.setPlanName(1);

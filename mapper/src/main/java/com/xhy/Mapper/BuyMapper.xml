@@ -28,17 +28,20 @@
                 and btime = #{btime}
             </if>
         </where>
-        <if test="sortType ==1">
-            order by importance
-        </if>
-        <if test="sortType ==2">
-            order by arrivaltime
-        </if>
-        <if test="sortType ==3">
-            order by btime
-        </if>
-        <if test="sortType == 0">
-            desc
+        <if test="sortType != 0 ">
+            order by
+            <if test="sortType ==1">
+                 importance
+            </if>
+            <if test="sortType ==2">
+               , arrivaltime
+            </if>
+            <if test="sortType ==3">
+                , btime
+            </if>
+            <if test="ordertype == 0">
+                desc
+            </if>
         </if>
     </select>
 
@@ -50,9 +53,9 @@
 
     <insert id="addBuy" parameterType="com.xhy.domain.Buy">
         insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid,
-                           uptype, comment, importance,department,buytype,needid)
+                           uptype, comment, importance, department, buytype, needid)
         values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid},
-                #{neederid}, 0, #{comment}, #{importance},#{department},0,#{needid});
+                #{neederid}, 0, #{comment}, #{importance}, #{department}, 0, #{needid});
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">
@@ -66,7 +69,7 @@
           , importance=#{importance}
           , comment=#{comment}
           , arrivaltime=#{arrivaltime}
-          ,department=#{department}
+          , department=#{department}
           , importance=#{importance}
           , buytype=#{buytype}
         where buyid = #{buyid};

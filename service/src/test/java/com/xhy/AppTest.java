@@ -23,6 +23,5 @@ public class AppTest
    @Test
      public void shouldAnswerWithTrue()
     {
-        NeedService needService = new NeedServiceimpl();
     }
 }

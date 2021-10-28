@@ -18,5 +18,6 @@ public class BuyVo implements Serializable {
     String itemid;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     Date btime;
-    int sortType; //空或者不传后端接收的时候默认是 0=ordertype ; 1=importancetype ; 2=arrivaltimetype ; 3=btimetype
+    int sortType; //空或者不传后端接收的时候默认是  1=importancetype ; 2=arrivaltimetype ; 3=btimetype
+    int orderType; //0=ordertype 降序 ，-1=不起用
 }

@@ -1,0 +1,52 @@
+Manifest-Version: 1.0
+Main-Class: com.xhy.App
+Class-Path: java-property-utils-1.9.jar batik-util-1.10.jar shiro-lang-1
+ .7.1.jar opentest4j-1.2.0.jar swagger-annotations-1.5.13.jar junit-plat
+ form-engine-1.8.1.jar jsqlparser-1.2.jar batik-dom-1.10.jar guava-18.0.
+ jar shiro-web-1.7.1.jar spring-web-5.3.5.jar fastjson-1.2.4.jar spring-
+ orm-5.0.8.RELEASE.jar javax.activation-api-1.2.0.jar springfox-swagger-
+ common-2.7.0.jar activiti-common-runtime-api-7.0.0.Beta1.jar httpcore-4
+ .4.13.jar batik-i18n-1.10.jar spring-webmvc-5.3.5.jar junit-jupiter-5.8
+ .1.jar commons-beanutils-1.9.4.jar junit-platform-commons-1.8.1.jar com
+ mons-io-1.3.1.jar spring-core-5.3.5.jar activation-1.1.jar commons-emai
+ l-1.5.jar jedis-3.2.0.jar activiti-process-validation-7.0.0.Beta1.jar m
+ ybatis-spring-2.0.6.jar commons-math3-3.6.1.jar mybatis-3.5.6.jar poi-4
+ .1.2.jar swagger-models-1.5.13.jar spring-beans-5.3.5.jar commons-lang3
+ -3.7.jar SparseBitSet-1.2.jar istack-commons-runtime-3.0.7.jar byte-bud
+ dy-1.6.14.jar activiti-bpmn-model-7.0.0.Beta1.jar jstl-api-1.2.jar juni
+ t-jupiter-api-5.8.1.jar el-api-2.2.jar commons-logging-1.2.jar batik-sv
+ ggen-1.10.jar protobuf-java-3.6.1.jar spring-context-5.3.5.jar juel-api
+ -2.2.7.jar encoder-1.2.2.jar xmlgraphics-commons-2.2.jar batik-ext-1.10
+ .jar txw2-2.3.1.jar shiro-config-core-1.7.1.jar apiguardian-api-1.1.2.j
+ ar activiti-image-generator-7.0.0.Beta1.jar shiro-cache-1.7.1.jar shiro
+ -spring-1.7.1.jar batik-constants-1.10.jar xmlbeans-3.1.0.jar shiro-cor
+ e-1.7.1.jar shiro-crypto-core-1.7.1.jar activiti-json-converter-7.0.0.B
+ eta1.jar spring-expression-5.3.5.jar activiti-engine-7.0.0.Beta1.jar as
+ sertj-core-3.9.1.jar mysql-connector-java-8.0.19.jar javaGeom-0.11.1.ja
+ r commons-collections4-4.4.jar jackson-core-2.12.3.jar ehcache-3.8.1.ja
+ r reflections-0.9.11.jar xml-apis-ext-1.3.04.jar springfox-spring-web-2
+ .7.0.jar log4j-1.2.17.jar asm-7.1.jar springfox-swagger-ui-2.7.0.jar ac
+ tiviti-process-model-api-7.0.0.Beta1.jar commons-csv-1.8.jar spring-plu
+ gin-core-1.2.0.RELEASE.jar stax-ex-1.8.jar spring-jcl-5.3.5.jar spring-
+ tx-5.3.5.jar activiti-spring-7.0.0.Beta1.jar commons-compress-1.19.jar 
+ xml-apis-1.3.04.jar pagehelper-5.1.8.jar serializer-2.7.2.jar easyexcel
+ -3.0.1.jar xalan-2.7.2.jar jaxb-runtime-2.3.1.jar javax.servlet-api-3.1
+ .0.jar springfox-swagger2-2.7.0.jar javassist-3.21.0-GA.jar jaxb-api-2.
+ 3.1.jar shiro-crypto-hash-1.7.1.jar joda-time-2.10.1.jar jstl-impl-1.2.
+ jar activiti-bpmn-converter-7.0.0.Beta1.jar activiti-common-model-api-7
+ .0.0.Beta1.jar juel-impl-2.2.7.jar commons-codec-1.11.jar activiti-proc
+ ess-runtime-api-7.0.0.Beta1.jar poi-ooxml-4.1.2.jar commons-collections
+ -3.2.2.jar springfox-core-2.7.0.jar spring-aop-5.3.5.jar springfox-spi-
+ 2.7.0.jar jstl-1.2.jar springfox-schema-2.7.0.jar httpclient-4.5.13.jar
+  FastInfoset-1.2.15.jar slf4j-api-1.7.30.jar classmate-1.3.3.jar jcl-ov
+ er-slf4j-1.7.25.jar mchange-commons-java-0.2.11.jar junit-jupiter-engin
+ e-5.8.1.jar jackson-annotations-2.12.3.jar shiro-crypto-cipher-1.7.1.ja
+ r jackson-databind-2.12.3.jar poi-ooxml-schemas-4.1.2.jar juel-spi-2.2.
+ 7.jar cglib-3.3.0.jar curvesapi-1.06.jar spring-plugin-metadata-1.2.0.R
+ ELEASE.jar shiro-event-1.7.1.jar batik-awt-util-1.10.jar mapstruct-1.1.
+ 0.Final.jar commons-pool2-2.6.2.jar aspectjweaver-1.9.6.jar junit-jupit
+ er-params-5.8.1.jar batik-xml-1.10.jar spring-jdbc-5.3.5.jar servlet-ap
+ i-2.5.jar c3p0-0.9.5.2.jar batik-css-1.10.jar spring-test-5.3.5.jar act
+ iviti-cloud-services-api-7.0.0.Beta1.jar cors-filter-2.5.jar javax.mail
+ -1.5.6.jar shiro-config-ogdl-1.7.1.jar
+

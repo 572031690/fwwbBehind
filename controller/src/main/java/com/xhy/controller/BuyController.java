@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,10 +149,10 @@ public class BuyController {
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("utf-8");
-            String fileName = URLEncoder.encode("需求计划审批结果", "UTF-8").replaceAll("\\+", "%20");
+            String fileName = URLEncoder.encode("采购计划审批结果", "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
-            EasyExcel.write(response.getOutputStream(), Buy.class).autoCloseStream(Boolean.FALSE).sheet("需求审批结果")
+            EasyExcel.write(response.getOutputStream(), Buy.class).autoCloseStream(Boolean.FALSE).sheet("采购审批结果")
                     .doWrite(buy);
         } catch (Exception e) {
             // 重置response

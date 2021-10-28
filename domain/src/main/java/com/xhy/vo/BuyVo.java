@@ -16,7 +16,7 @@ public class BuyVo implements Serializable {
     int buyerid;
     String itemtype;
     String itemid;
-    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     Date btime;
     int ordertype; //降序传int 1
     int importancetype; //按照重要性排序 （int ）1 是启动

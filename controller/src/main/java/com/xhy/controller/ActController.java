@@ -245,14 +245,12 @@ public class ActController {
     /*找出需求个人待办任务*/
     @RequiresPermissions("needManger:listUpNeed")
     @ResponseBody
-    @GetMapping("/queryNeedActTask")
-    public Map<String, Object> queryNeedActTask(NeedVO needVO) {
+    @PostMapping("/queryNeedActTask")
+    public Map<String, Object> queryNeedActTask(@RequestBody NeedVO needVO) {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Map<String, Object> map = new HashMap<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User user = userServise.findUser(username);
-
         int count = 0;
         int flag = 0;
         int index = 1;
@@ -305,8 +303,8 @@ public class ActController {
     /*找出购买个人代办任务*/
     @RequiresPermissions("buyManger:aduitBuy")
     @ResponseBody
-    @GetMapping("/queryBuyActTask")
-    public Map<String, Object> queryBuyActTask(BuyVo buyVo) {
+    @PostMapping("/queryBuyActTask")
+    public Map<String, Object> queryBuyActTask(@RequestBody BuyVo buyVo) {
         Map<String, Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());

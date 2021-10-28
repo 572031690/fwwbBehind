@@ -15,7 +15,7 @@
             <if test="department!=null and department!=''">
                 and department = #{department}
             </if>
-            <if test="buyerid!=0">
+            <if test="buyerid !=0">
                 and buyerid = #{buyerid}
             </if>
             <if test="itemtype!=null and itemtype!=''">
@@ -29,10 +29,10 @@
             </if>
         </where>
         order by buyid
-        <if test="importancetype==1">
+        <if test="importancetype ==1">
             ,importance
         </if>
-        <if test="arrivaltimetype==1">
+        <if test="arrivaltimetype ==1">
             ,arrivaltime
         </if>
         <if test="btimetype==1">

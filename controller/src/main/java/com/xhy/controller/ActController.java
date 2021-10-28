@@ -720,10 +720,12 @@ public class ActController {
     * */
 
     @RequiresPermissions("needManager:findHistory")
-    @GetMapping("/findFinishedNeed")
+    @PostMapping("/findFinishedNeed")
     @ResponseBody
-    public Map<String,Object> findFinishedNeed(int page,int limit){
+    public Map<String,Object> findFinishedNeed(@RequestBody NeedVO needVO){
         Map<String,Object> map = new HashMap<>();
+        int limit = needVO.getLimit();
+        int page = needVO.getPage();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);
@@ -796,10 +798,12 @@ public class ActController {
      * 查看购买历史代办
      * */
     @RequiresPermissions("buyManager:findHistory")
-    @GetMapping("/findFinishedBuy")
+    @PostMapping("/findFinishedBuy")
     @ResponseBody
-    public Map<String,Object> findFinishedBuy(int page,int limit){
+    public Map<String,Object> findFinishedBuy(@RequestBody BuyVo buyVo){
         Map<String,Object> map = new HashMap<>();
+        int limit = buyVo.getLimit();
+        int page = buyVo.getPage();
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);

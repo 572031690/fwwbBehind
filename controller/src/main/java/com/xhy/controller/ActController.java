@@ -457,12 +457,12 @@ public class ActController {
                 Depository depository = depositoryService.findByName(byNeedid.getItemtype());
                 if(byNeedid.getNeednum() > depository.getStock()){
                     byNeedid.setPlanName(2);
-                    byNeedid.setApprovaltype(0);
+                    byNeedid.setApprovaltype(1);
                     needService.updateNeed(byNeedid);
                 }
                 else {
                     byNeedid.setPlanName(1);
-                    byNeedid.setApprovaltype(0);
+                    byNeedid.setApprovaltype(1);
                     needService.updateNeed(byNeedid);
                     Buy buy = new Buy();
                     buy.setBuytitle(need.getNeedtitle());

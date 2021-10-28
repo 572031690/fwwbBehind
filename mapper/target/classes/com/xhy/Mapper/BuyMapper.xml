@@ -12,6 +12,21 @@
             <if test="searchName!=null and searchName!=''">
                 and buytitle like '%${searchName}%'
             </if>
+            <if test="department!=null and department!=''">
+                and department = #{department}
+            </if>
+            <if test="buyerid!=0">
+                and buyerid = #{buyerid}
+            </if>
+            <if test="itemtype!=null and itemtype!=''">
+                and itemtype = #{itemtype}
+            </if>
+            <if test="itemid!=null and itemid!=''">
+                and itemid = #{itemid}
+            </if>
+            <if test="btime!=null">
+                and btime = #{btime}
+            </if>
         </where>
         order by buyid
         <if test="importancetype==1">

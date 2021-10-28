@@ -22,6 +22,8 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/webitem/findAllitem","anon");
         map.put("/depositroy/findDepository","anon");
         map.put("/webitem/findItemName","anon");
+        map.put("/webneed/needResult","anon");
+        map.put("/webbuy/buyResult","anon");
 
         map.put("/swagger-ui.html","anon");
         map.put("/swagger-resources/** " ,"anon");

@@ -1,10 +1,9 @@
 package com.xhy.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.Need;
-import com.xhy.domain.Role;
-import com.xhy.domain.User;
 import com.xhy.service.NeedService;
 import com.xhy.service.UserServise;
 import com.xhy.vo.NeedVO;
@@ -13,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Character.getType;
 
 @Controller
 @RequestMapping("/webneed")
@@ -130,19 +128,35 @@ public class NeedController {
     }
 
 
+    /*需求审批结果导出*/
+    @GetMapping("/needResult")
+    public void needResult(HttpServletResponse response){
+        List<Need> need = needService.findNeed();
+        try {
 
-//    @RequiresPermissions("needer:listNeed")
-//    @RequestMapping(value = "/findHistroy",method = RequestMethod.GET)
-//    public @ResponseBody Map<String,Object> findHistroy( NeedVO needVO)
-//    {
-//        Map<String,Object> map = new HashMap<String,Object>();
-//        Map<String, Object> histroy = needService.findHistroy(needVO);
-//        map.put("list",histroy.get("list"));
-//        map.put("count",histroy.get("count"));
-//        map.put("page",histroy.get("page"));
-//        map.put("limit",histroy.get("limit"));
-//        return map;
-//    }
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setCharacterEncoding("utf-8");
+            String fileName = URLEncoder.encode("需求计划审批结果", "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+            // 这里需要设置不关闭流
+            EasyExcel.write(response.getOutputStream(), Need.class).autoCloseStream(Boolean.FALSE).sheet("需求审批结果")
+                    .doWrite(need);
+        } catch (Exception e) {
+            // 重置response
+            response.reset();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            Map<String,Object> map =new HashMap<>();
+            map.put("status", "failure");
+            map.put("message", "下载文件失败" + e.getMessage());
+            try {
+                response.getWriter().println(JSON.toJSONString(map));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
 
 

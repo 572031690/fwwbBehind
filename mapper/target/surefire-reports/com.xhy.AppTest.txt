@@ -1,0 +1,43 @@
+-------------------------------------------------------------------------------
+Test set: com.xhy.AppTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.38 s <<< FAILURE! - in com.xhy.AppTest
+testbatis(com.xhy.AppTest)  Time elapsed: 0.311 s  <<< ERROR!
+org.apache.ibatis.exceptions.PersistenceException: 
+
+### Error opening session.  Cause: java.lang.NullPointerException
+### Cause: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+Caused by: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+
+testbatis(com.xhy.AppTest)  Time elapsed: 0.311 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.xhy.AppTest.destroy(AppTest.java:75)
+
+testsave(com.xhy.AppTest)  Time elapsed: 0.017 s  <<< ERROR!
+org.apache.ibatis.exceptions.PersistenceException: 
+
+### Error opening session.  Cause: java.lang.NullPointerException
+### Cause: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+Caused by: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+
+testsave(com.xhy.AppTest)  Time elapsed: 0.017 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.xhy.AppTest.destroy(AppTest.java:75)
+
+testfindbyid(com.xhy.AppTest)  Time elapsed: 0.014 s  <<< ERROR!
+org.apache.ibatis.exceptions.PersistenceException: 
+
+### Error opening session.  Cause: java.lang.NullPointerException
+### Cause: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+Caused by: java.lang.NullPointerException
+	at com.xhy.AppTest.init(AppTest.java:32)
+
+testfindbyid(com.xhy.AppTest)  Time elapsed: 0.014 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.xhy.AppTest.destroy(AppTest.java:75)
+

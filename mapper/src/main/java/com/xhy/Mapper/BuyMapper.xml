@@ -28,14 +28,17 @@
                 and btime = #{btime}
             </if>
         </where>
-        order by buyid
+        order by
+        <if test="buyid == 1">
+            buyid,
+        </if>
         <if test="importancetype ==1">
             ,importance
         </if>
         <if test="arrivaltimetype ==1">
             ,arrivaltime
         </if>
-        <if test="btimetype==1">
+        <if test="btimetype ==1">
             ,btime
         </if>
         <if test="ordertype == 1">

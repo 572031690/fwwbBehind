@@ -162,7 +162,7 @@ public class InOutRepositoryController {
                         map.put("code", "101");
                     } else {
                         map.put("code", "102");
-                        map.put("errot","采购状态修改失败");
+                        map.put("error","采购状态修改失败");
                     }
                 }
             } else {
@@ -302,7 +302,7 @@ public class InOutRepositoryController {
                 }
             } else {
                 map.put("code", "102");
-                map.put("erroe","仓库修改失败");
+                map.put("error","仓库修改失败");
             }
         } else {
             map.put("code", "102");

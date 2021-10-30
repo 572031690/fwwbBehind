@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.pagehelper.PageInfo;
 import com.xhy.domain.*;
 import com.xhy.service.*;
+import com.xhy.vo.DepositoryVO;
 import com.xhy.vo.InRepositoryVO;
 import com.xhy.vo.OutRepositoryVO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class InOutRepositoryController {
         InRepositoryVO inRepositoryVO = new InRepositoryVO();
         inRepositoryVO.setSelectName(String.valueOf(inRepository.getBuyid()));
         List<InRepository> inRepositoryList = inRepositoryService.findInRepository(inRepositoryVO);
-        for (InRepository i : inRepositoryList){
+        for (InRepository i : inRepositoryList) {
             i.getInRept();
             flag++;
         }
@@ -126,52 +126,79 @@ public class InOutRepositoryController {
         Map<String, Object> map = new HashMap<>();
         int count = 0; //入库总量
         int num = inRepository.getNum();
-        Depository depository = depositoryService.findByName(inRepository.getName());
+        Depository depository = depositoryService.findByName(inRepository.getName()); //查询仓库表
         Buy buy = buyService.findBuyById(inRepository.getBuyid());
         /*获取入库表中记录*/
         InRepositoryVO inRepositoryVO = new InRepositoryVO();
         inRepositoryVO.setSelectName(String.valueOf(inRepository.getBuyid()));
         List<InRepository> inRepositoryList = inRepositoryService.findInRepository(inRepositoryVO);
-        for(InRepository i : inRepositoryList){  //循环获取入库表中的入库数量
+        /*获取目前入库总量*/
+        for (InRepository i : inRepositoryList) {  //循环获取入库表中的入库数量
             count = count + i.getNum();  //入库总量 = 每次入库量之和
         }
-        int needNum = buy.getNum();  //采购需求数量
-        int stock = depository.getStock(); //仓库当前存量
-        int totalStock  =  depository.getTotalstock(); //仓库总库存量
-        if(count + stock <= totalStock && needNum <=totalStock)  //入库总量+当前库存量要小于库存总量
-        {
-            if (count < needNum) {   //入库总量<采购需求数量
-                int addNum = stock + num;
-                depository.setStock(addNum);
-            } else if (count >= needNum) {
-                int addNum = stock + num;
-                depository.setStock(addNum);
-                buy.setBuytype(2); //buytype=1表示完成采购
-
-            }
-            Integer integer = depositoryService.updataDepository(depository);
-            if (integer != 0) {
-                Depository depository_new = depositoryService.findByName(inRepository.getName());
-                if (depository_new.getStock() >= buy.getNum()) {
-                    buy.setArrivaltime(date);
-                    Integer status = buyService.updateBuy(buy);
-                    if (status != 0) {
-                        Need need = needService.findByNeedid(buy.getNeedid());
-                        need.setPlanName(2);
-                        needService.updateStatus(need);
-                        map.put("code", "101");
+        if(!depository.equals(null)) {
+            if(depository.getName().equals(inRepository.getName()) & depository.getItemcode().equals(inRepository.getItemid())) {
+                int needNum = buy.getNum();  //采购需求数量
+                int stock = depository.getStock(); //仓库当前存量
+                int totalStock = depository.getTotalstock(); //仓库总库存量
+                if (count + stock <= totalStock && needNum <= totalStock)  //入库总量+当前库存量要小于库存总量
+                {
+                    if (count < needNum) {   //入库总量<采购需求数量
+                        int addNum = stock + num;
+                        depository.setStock(addNum);
+                    } else if (count >= needNum) {
+                        int addNum = stock + num;
+                        depository.setStock(addNum);
+                        buy.setBuytype(2);
+                    }
+                    Integer integer = depositoryService.updataDepository(depository);
+                    inRepository.setStatus(2);  //修改入库操作的完成状态，2表示完成入库，不能再进行2次操作
+                    if (integer != 0) {
+                        inRepositoryService.updateInRepository(inRepository);
+                        if (count >= buy.getNum()) {
+                            buy.setArrivaltime(date);
+                            Integer status = buyService.updateBuy(buy);
+                            if (status != 0) {
+                                Need need = needService.findByNeedid(buy.getNeedid());
+                                need.setApprovaltype(2);
+                                needService.updateStatus(need);
+                                map.put("code", "101");
+                            } else {
+                                map.put("code", "102");
+                                map.put("error", "采购状态修改失败");
+                            }
+                        }
                     } else {
                         map.put("code", "102");
-                        map.put("error","采购状态修改失败");
+                        map.put("error", "仓库库存修改失败");
                     }
+                } else {
+                    map.put("code", "102");
+                    map.put("error", "入库数量超出或采购数量出错");
                 }
-            } else {
-                map.put("code", "102");
-                map.put("error","仓库库存修改失败");
+            }else{
+                map.put("code","102");
+                map.put("error","输入的物料名称和编号不正确");
             }
-        }else {
-            map.put("code","102");
-            map.put("error","入库数量超出或采购数量出错");
+        }else{
+            /*仓库没有当前材料*/
+            Depository depository_add = new Depository();
+            depository_add.setName(inRepository.getName());//设置物料名称
+            depository_add.setItemcode(inRepository.getItemid());//设置物料编码
+            depository_add.setUnit(inRepository.getUnit());//设置单位
+            depository_add.setStock(inRepository.getNum());//设置库存数量
+            depository_add.setTotalstock(10000000);
+            depository_add.setComment(inRepository.getName()+"材料");
+            depositoryService.addDepository(depository_add);//添加仓库记录
+            /*更新入库操作的状态*/
+            inRepository.setStatus(2); //2为完成入库
+            Integer s = inRepositoryService.updateInRepository(inRepository);
+            if(s!=0){
+                map.put("code","101");
+            }else {
+                map.put("code","102");
+                map.put("error","");
+            }
         }
         return map;
     }
@@ -210,7 +237,7 @@ public class InOutRepositoryController {
         OutRepositoryVO outRepositoryVO = new OutRepositoryVO();
         outRepositoryVO.setSelectName(String.valueOf(outRepository.getNeedid()));
         List<OutRepository> outRepositoryList = outRepositoryService.findOutRepository(outRepositoryVO);
-        for (OutRepository i : outRepositoryList){
+        for (OutRepository i : outRepositoryList) {
             i.getOutRept();
             flag++;
         }
@@ -263,50 +290,71 @@ public class InOutRepositoryController {
         Map<String, Object> map = new HashMap<>();
         int count = 0;  //出库总量
         int num = outRepository.getNum();
-        Depository depository = depositoryService.findByName(outRepository.getName());
-        Need need = needService.findByNeedid(outRepository.getNeedid());
-        int neednum = need.getNeednum(); //需求数量
-        int stock = depository.getStock();//库存数量
-        int totalStock = depository.getTotalstock();//库存总量
-        /*获取出库表中记录*/
-        OutRepositoryVO outRepositoryVO = new OutRepositoryVO();
-        outRepositoryVO.setSelectName(String.valueOf(outRepository.getNeedid()));
-        List<OutRepository> outList = outRepositoryService.findOutRepository(outRepositoryVO);
-        for (OutRepository repository : outList) {
-            count = count + repository.getNum(); //出库总量 = 出库表中的数量总和
-        }
-        if (count <= stock || count <= totalStock) {   //判断出库总量是否超过当前库存量和库存总量
-            if (count < neednum) {          //出库总量小于需求数量
-                int closeNum = stock - num;
-                depository.setStock(closeNum);
-            } else if (count > neednum) {     //出库总量大于需求数量
-                int closeNum = stock - num + (count - neednum);  //将多余的部分重新分配到仓库中
-                depository.setStock(closeNum);
-                need.setApprovaltype(2); //approvaltype=1表示完成供应
-            } else if (count == neednum) {   //出库总量等于需求数量
-                int closeNum = stock - num;
-                depository.setStock(closeNum);
-                need.setApprovaltype(1);//approvaltype=1表示完成供应
-            }
-            Integer integer = depositoryService.updataDepository(depository);
-            if (integer != 0) {
-                if (count >= neednum) {
-                    Integer status = needService.updateNeed(need);
-                    if (status != 0) {
-                        map.put("code", "101");
+        DepositoryVO depositoryVO = new DepositoryVO();
+        depositoryVO.setLimit(0);
+        depositoryVO.setPage(0);
+        List<Depository> depositoryList = depositoryService.findDepository(depositoryVO);
+        for (Depository depository : depositoryList) {
+            if (depository.getName().equals(outRepository.getName()) & depository.getItemcode().equals(outRepository.getItemid())) {
+                Need need = needService.findByNeedid(outRepository.getNeedid());
+                int neednum = need.getNeednum(); //需求数量
+                int stock = depository.getStock();//库存数量
+                int totalStock = depository.getTotalstock();//库存总量
+                /*获取出库表中记录*/
+                OutRepositoryVO outRepositoryVO = new OutRepositoryVO();
+                outRepositoryVO.setSelectName(String.valueOf(outRepository.getNeedid()));
+                List<OutRepository> outList = outRepositoryService.findOutRepository(outRepositoryVO);
+                for (OutRepository repository : outList) {
+                    count = count + repository.getNum(); //出库总量 = 出库表中的数量总和
+                }
+                if (count <= stock && count <= totalStock) {   //判断出库总量是否超过当前库存量和库存总量
+                    if (count < neednum) {          //出库总量小于需求数量
+                        int closeNum = stock - num;
+                        depository.setStock(closeNum);
+                    } else if (count > neednum) {     //出库总量大于需求数量
+                        int closeNum = stock - num + (count - neednum);  //将多余的部分重新分配到仓库中
+                        depository.setStock(closeNum);
+                        need.setApprovaltype(1);
 
-                    } else {
-                        map.put("code", "102");
-                        map.put("error", "需求状态修改失败");
+                    } else if (count == neednum) {   //出库总量等于需求数量
+                        int closeNum = stock - num;
+                        depository.setStock(closeNum);
+                        need.setApprovaltype(1);
                     }
+                    Integer integer = depositoryService.updataDepository(depository);
+                    System.out.println("integer" + integer);
+                    if (integer != 0) {
+                        if (count >= neednum) {
+                            Integer status = needService.updateNeed(need);
+                            System.out.println("status" + status);
+                            if (status != 0) {
+                                map.put("code", "101");
+                                break;
+                            } else {
+                                map.put("code", "102");
+                                map.put("error", "需求状态修改失败");
+                            }
+                            map.put("code", "101");
+                            break;
+                        }
+                    } else {
+
+                        System.out.println("仓库修改失败");
+
+                        map.put("code", "102");
+                        map.put("error", "仓库修改失败");
+                    }
+                } else {
+
+                    System.out.println("输入的数量超出当前库存或总库存");
+
+                    map.put("code", "102");
+                    map.put("error", "输入的数量超出当前库存或总库存");
                 }
             } else {
                 map.put("code", "102");
-                map.put("error","仓库修改失败");
+                map.put("error", "输入材料名称与物料编码出错");
             }
-        } else {
-            map.put("code", "102");
-            map.put("error", "输入的数量超出当前库存或总库存");
         }
         return map;
     }

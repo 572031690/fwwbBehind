@@ -27,22 +27,20 @@
             <if test="btime!=null">
                 and btime = #{btime}
             </if>
+
         </where>
-        <if test="sortType != 0 ">
-            order by
             <if test="sortType ==1">
-                 importance
+                order by importance
             </if>
             <if test="sortType ==2">
-               , arrivaltime
+                order by arrivaltime
             </if>
             <if test="sortType ==3">
-                , btime
+                order by btime
             </if>
-            <if test="ordertype == 0">
-                desc
+            <if test="ordertype == 1">
+                    desc
             </if>
-        </if>
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Buy">

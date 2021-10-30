@@ -32,6 +32,7 @@ public class BuyController {
     @PostMapping("/findAllBuy")
     public @ResponseBody
     Map<String, Object> findAllBuy(@RequestBody BuyVo buyVo) {
+        System.out.println(buyVo);
         Map<String, Object> map = new HashMap<String, Object>();
         List<Buy> buyList = buyService.findAllBuy(buyVo);
         PageInfo pageInfo = new PageInfo(buyList);

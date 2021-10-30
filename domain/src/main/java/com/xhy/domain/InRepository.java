@@ -16,4 +16,5 @@ public class InRepository implements Serializable {
     private String unit; //入库单位
     private int inRept; //入库批次
     private int buyid; //采购计划编号
+    private int status;  //完成状态值
 }

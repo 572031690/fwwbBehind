@@ -18,12 +18,12 @@
 
     <!--添加出库信息-->
     <insert id="addOutRepository" parameterType="com.xhy.domain.OutRepository">
-        insert into tb_outrepository values(null,#{name},#{itemid},#{time},#{num},#{unit},#{outRept},#{needid});
+        insert into tb_outrepository values(null,#{name},#{itemid},#{time},#{num},#{unit},#{outRept},#{needid},#{status});
     </insert>
 
     <!--修改出库信息-->
     <update id="updateOutRepository" parameterType="com.xhy.domain.OutRepository">
-        update tb_outrepository set name=#{name},itemid=#{itemid},time=#{time},num=#{num},unit=#{unit} where id=#{id}
+        update tb_outrepository set name=#{name},itemid=#{itemid},time=#{time},num=#{num},unit=#{unit},status=#{status} where id=#{id}
     </update>
 
     <!--删除出库信息-->

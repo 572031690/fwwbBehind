@@ -17,12 +17,12 @@
     </select>
     <!--添加入库信息-->
     <insert id="addInRepository" parameterType="com.xhy.domain.InRepository">
-        insert into tb_inrepository values(null,#{name},#{itemid},#{time},#{num},#{unit},#{inRept},#{buyid});
+        insert into tb_inrepository values(null,#{name},#{itemid},#{time},#{num},#{unit},#{inRept},#{buyid},#{status});
     </insert>
 
     <!--修改入库信息-->
     <update id="updateInRepository" parameterType="com.xhy.domain.InRepository">
-        update tb_inrepository set name=#{name},itemid=#{itemid},time=#{time},num=#{num},unit=#{unit} where id=#{id}
+        update tb_inrepository set name=#{name},itemid=#{itemid},time=#{time},num=#{num},unit=#{unit},status=#{status} where id=#{id}
     </update>
 
     <!--删除入库信息-->

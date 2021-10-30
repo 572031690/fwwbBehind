@@ -17,4 +17,5 @@ public class OutRepository implements Serializable {
     private String unit;//出库单位
     private int outRept ; //出库批次
     private int needid; //需求订单编号
+    private int status; //状态值
 }

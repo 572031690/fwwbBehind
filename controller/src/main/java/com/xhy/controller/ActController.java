@@ -19,6 +19,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -94,7 +95,7 @@ public class ActController {
         actneed.setTaskId(task.getId());
         if (upStatus != 0) {
             System.out.println("已修改审批状态");
-            map.put("status","已修改审批状态");
+            map.put("status", "已修改审批状态");
         }
         map.put("code", "101");
         map.put("list", actneed);
@@ -146,7 +147,7 @@ public class ActController {
             map.put("status", "已修改审批状态");
         }
         map.put("code", "101");
-        map.put("list",actbuy);
+        map.put("list", actbuy);
         return map;
     }
 
@@ -177,9 +178,6 @@ public class ActController {
                 }
             }
         }
-
-        System.out.println(assignee);
-        System.out.println(manager);
 
         User user = userServise.findUser(username);
         actmap.put("userid", user.getUserid());
@@ -257,45 +255,54 @@ public class ActController {
         List<Task> tasks = taskService.createTaskQuery().taskCandidateUser(String.valueOf(user.getUserid())).processDefinitionKey("needAudit").list();
         List<Need> needList = new ArrayList<>();
         List<Need> finalNeed = new ArrayList<>();
-            for (Task task : tasks) {
-                String processInstanceId = task.getProcessInstanceId();
-                ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-                String businessKey = instance.getBusinessKey();
-                Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                need.setTaskId(task.getId());
-                Date startDay = need.getNeedday();
-                Date endDay = new Date();
-                long start = startDay.getTime();
-                long end = endDay.getTime();
-                long berween_days = (start - end) / (1000 * 3600 * 24);
-                if(berween_days <= 2){
-                    need.setUptype(5); //审批逾期
-                    taskService.deleteTask(task.getId());
-                }
-                needList.add(need);
-                count++;
-            }
-            if (needVO.getSearchName().equals(null) | needVO.getSearchName().isEmpty()) {
-                for (Need need : needList) {
-                    if (index >= needVO.getPage()) {
-                        if (flag <= needVO.getLimit()) {
-                            finalNeed.add(need);
-                            flag++;
-                        } else {
-                            break;
-                        }
-                    }
-                    index++;
-                }
-            } else {
-                for (Need need : needList) {
-                    if (need.getNeedtitle().equals(needVO.getSearchName())) {
+        for (Task task : tasks) {
+            String processInstanceId = task.getProcessInstanceId();
+            ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+//            List<HistoricActivityInstance> historyList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+            String businessKey = instance.getBusinessKey();
+            Need need = needService.findByNeedid(Integer.parseInt(businessKey));
+            need.setTaskId(task.getId());
+//            Date startDay = need.getNeedday();
+//            Date endDay = new Date();
+//            long start = startDay.getTime();
+//            long end = endDay.getTime();
+//            long berween_days = (end - start) / (1000 * 3600 * 24);
+//            System.out.println(berween_days);
+//            if (berween_days >= 2) {
+//                need.setUptype(5); //审批逾期
+//                needService.updateStatus(need);
+//                for (HistoricActivityInstance h : historyList) {
+//                    if (h.getActivityId().equals("_5")) {
+//                        Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+//                        System.out.println("task"+task1);
+//                        taskService.complete(task1.getId());
+//                    }
+//                }
+//            }
+            needList.add(need);
+            count++;
+        }
+        if (needVO.getSearchName().equals(null) | needVO.getSearchName().isEmpty()) {
+            for (Need need : needList) {
+                if (index >= needVO.getPage()) {
+                    if (flag <= needVO.getLimit()) {
                         finalNeed.add(need);
+                        flag++;
+                    } else {
+                        break;
                     }
                 }
+                index++;
             }
-            map.put("count", count);
-            map.put("list", finalNeed);
+        } else {
+            for (Need need : needList) {
+                if (need.getNeedtitle().equals(needVO.getSearchName())) {
+                    finalNeed.add(need);
+                }
+            }
+        }
+        map.put("count", count);
+        map.put("list", finalNeed);
         return map;
     }
 
@@ -322,19 +329,27 @@ public class ActController {
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
-            Date startDay = buy.getBtime();
-            Date endDay = new Date();
-            long start = startDay.getTime();
-            long end = endDay.getTime();
-            long berween_days = (start - end) / (1000 * 3600 * 24);
-            if(berween_days <=2){
-                buy.setUptype(5);
-                taskService.deleteTask(task.getId());
-            }
+//            Date startDay = buy.getBtime();
+//            Date endDay = new Date();
+//            long start = startDay.getTime();
+//            long end = endDay.getTime();
+//            long berween_days = (start - end) / (1000 * 3600 * 24);
+//            if (berween_days >= 2) {
+//                buy.setUptype(5);
+//                runtimeService.suspendProcessInstanceById(processInstanceId);
+//                runtimeService.deleteProcessInstance(processInstanceId, "逾期了");
+//                taskService.deleteTask(task.getId());
+////                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+////                for(HistoricActivityInstance h:list){
+////                    if(!h.getActivityId().equals("_5")){
+////                        taskService.complete(task.getId());
+////                    }
+////                }
+//
+//            }
             buyList.add(buy);
             count++;
         }
-        System.out.println(buyList);
         if (buyVo.getSearchName().equals(null) | buyVo.getSearchName().isEmpty()) {
             for (Buy buy : buyList) {
                 if (index >= buyVo.getPage()) {
@@ -453,12 +468,11 @@ public class ActController {
                 }
                 Need byNeedid = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 Depository depository = depositoryService.findByName(byNeedid.getItemtype());
-                if(byNeedid.getNeednum() > depository.getStock()){
+                if (byNeedid.getNeednum() > depository.getStock()) {
                     byNeedid.setPlanName(2);
                     byNeedid.setApprovaltype(1);
                     needService.updateNeed(byNeedid);
-                }
-                else {
+                } else {
                     byNeedid.setPlanName(1);
                     byNeedid.setApprovaltype(1);
                     needService.updateNeed(byNeedid);
@@ -491,10 +505,10 @@ public class ActController {
                 act_buy.setText(text);
                 act_buy.setId(1);
                 actBuy = actService.addActBuy(act_buy);
-                Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
+                Buy buy =new Buy();
+                buy.setBuyid(Integer.parseInt(processInstance.getBusinessKey()));
                 buy.setUptype(1);
-                buy.setBuyerid(userServise.findUser(username).getUserid());
-                upbuy = buyService.updateBuy(buy);
+                upbuy = buyService.updateStatus(buy);
                 if (upbuy != 0) {
                     map.put("success", "状态修改");
                 }
@@ -575,7 +589,7 @@ public class ActController {
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
 
         if (processDefinitionKey.contains("needAudit")) {
-            if(roles.contains("需求经理")){
+            if (roles.contains("需求经理")) {
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
@@ -603,7 +617,7 @@ public class ActController {
                 }
                 String processInstanceId = task.getProcessInstanceId();
                 runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
-            }else if(roles.contains("总经理")){
+            } else if (roles.contains("总经理")) {
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_4").singleResult();
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
@@ -633,7 +647,7 @@ public class ActController {
                 runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
             }
         } else if (processDefinitionKey.contains("buyAudit")) {
-            if(roles.contains("采购经理")){
+            if (roles.contains("采购经理")) {
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
@@ -657,7 +671,7 @@ public class ActController {
                 }
                 String processInstanceId = task.getProcessInstanceId();
                 runtimeService.deleteProcessInstance(processInstanceId, "processInstance delete");
-            }else if(roles.contains("总经理")){
+            } else if (roles.contains("总经理")) {
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_4").singleResult();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
@@ -717,13 +731,13 @@ public class ActController {
 
     /**
      * 查看历史代办
-    * */
+     */
 
     @RequiresPermissions("needManager:findHistory")
     @PostMapping("/findFinishedNeed")
     @ResponseBody
-    public Map<String,Object> findFinishedNeed(@RequestBody NeedVO needVO){
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> findFinishedNeed(@RequestBody NeedVO needVO) {
+        Map<String, Object> map = new HashMap<>();
         int limit = needVO.getLimit();
         int page = needVO.getPage();
         Subject subject = SecurityUtils.getSubject();
@@ -731,32 +745,31 @@ public class ActController {
         User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Need> needList = new ArrayList<>();
-        Integer count=0;
-        int index=1;
-        int flag=0;
+        Integer count = 0;
+        int index = 1;
+        int flag = 0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("needAudit").singleResult();
 
-        if(roles.contains("需求经理")){
+        if (roles.contains("需求经理")) {
             List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).taskDefinitionKey("_3").list();
-            for(HistoricTaskInstance instance:list){
+            for (HistoricTaskInstance instance : list) {
                 String processInstanceId = instance.getProcessInstanceId();
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                if(flag<=limit && index >=page){
+                if (flag <= limit && index >= page) {
                     needList.add(need);
                     flag++;
                     index++;
                 }
                 count++;
             }
-            map.put("count",count);
-            map.put("page",index);
-            map.put("limit",flag);
-            map.put("list",needList);
-        }else if(roles.contains("总经理"))
-        {
-            if(needList.equals(null) || needList.size()==0) {
+            map.put("count", count);
+            map.put("page", index);
+            map.put("limit", flag);
+            map.put("list", needList);
+        } else if (roles.contains("总经理")) {
+            if (needList.equals(null) || needList.size() == 0) {
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
                 for (HistoricActivityInstance activityInstance : list) {
                     String processInstanceId = activityInstance.getProcessInstanceId();
@@ -770,10 +783,10 @@ public class ActController {
                     }
                     count++;
                 }
-            } else{
+            } else {
                 needList.clear();
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
-                for(HistoricActivityInstance activityInstance:list){
+                for (HistoricActivityInstance activityInstance : list) {
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
@@ -786,22 +799,22 @@ public class ActController {
                     count++;
                 }
             }
-            map.put("count",count);
-            map.put("page",index);
-            map.put("limit",flag);
-            map.put("list",needList);
+            map.put("count", count);
+            map.put("page", index);
+            map.put("limit", flag);
+            map.put("list", needList);
         }
         return map;
     }
 
     /**
      * 查看购买历史代办
-     * */
+     */
     @RequiresPermissions("buyManager:findHistory")
     @PostMapping("/findFinishedBuy")
     @ResponseBody
-    public Map<String,Object> findFinishedBuy(@RequestBody BuyVo buyVo){
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> findFinishedBuy(@RequestBody BuyVo buyVo) {
+        Map<String, Object> map = new HashMap<>();
         int limit = buyVo.getLimit();
         int page = buyVo.getPage();
         Subject subject = SecurityUtils.getSubject();
@@ -809,13 +822,13 @@ public class ActController {
         User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Buy> buyList = new ArrayList<>();
-        Integer count=0;
-        int index=1;
-        int flag=0;
+        Integer count = 0;
+        int index = 1;
+        int flag = 0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("buyAudit").singleResult();
-        if(roles.contains("采购经理")){
+        if (roles.contains("采购经理")) {
             List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_3").list();
-            for(HistoricActivityInstance activityInstance:list){
+            for (HistoricActivityInstance activityInstance : list) {
                 String processInstanceId = activityInstance.getProcessInstanceId();
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
@@ -827,15 +840,14 @@ public class ActController {
                 }
                 count++;
             }
-            map.put("count",count);
-            map.put("page",index);
-            map.put("limit",flag);
-            map.put("list",buyList);
-        }else if(roles.contains("总经理"))
-        {
-            if(buyList.equals(null) || buyList.size()==0){
+            map.put("count", count);
+            map.put("page", index);
+            map.put("limit", flag);
+            map.put("list", buyList);
+        } else if (roles.contains("总经理")) {
+            if (buyList.equals(null) || buyList.size() == 0) {
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
-                for(HistoricActivityInstance activityInstance:list){
+                for (HistoricActivityInstance activityInstance : list) {
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
@@ -847,10 +859,10 @@ public class ActController {
                     }
                     count++;
                 }
-            }else{
+            } else {
                 buyList.clear();
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
-                for(HistoricActivityInstance activityInstance:list){
+                for (HistoricActivityInstance activityInstance : list) {
                     String processInstanceId = activityInstance.getProcessInstanceId();
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
@@ -863,10 +875,10 @@ public class ActController {
                     count++;
                 }
             }
-            map.put("count",count);
-            map.put("page",index);
-            map.put("limit",flag);
-            map.put("list",buyList);
+            map.put("count", count);
+            map.put("page", index);
+            map.put("limit", flag);
+            map.put("list", buyList);
         }
         return map;
     }

@@ -30,9 +30,6 @@
         <property name="basePackage" value="com.xhy.Mapper"/>
     </bean>
 
-    <context:component-scan base-package="com.xhy">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
 
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           depends-on="lifecycleBeanPostProcessor"/>

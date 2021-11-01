@@ -258,27 +258,27 @@ public class ActController {
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-//            List<HistoricActivityInstance> historyList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+            List<HistoricActivityInstance> historyList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
             String businessKey = instance.getBusinessKey();
             Need need = needService.findByNeedid(Integer.parseInt(businessKey));
             need.setTaskId(task.getId());
-//            Date startDay = need.getNeedday();
-//            Date endDay = new Date();
-//            long start = startDay.getTime();
-//            long end = endDay.getTime();
-//            long berween_days = (end - start) / (1000 * 3600 * 24);
-//            System.out.println(berween_days);
-//            if (berween_days >= 2) {
-//                need.setUptype(5); //审批逾期
-//                needService.updateStatus(need);
-//                for (HistoricActivityInstance h : historyList) {
-//                    if (h.getActivityId().equals("_5")) {
-//                        Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-//                        System.out.println("task"+task1);
-//                        taskService.complete(task1.getId());
-//                    }
-//                }
-//            }
+            Date startDay = need.getNeedday();
+            Date endDay = new Date();
+            long start = startDay.getTime();
+            long end = endDay.getTime();
+            long berween_days = (end - start) / (1000 * 3600 * 24);
+            System.out.println(berween_days);
+            if (berween_days >= 2) {
+                need.setUptype(5); //审批逾期
+                needService.updateStatus(need);
+                for (HistoricActivityInstance h : historyList) {
+                    if (h.getActivityId().equals("_5")) {
+                        Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+                        System.out.println("task"+task1);
+                        taskService.complete(task1.getId());
+                    }
+                }
+            }
             needList.add(need);
             count++;
         }
@@ -329,24 +329,24 @@ public class ActController {
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
-//            Date startDay = buy.getBtime();
-//            Date endDay = new Date();
-//            long start = startDay.getTime();
-//            long end = endDay.getTime();
-//            long berween_days = (start - end) / (1000 * 3600 * 24);
-//            if (berween_days >= 2) {
-//                buy.setUptype(5);
-//                runtimeService.suspendProcessInstanceById(processInstanceId);
-//                runtimeService.deleteProcessInstance(processInstanceId, "逾期了");
-//                taskService.deleteTask(task.getId());
-////                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
-////                for(HistoricActivityInstance h:list){
-////                    if(!h.getActivityId().equals("_5")){
-////                        taskService.complete(task.getId());
-////                    }
-////                }
-//
-//            }
+            Date startDay = buy.getBtime();
+            Date endDay = new Date();
+            long start = startDay.getTime();
+            long end = endDay.getTime();
+            long berween_days = (start - end) / (1000 * 3600 * 24);
+            if (berween_days >= 2) {
+                buy.setUptype(5);
+                runtimeService.suspendProcessInstanceById(processInstanceId);
+                runtimeService.deleteProcessInstance(processInstanceId, "逾期了");
+                taskService.deleteTask(task.getId());
+                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
+                for(HistoricActivityInstance h:list){
+                    if(!h.getActivityId().equals("_5")){
+                        taskService.complete(task.getId());
+                    }
+                }
+
+            }
             buyList.add(buy);
             count++;
         }
@@ -466,19 +466,19 @@ public class ActController {
                     map.put("code", "101");
                     map.put("status", "总经理审批通过");
                 }
-                Need byNeedid = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
-                Depository depository = depositoryService.findByName(byNeedid.getItemtype());
-                if (byNeedid.getNeednum() > depository.getStock()) {
-                    byNeedid.setPlanName(2);
-                    byNeedid.setApprovaltype(1);
-                    needService.updateNeed(byNeedid);
+                Depository depository = depositoryService.findByName(need.getItemtype());
+                if (need.getNeednum() < depository.getStock()) {  //需求数量大于仓库库存
+                    need.setPlanName(2); //
+                    need.setApprovaltype(1);
+                    needService.updateNeed(need);
                 } else {
-                    byNeedid.setPlanName(1);
-                    byNeedid.setApprovaltype(1);
-                    needService.updateNeed(byNeedid);
+                    need.setPlanName(1);
+                    need.setApprovaltype(1);
+                    needService.updateNeed(need);
                     Buy buy = new Buy();
                     buy.setBuytitle(need.getNeedtitle());
                     buy.setItemtype(need.getItemtype());
+                    buy.setBtime(new Date());
                     buy.setItemid(need.getItemid());
                     buy.setNum(need.getNeednum());
                     buy.setUnit(need.getUnit());

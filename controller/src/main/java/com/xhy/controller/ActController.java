@@ -268,14 +268,17 @@ public class ActController {
             long end = endDay.getTime();
             long berween_days = (end - start) / (1000 * 3600 * 24);
             System.out.println(berween_days);
+            map.put("dueTime",berween_days); //剩余时间
             if (berween_days >= 2) {
                 need.setUptype(5); //审批逾期
                 needService.updateStatus(need);
                 for (HistoricActivityInstance h : historyList) {
+                    Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+                    System.out.println("task:"+task1.getId());//控制台查看任务的id
+                    taskService.complete(task1.getId());
                     if (h.getActivityId().equals("_5")) {
-                        Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-                        System.out.println("task"+task1);
-                        taskService.complete(task1.getId());
+                        map.put("code","102");
+                        map.put("status",need.getNeedid()+"号,"+need.getNeedtitle()+"审批已逾期");
                     }
                 }
             }
@@ -326,6 +329,7 @@ public class ActController {
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+            List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
@@ -333,22 +337,23 @@ public class ActController {
             Date endDay = new Date();
             long start = startDay.getTime();
             long end = endDay.getTime();
-            long berween_days = (start - end) / (1000 * 3600 * 24);
-            if (berween_days >= 2) {
+            long between_days = (start - end) / (1000 * 3600 * 24);
+            map.put("dueTime",between_days);
+            if (between_days >= 2) {
                 buy.setUptype(5);
-                runtimeService.suspendProcessInstanceById(processInstanceId);
-                runtimeService.deleteProcessInstance(processInstanceId, "逾期了");
-                taskService.deleteTask(task.getId());
-                List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
-                for(HistoricActivityInstance h:list){
-                    if(!h.getActivityId().equals("_5")){
-                        taskService.complete(task.getId());
+                buyService.updateBuy(buy);
+                for (HistoricActivityInstance h : list) {
+                    Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+                    System.out.println("task:" + task1.getId()); //控制台查看任务的id
+                    taskService.complete(task1.getId());
+                    if (h.getActivityId().equals("_5")) {
+                        map.put("code", "102");
+                        map.put("status", buy.getBuyid() + "号," + buy.getBuytitle() + "审批已逾期");
                     }
                 }
-
+                buyList.add(buy);
+                count++;
             }
-            buyList.add(buy);
-            count++;
         }
         if (buyVo.getSearchName().equals(null) | buyVo.getSearchName().isEmpty()) {
             for (Buy buy : buyList) {

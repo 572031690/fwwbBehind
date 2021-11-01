@@ -467,11 +467,13 @@ public class ActController {
                     map.put("status", "总经理审批通过");
                 }
                 Depository depository = depositoryService.findByName(need.getItemtype());
-                if (need.getNeednum() < depository.getStock()) {  //需求数量大于仓库库存
+                /*库存供应*/
+                if (need.getNeednum() <= depository.getStock()) {  //需求数量小于等于仓库库存
                     need.setPlanName(2); //
                     need.setApprovaltype(1);
                     needService.updateNeed(need);
-                } else {
+                } else { //需求数量大于仓库库存
+                    /*采购供应*/
                     need.setPlanName(1);
                     need.setApprovaltype(1);
                     needService.updateNeed(need);

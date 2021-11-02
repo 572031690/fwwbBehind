@@ -1,12 +1,10 @@
 package com.xhy.controller;
 
-import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
-import com.github.pagehelper.PageHelper;
+
 import com.xhy.domain.*;
 import com.xhy.service.*;
 import com.xhy.vo.BuyVo;
 import com.xhy.vo.NeedVO;
-import io.swagger.models.auth.In;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -17,9 +15,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -94,7 +89,6 @@ public class ActController {
         Task task = taskService.createTaskQuery().processDefinitionKey("needAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actneed.setTaskId(task.getId());
         if (upStatus != 0) {
-            System.out.println("已修改审批状态");
             map.put("status", "已修改审批状态");
         }
         map.put("code", "101");
@@ -142,8 +136,6 @@ public class ActController {
         Task task = taskService.createTaskQuery().processDefinitionKey("buyAudit").taskAssignee(String.valueOf(user.getUserid())).singleResult();
         actbuy.setTaskId(task.getId());
         if (status != 0) {
-            System.out.println("已修改审批状态");
-
             map.put("status", "已修改审批状态");
         }
         map.put("code", "101");
@@ -178,7 +170,6 @@ public class ActController {
                 }
             }
         }
-
         User user = userServise.findUser(username);
         actmap.put("userid", user.getUserid());
         actmap.put("assignee", StringUtils.join(assignee.toArray(), ","));
@@ -258,7 +249,6 @@ public class ActController {
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-            List<HistoricActivityInstance> historyList = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
             String businessKey = instance.getBusinessKey();
             Need need = needService.findByNeedid(Integer.parseInt(businessKey));
             need.setTaskId(task.getId());
@@ -267,47 +257,58 @@ public class ActController {
             long start = startDay.getTime();
             long end = endDay.getTime();
             long berween_days = (end - start) / (1000 * 3600 * 24);
-            System.out.println(berween_days);
-            map.put("dueTime",berween_days); //剩余时间
+            System.out.println("berween_days"+berween_days);
+            map.put("dueTime", berween_days); //剩余时间
             if (berween_days >= 2) {
                 need.setUptype(5); //审批逾期
                 needService.updateStatus(need);
-                for (HistoricActivityInstance h : historyList) {
-                    Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-                    System.out.println("task:"+task1.getId());//控制台查看任务的id
-                    taskService.complete(task1.getId());
-                    if (h.getActivityId().equals("_5")) {
-                        map.put("code","102");
-                        map.put("status",need.getNeedid()+"号,"+need.getNeedtitle()+"审批已逾期");
+                List<UserRole> userRole_manager = userServise.findUserRole(10001);
+                System.out.println("task:"+task.getId());   //查看当前的任务id
+                taskService.claim(task.getId(), String.valueOf(user.getUserid()));
+                taskService.complete(task.getId(),map);
+                HistoricActivityInstance instance1 = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityId("_5").singleResult();
+                if (userRole_manager != null |instance1==null) {
+                    User manager = userServise.findbyid(userRole_manager.get(0).getUserId());
+                    Task task2 = taskService.createTaskQuery().taskCandidateUser(String.valueOf(manager.getUserid())).processInstanceId(processInstanceId).taskDefinitionKey("_4").singleResult();
+                    System.out.println("task2:" + task2);//控制台查看任务的id
+                    taskService.claim(task2.getId(), String.valueOf(userRole_manager.get(0).getUserId()));
+                    taskService.complete(task2.getId());
+                    HistoricActivityInstance instance2 = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityId("_5").singleResult();
+                    if (instance2 != null) {
+                        map.put("code", "102");
+                        map.put("status", need.getNeedid() + "号," + need.getNeedtitle() + "审批已逾期");
                     }
                 }
             }
-            needList.add(need);
-            count++;
-        }
-        if (needVO.getSearchName().equals(null) | needVO.getSearchName().isEmpty()) {
-            for (Need need : needList) {
-                if (index >= needVO.getPage()) {
-                    if (flag <= needVO.getLimit()) {
-                        finalNeed.add(need);
-                        flag++;
-                    } else {
-                        break;
-                    }
-                }
-                index++;
-            }
-        } else {
-            for (Need need : needList) {
-                if (need.getNeedtitle().equals(needVO.getSearchName())) {
-                    finalNeed.add(need);
-                }
-            }
-        }
-        map.put("count", count);
-        map.put("list", finalNeed);
-        return map;
+        needList.add(need);
+        count++;
     }
+        if(needVO.getSearchName().equals(null) |needVO.getSearchName().isEmpty())
+    {
+        for (Need need : needList) {
+            if (index >= needVO.getPage()) {
+                if (flag <= needVO.getLimit()) {
+                    finalNeed.add(need);
+                    flag++;
+                } else {
+                    break;
+                }
+            }
+            index++;
+        }
+    } else
+
+    {
+        for (Need need : needList) {
+            if (need.getNeedtitle().equals(needVO.getSearchName())) {
+                finalNeed.add(need);
+            }
+        }
+    }
+        map.put("count",count);
+        map.put("list",finalNeed);
+        return map;
+}
 
 
     /*找出购买个人代办任务*/
@@ -329,7 +330,6 @@ public class ActController {
         for (Task task : tasks) {
             String processInstanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
-            List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).list();
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
@@ -338,15 +338,23 @@ public class ActController {
             long start = startDay.getTime();
             long end = endDay.getTime();
             long between_days = (start - end) / (1000 * 3600 * 24);
-            map.put("dueTime",between_days);
+            map.put("dueTime", between_days);
             if (between_days >= 2) {
                 buy.setUptype(5);
                 buyService.updateBuy(buy);
-                for (HistoricActivityInstance h : list) {
-                    Task task1 = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-                    System.out.println("task:" + task1.getId()); //控制台查看任务的id
-                    taskService.complete(task1.getId());
-                    if (h.getActivityId().equals("_5")) {
+                List<UserRole> userRole_manager = userServise.findUserRole(10001);
+                System.out.println("task:"+task.getId());   //查看当前的任务id
+                taskService.claim(task.getId(), String.valueOf(user.getUserid()));
+                taskService.complete(task.getId(),map);
+                HistoricActivityInstance instance1 = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityId("_5").singleResult();
+                if (userRole_manager != null |instance1==null) {
+                    User manager = userServise.findbyid(userRole_manager.get(0).getUserId());
+                    Task task2 = taskService.createTaskQuery().taskCandidateUser(String.valueOf(manager.getUserid())).processInstanceId(processInstanceId).taskDefinitionKey("_4").singleResult();
+                    System.out.println("task2:" + task2);//控制台查看任务的id
+                    taskService.claim(task2.getId(), String.valueOf(userRole_manager.get(0).getUserId()));
+                    taskService.complete(task2.getId());
+                    HistoricActivityInstance instance2 = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityId("_5").singleResult();
+                    if (instance2 != null) {
                         map.put("code", "102");
                         map.put("status", buy.getBuyid() + "号," + buy.getBuytitle() + "审批已逾期");
                     }
@@ -388,7 +396,6 @@ public class ActController {
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         Set<String> roles = userServise.findRoleByUserName(username);
-        System.out.println(roles);
         if (roles.contains("需求经理") | roles.contains("采购经理") | roles.contains("总经理")) {
             taskService.claim(String.valueOf(taskId), String.valueOf(userServise.findUser(username).getUserid()));
         }
@@ -396,8 +403,6 @@ public class ActController {
         Task task = taskService.createTaskQuery().taskId(String.valueOf(taskId)).singleResult();
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
-
-
         if (processDefinitionKey.equals("needAudit")) {
             Act_Need act_need = new Act_Need();
             Integer actNeed = 0;
@@ -427,7 +432,6 @@ public class ActController {
                 taskService.complete(String.valueOf(taskId));
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
-                System.out.println(instance.getId());
                 Need need = needService.findByNeedid(Integer.parseInt(processInstance.getBusinessKey()));
                 act_need.setUpname(userServise.findbyid(need.getNeederid()).getRealname());
                 act_need.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());
@@ -512,7 +516,7 @@ public class ActController {
                 act_buy.setText(text);
                 act_buy.setId(1);
                 actBuy = actService.addActBuy(act_buy);
-                Buy buy =new Buy();
+                Buy buy = new Buy();
                 buy.setBuyid(Integer.parseInt(processInstance.getBusinessKey()));
                 buy.setUptype(1);
                 upbuy = buyService.updateStatus(buy);

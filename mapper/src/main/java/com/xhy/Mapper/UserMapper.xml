@@ -90,7 +90,7 @@
     <select id="findUserRole" parameterType="int" resultType="com.xhy.domain.UserRole">
         select *  from tb_user_role
         <where>
-            <if test="roleId != null and roleId!=null">
+            <if test="roleId !=0">
                 roleId = #{roleId}
             </if>
         </where>

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -124,7 +125,7 @@ public class Usercontroller {
     @ResponseBody
     public Map<String,Object> unauthorized(){
         Map<String,Object> map = new HashMap<>();
-        map.put("code","403");
+        map.put("code","102");
         map.put("error","没有权限");
         return map;
     }
@@ -285,6 +286,13 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> addUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
+        /*将员工号统一化处理*/
+        StringBuilder stringBuilderuser = new StringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(new Date());
+        String[] split = format.split("-");
+        String s = stringBuilderuser.append("ZNKC" + split[0]+split[1]+split[2]+user.getEmployeeid()).toString();
+        user.setEmployeeid(s);
         Integer status= userServise.addUser(user);
         if(status!=0){
             map.put("code", "101");

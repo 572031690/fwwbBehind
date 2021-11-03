@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context
@@ -11,8 +11,7 @@
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/aop
-		https://www.springframework.org/schema/aop/spring-aop.xsd">
-
+		https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -22,23 +21,21 @@
         <property name="loginUrl" value="/web/unauth"/>
         <!--未授权时跳转的地址-->
         <property name="unauthorizedUrl" value="/web/unauthorized"/>
-<!--        认证成功后跳转地址-->
+        <!--        认证成功后跳转地址-->
         <property name="successUrl" value="/web/success"/>
+
         <!--读取初始自定义权限内容-->
         <!--如果使用authc验证,则需要重写rememberMe的过滤器,或配置fromAuthernticationFilter的Bean-->
-<!--        <property name="filters" >-->
-<!--        </property>-->
-<!--        <property name="filterChainDefinitions">-->
-<!--            <value>-->
-
-<!--            </value>-->
-<!--        </property>-->
+        <!--        <property name="filters" >-->
+        <!--        </property>-->
         <!--权限map给到过滤器-->
         <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
     </bean>
 
+
     <!--通过动态获取授权类调用它的createFilterChainDefinitionMap方法 获取权限map-->
-    <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="createFilterChainDefinitionMap"/>
+    <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder"
+          factory-method="createFilterChainDefinitionMap"/>
     <!--引入动态获取授权类-->
     <bean id="filterChainDefinitionMapBuilder" class="com.xhy.shiro.Map.FilterChainDefinitionMapBuilder"/>
 
@@ -46,7 +43,7 @@
     <!--2.安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="useRealm"/>
-          <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
         <property name="sessionManager" ref="CrmSessionManager"/>
     </bean>
 
@@ -56,10 +53,10 @@
     <bean id="useRealm" class="com.xhy.shiro.realm.UserRealm">
         <!--        userService在此处注入至UserRealm中-->
         <property name="cachingEnabled" value="true"/>
-<!--  密码凭证对象-->
+        <!--  密码凭证对象-->
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
     </bean>
-<!-- 通过HashedCredentialsMatcher对象来做密码的认证-->
+    <!-- 通过HashedCredentialsMatcher对象来做密码的认证-->
     <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
         <!--hashAlgorithmName md5 散列函数-->
         <property name="hashAlgorithmName" value="MD5"/>
@@ -75,24 +72,24 @@
 
     </bean>
 
-<!--      5.将shiro对Bean的生命周期管理的对象注入,交给spring管理-->
+    <!--      5.将shiro对Bean的生命周期管理的对象注入,交给spring管理-->
     <!--shiro 生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-<!--    默认会话模板-->
+    <!--    默认会话模板-->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="sid"/>
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="-1"/>
     </bean>
-<!--    rememberMeCookie-->
+    <!--    rememberMeCookie-->
     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="rememberMe"/>
-<!--        cookie只在http请求中可用，那么通过js脚本将无法读取到cookie信息，有效防止cookie被窃取-->
+        <!--        cookie只在http请求中可用，那么通过js脚本将无法读取到cookie信息，有效防止cookie被窃取-->
         <property name="httpOnly" value="true"/>
-<!--        cookie的生命周期，单位：秒-->
+        <!--        cookie的生命周期，单位：秒-->
         <property name="maxAge" value="604800"/>
     </bean>
-<!--    rememberMe 管理器-->
+    <!--    rememberMe 管理器-->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUsOKTA3Kprsdag==')}"/>
         <property name="cookie" ref="rememberMeCookie"/>
@@ -104,7 +101,6 @@
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
     </bean>
-
 
 
 </beans>

@@ -38,9 +38,13 @@
             <if test="sortType ==3">
                 order by btime
             </if>
-            <if test="ordertype == 1">
-                    desc
+            <if test="sortType  == -1 || sortType == 0">
+                order by buyid
             </if>
+            <if test="ordertype == 0">
+                desc
+            </if>
+
     </select>
 
     <select id="findbyid" parameterType="int" resultType="com.xhy.domain.Buy">
@@ -53,7 +57,7 @@
         insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid,
                            uptype, comment, importance, department, buytype, needid)
         values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid},
-                #{neederid}, 0, #{comment}, #{importance}, #{department}, 0, #{needid});
+                #{neederid}, 0, #{comment}, #{importance}, #{department}, 1, #{needid});
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">
@@ -69,6 +73,7 @@
           , arrivaltime=#{arrivaltime}
           , department=#{department}
           , importance=#{importance}
+          ,buyerid=#{buyerid}
           , buytype=#{buytype}
         where buyid = #{buyid};
     </update>

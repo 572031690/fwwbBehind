@@ -7,8 +7,11 @@ import com.xhy.domain.Buy;
 import com.xhy.domain.Need;
 import com.xhy.domain.User;
 import com.xhy.service.BuyService;
+import com.xhy.service.UserServise;
 import com.xhy.vo.BuyVo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,9 @@ public class BuyController {
 
     @Autowired
     BuyService buyService;
+
+    @Autowired
+    UserServise userServise;
 
     @RequiresPermissions("buyer:listBuy")
     @PostMapping("/findAllBuy")
@@ -49,6 +55,10 @@ public class BuyController {
     public @ResponseBody
     Map<String, Object> updateBuy(@RequestBody Buy buy) {
         Map<String, Object> map = new HashMap<String, Object>();
+        Subject subject = SecurityUtils.getSubject();
+        String username = String.valueOf(subject.getPrincipals());
+        User user = userServise.findUser(username);
+        buy.setBuyerid(user.getUserid());
         if (buy != null) {
             Integer updatebuy = buyService.updateBuy(buy);
             if (updatebuy != 0) {
@@ -86,6 +96,10 @@ public class BuyController {
     @RequestMapping(value = "/addBuy", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addBuy(@RequestBody Buy buy) {
+        Subject subject = SecurityUtils.getSubject();
+        String username = String.valueOf(subject.getPrincipals());
+        User user = userServise.findUser(username);
+        buy.setBuyerid(user.getUserid());
         Map<String, Object> map = new HashMap<String, Object>();
         if (buy != null) {
             Integer addBuy = buyService.addBuy(buy);

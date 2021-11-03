@@ -333,6 +333,7 @@ public class ActController {
             String businessKey = instance.getBusinessKey();
             Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
             buy.setTaskId(task.getId());
+            /*查看是否逾期*/
             Date startDay = buy.getBtime();
             Date endDay = new Date();
             long start = startDay.getTime();
@@ -343,11 +344,11 @@ public class ActController {
                 buy.setUptype(5);
                 buyService.updateBuy(buy);
                 List<UserRole> userRole_manager = userServise.findUserRole(10001);
-                System.out.println("task:"+task.getId());   //查看当前的任务id
+                System.out.println("task:" + task.getId());   //查看当前的任务id
                 taskService.claim(task.getId(), String.valueOf(user.getUserid()));
-                taskService.complete(task.getId(),map);
+                taskService.complete(task.getId(), map);
                 HistoricActivityInstance instance1 = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstanceId).activityId("_5").singleResult();
-                if (userRole_manager != null |instance1==null) {
+                if (userRole_manager != null | instance1 == null) {
                     User manager = userServise.findbyid(userRole_manager.get(0).getUserId());
                     Task task2 = taskService.createTaskQuery().taskCandidateUser(String.valueOf(manager.getUserid())).processInstanceId(processInstanceId).taskDefinitionKey("_4").singleResult();
                     System.out.println("task2:" + task2);//控制台查看任务的id
@@ -359,10 +360,10 @@ public class ActController {
                         map.put("status", buy.getBuyid() + "号," + buy.getBuytitle() + "审批已逾期");
                     }
                 }
+            }
                 buyList.add(buy);
                 count++;
             }
-        }
         if (buyVo.getSearchName().equals(null) | buyVo.getSearchName().isEmpty()) {
             for (Buy buy : buyList) {
                 if (index >= buyVo.getPage()) {
@@ -382,6 +383,7 @@ public class ActController {
                 }
             }
         }
+        System.out.println(finalBuy);
         map.put("count", count);
         map.put("list", finalBuy);
         return map;
@@ -497,7 +499,7 @@ public class ActController {
                     buy.setNeederid(need.getNeederid());
                     buy.setNeedid(need.getNeedid());
                     buy.setDepartment(need.getDepartment());
-                    buy.setBuyerid(userServise.findUser(username).getUserid());
+                    buy.setBuytype(1);
                     buyService.addBuy(buy);
                 }
             }
@@ -662,6 +664,7 @@ public class ActController {
                 HistoricActivityInstanceQuery historicActivityInstanceQuery = historyService.createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId());
                 HistoricActivityInstance instance = historicActivityInstanceQuery.taskAssignee(String.valueOf(userServise.findUser(username).getUserid())).activityId("_3").singleResult();
                 Buy buy = buyService.findBuyById(Integer.parseInt(processInstance.getBusinessKey()));
+                System.out.println(buy);
                 Act_Buy act_buy = new Act_Buy();
                 act_buy.setUpname(userServise.findbyid(buy.getBuyerid()).getRealname());
                 act_buy.setAuther(userServise.findbyid(Integer.parseInt(task.getAssignee())).getRealname());

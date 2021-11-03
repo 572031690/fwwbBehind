@@ -40,7 +40,7 @@
 
     <insert id="addUser" parameterType="com.xhy.domain.User">
         insert into tb_users
-        values (null, #{username}, #{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0,1);
+        values (null, #{username}, #{realname}, #{password}, #{salt}, #{telNum}, #{employeeid}, 0,0);
     </insert>
 
     <update id="updateUser" parameterType="com.xhy.domain.User">

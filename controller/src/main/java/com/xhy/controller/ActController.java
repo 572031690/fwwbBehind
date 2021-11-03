@@ -107,7 +107,6 @@ public class ActController {
         buy.setBuyid(buyid);
         buy.setUptype(0);
         Integer status = buyService.updateStatus(buy);
-
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         List<Role> roles = roleService.findRole();
@@ -483,7 +482,7 @@ public class ActController {
                     need.setPlanName(2); //
                     need.setApprovaltype(1);
                     needService.updateNeed(need);
-                } else { //需求数量大于仓库库存
+                } else if(need.getNeednum() >= depository.getStock() &  depository.getStock() +need.getNeednum() <=depository.getStock()){ //需求数量大于仓库库存
                     /*采购供应*/
                     need.setPlanName(1);
                     need.setApprovaltype(1);
@@ -498,8 +497,31 @@ public class ActController {
                     buy.setComment(need.getComment());
                     buy.setNeederid(need.getNeederid());
                     buy.setNeedid(need.getNeedid());
+                    buy.setBuyerid(0);
+                    buy.setImportance(1);
                     buy.setDepartment(need.getDepartment());
-                    buy.setBuytype(1);
+                    buyService.addBuy(buy);
+                }
+                else if(need.getNeednum() >= depository.getStock() &  depository.getStock() +need.getNeednum() >=depository.getStock()){
+                    map.put("tip","要采购的数量与库存数量超过了总库存,已修改");
+                    /*采购供应*/
+                    int latest_needNum = need.getNeednum() - depository.getStock();
+                    need.setPlanName(1);
+                    need.setApprovaltype(1);
+                    needService.updateNeed(need);
+                    Buy buy = new Buy();
+                    buy.setBuytitle(need.getNeedtitle());
+                    buy.setItemtype(need.getItemtype());
+                    buy.setBtime(new Date());
+                    buy.setItemid(need.getItemid());
+                    buy.setNum(latest_needNum);
+                    buy.setUnit(need.getUnit());
+                    buy.setComment(need.getComment());
+                    buy.setNeederid(need.getNeederid());
+                    buy.setNeedid(need.getNeedid());
+                    buy.setBuyerid(0);
+                    buy.setImportance(1);
+                    buy.setDepartment(need.getDepartment());
                     buyService.addBuy(buy);
                 }
             }

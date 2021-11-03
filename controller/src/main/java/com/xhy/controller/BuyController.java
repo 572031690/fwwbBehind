@@ -41,6 +41,15 @@ public class BuyController {
         System.out.println(buyVo);
         Map<String, Object> map = new HashMap<String, Object>();
         List<Buy> buyList = buyService.findAllBuy(buyVo);
+        for(Buy b : buyList){
+            if(b.getBuyerid()==0){
+                Subject subject = SecurityUtils.getSubject();
+                String username = String.valueOf(subject.getPrincipals());
+                User user = userServise.findUser(username);
+                b.setBuyerid(user.getUserid());
+                buyService.updateBuy(b);
+            }
+        }
         PageInfo pageInfo = new PageInfo(buyList);
         long total = pageInfo.getTotal();
         int pageNum = pageInfo.getPageNum();

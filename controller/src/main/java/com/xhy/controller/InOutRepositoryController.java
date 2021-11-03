@@ -150,6 +150,12 @@ public class InOutRepositoryController {
                         int addNum = stock + num;
                         depository.setStock(addNum);
                         buy.setBuytype(2);
+                        Need need = needService.findByNeedid(buy.getNeedid());
+                        need.setApprovaltype(2);
+                        Integer integer = needService.updateNeed(need);
+                        if(integer!=0){
+                            System.out.println("完成入库");
+                        }
                     }
                     Integer integer = depositoryService.updataDepository(depository);
                     if (integer != 0) {

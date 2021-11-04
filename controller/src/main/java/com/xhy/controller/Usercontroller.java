@@ -311,7 +311,13 @@ public class Usercontroller {
     public @ResponseBody
     Map<String, Object> updateUser(@RequestBody User user) {
         Map<String, Object> map = new HashMap<String, Object>();
-        System.out.println(user);
+        /*将员工号统一化处理*/
+        StringBuilder stringBuilderuser = new StringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = simpleDateFormat.format(new Date());
+        String[] split = format.split("-");
+        String s = stringBuilderuser.append("ZNKC" + split[0]+split[1]+split[2]+user.getEmployeeid()).toString();
+        user.setEmployeeid(s);
         Integer status= userServise.updataUser(user);
         if(status!=0){
             map.put("code", "101");

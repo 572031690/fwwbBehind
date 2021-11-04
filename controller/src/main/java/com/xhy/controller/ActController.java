@@ -776,13 +776,13 @@ public class ActController {
         Map<String, Object> map = new HashMap<>();
         int limit = needVO.getPage();
         int page = needVO.getPage();
-
+        int index = 1;
+        int flag = 0;
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Need> needList = new ArrayList<>();
-        List<Need> needs = new ArrayList<>(); //最后的结果
         Integer count = 0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("needAudit").singleResult();
 
@@ -793,17 +793,17 @@ public class ActController {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                needList.add(need);
+                if (flag <= limit & index >= page) {
+                    needList.add(need);
+                    flag++;
+                    index++;
+                }
                 count++;
             }
-            for(int i =page-1;i<=limit;i++){
-                needs.add(needList.get(i));
-            }
-            System.out.println(needs);
             map.put("count", count);
             map.put("page", needVO.getPage());
             map.put("limit", needVO.getPage());
-            map.put("list", needs);
+            map.put("list", needList);
         } else if (roles.contains("总经理")) {
             if (needList.equals(null) || needList.size() == 0) {
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
@@ -812,11 +812,12 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
+                    if (flag <= limit & index >= page) {
                         needList.add(need);
+                        flag++;
+                        index++;
+                    }
                         count++;
-                }
-                for(int i =page-1;i<=limit;i++){
-                    needs.add(needList.get(i));
                 }
             } else {
                 needList.clear();
@@ -826,18 +827,18 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                    needList.add(need);
+                    if (flag <= limit & index >= page) {
+                        needList.add(need);
+                        flag++;
+                        index++;
+                    }
                     count++;
                 }
-                for(int i =page-1;i<=limit;i++){
-                    needs.add(needList.get(i));
-                }
             }
-            System.out.println(needs);
             map.put("count", count);
             map.put("page", needVO.getPage());
             map.put("limit", needVO.getLimit());
-            map.put("list", needs);
+            map.put("list", needList);
         }
         return map;
     }

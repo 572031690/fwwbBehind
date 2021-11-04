@@ -185,7 +185,7 @@ public class InOutRepositoryController {
                 }
             } else {
                 map.put("code", "102");
-                map.put("error", "输入的物料名称和编号不正确");
+                map.put("error", "查无此物，请联系仓库管理员");
             }
         } else {
             /*仓库没有当前材料*/
@@ -358,7 +358,7 @@ public class InOutRepositoryController {
                 }
             } else {
                 map.put("code", "102");
-                map.put("error", "输入材料名称与物料编码出错");
+                map.put("error", "查无此物，请联系仓库管理员");
             }
         return map;
     }

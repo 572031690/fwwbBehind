@@ -1,0 +1,14 @@
+com\xhy\Mapper\UserMapper.class
+com\xhy\Mapper\BuyMapper.class
+com\xhy\Mapper\MonthsalesupMapper.class
+com\xhy\Mapper\CompanyMapper.class
+com\xhy\Mapper\ActMapper.class
+com\xhy\Mapper\NeedMapper.class
+com\xhy\Mapper\DepositoryMapper.class
+com\xhy\Mapper\InRepositoryMapper.class
+com\xhy\Mapper\MonthsalesMapper.class
+com\xhy\Mapper\RoleMapper.class
+com\xhy\Mapper\OutRepositoryMapper.class
+com\xhy\Mapper\CountrysaleMapper.class
+com\xhy\Mapper\ItemMapper.class
+com\xhy\Mapper\PermissionMapper.class

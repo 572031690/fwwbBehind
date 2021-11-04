@@ -45,7 +45,7 @@
     <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
     <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2"/>
 
-
+    <mvc:annotation-driven></mvc:annotation-driven>
 
 
     <!--    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->

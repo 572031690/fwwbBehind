@@ -55,9 +55,9 @@
 
     <insert id="addBuy" parameterType="com.xhy.domain.Buy">
         insert into tb_buy(buyid, buytitle, btime, itemtype, itemid, num, unit, buyerid, neederid,
-                           uptype, comment, importance, department, buytype, needid)
+                           uptype, comment, importance, department,needid,buytype)
         values (null, #{buytitle}, #{btime}, #{itemtype}, #{itemid}, #{num}, #{unit}, #{buyerid},
-                #{neederid}, 0, #{comment}, #{importance}, #{department}, 1, #{needid});
+                #{neederid}, 0, #{comment}, #{importance}, #{department},#{needid},1);
     </insert>
 
     <update id="updataBuy" parameterType="com.xhy.domain.Buy">

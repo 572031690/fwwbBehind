@@ -774,16 +774,16 @@ public class ActController {
     @ResponseBody
     public Map<String, Object> findFinishedNeed(@RequestBody NeedVO needVO) {
         Map<String, Object> map = new HashMap<>();
-        int limit = needVO.getLimit();
+        int limit = needVO.getPage();
         int page = needVO.getPage();
+
         Subject subject = SecurityUtils.getSubject();
         String username = String.valueOf(subject.getPrincipals());
         User user = userServise.findUser(username);
         Set<String> roles = userServise.findRoleByUserName(username);
         List<Need> needList = new ArrayList<>();
+        List<Need> needs = new ArrayList<>(); //最后的结果
         Integer count = 0;
-        int index = 1;
-        int flag = 0;
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("needAudit").singleResult();
 
         if (roles.contains("需求经理")) {
@@ -793,17 +793,17 @@ public class ActController {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                if (flag <= limit && index >= page) {
-                    needList.add(need);
-                    flag++;
-                    index++;
-                }
+                needList.add(need);
                 count++;
             }
+            for(int i =page-1;i<=limit;i++){
+                needs.add(needList.get(i));
+            }
+            System.out.println(needs);
             map.put("count", count);
-            map.put("page", index);
-            map.put("limit", flag);
-            map.put("list", needList);
+            map.put("page", needVO.getPage());
+            map.put("limit", needVO.getPage());
+            map.put("list", needs);
         } else if (roles.contains("总经理")) {
             if (needList.equals(null) || needList.size() == 0) {
                 List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().processDefinitionId(String.valueOf(processDefinition.getId())).taskAssignee(String.valueOf(user.getUserid())).activityId("_4").list();
@@ -812,12 +812,11 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                    if (flag <= limit && index >= page) {
                         needList.add(need);
-                        flag++;
-                        index++;
-                    }
-                    count++;
+                        count++;
+                }
+                for(int i =page-1;i<=limit;i++){
+                    needs.add(needList.get(i));
                 }
             } else {
                 needList.clear();
@@ -827,18 +826,18 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Need need = needService.findByNeedid(Integer.parseInt(businessKey));
-                    if (flag <= limit && index >= page) {
-                        needList.add(need);
-                        flag++;
-                        index++;
-                    }
+                    needList.add(need);
                     count++;
                 }
+                for(int i =page-1;i<=limit;i++){
+                    needs.add(needList.get(i));
+                }
             }
+            System.out.println(needs);
             map.put("count", count);
-            map.put("page", index);
-            map.put("limit", flag);
-            map.put("list", needList);
+            map.put("page", needVO.getPage());
+            map.put("limit", needVO.getLimit());
+            map.put("list", needs);
         }
         return map;
     }
@@ -869,7 +868,7 @@ public class ActController {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                 String businessKey = historicProcessInstance.getBusinessKey();
                 Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                if (flag <= limit && index >= page) {
+                if (flag <= limit & index >= page) {
                     buyList.add(buy);
                     flag++;
                     index++;
@@ -888,7 +887,7 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                    if (flag <= limit && index >= page) {
+                    if (flag <= limit & index >= page) {
                         buyList.add(buy);
                         flag++;
                         index++;
@@ -903,7 +902,7 @@ public class ActController {
                     HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
                     String businessKey = historicProcessInstance.getBusinessKey();
                     Buy buy = buyService.findBuyById(Integer.parseInt(businessKey));
-                    if (flag <= limit && index >= page) {
+                    if (flag <= limit & index >= page) {
                         buyList.add(buy);
                         flag++;
                         index++;

@@ -44,12 +44,19 @@ public class DepositoryController {
     @PostMapping("/addDepository")
     @ResponseBody
     public Map<String,Object> addDepository(@RequestBody Depository depository){
-        Integer status = depositoryService.addDepository(depository);
-        if(status != 0){
-            map.put("code","101");
-        }
-        else{
+        if(depository.getTotalstock()<depository.getStock()){
             map.put("code","102");
+            map.put("error","库存总量不能小于库存量");
+        }else {
+            Integer status = depositoryService.addDepository(depository);
+            if (status != 0 & status !=2) {
+                map.put("code", "101");
+            } else if(status == 2){
+                map.put("code", "102");
+                map.put("error","超出总库存限制，添加失败,请修改总库存");
+            }else{
+
+            }
         }
         return map;
     }

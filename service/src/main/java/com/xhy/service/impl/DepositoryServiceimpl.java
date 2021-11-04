@@ -31,18 +31,21 @@ public class DepositoryServiceimpl implements DepositoryService {
     public Integer addDepository(Depository depository) {
         int new_stock = 0;
         Depository byName = depositoryMapper.findByName(depository.getName());
-        if(!byName.equals(null)){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(byName!=null){
            new_stock =  depository.getStock() +  byName.getStock(); // 添加库存的量
-           if(new_stock<=byName.getTotalstock() && depository.getStock() <=byName.getTotalstock()){
+           if(new_stock<=byName.getTotalstock() ){
                depository.setStock(new_stock);//更新的库存
                depository.setId(byName.getId());//存在的物料的id
-               depository.setTotalstock(byName.getTotalstock());
+               stringBuilder.append(byName.getComment());
+               stringBuilder.append(depository.getComment());
+               String s = stringBuilder.toString();
+               depository.setComment(s);
                return depositoryMapper.updataDepository(depository);
-           }else
-           {
-               return 0;
+           }else {
+               return 2;
            }
-        }else return depositoryMapper.addDepository(depository);
+        } else return depositoryMapper.addDepository(depository);
     }
 
     @Override
